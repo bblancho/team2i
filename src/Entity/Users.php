@@ -7,11 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity(fields: ['email'], message: "Cette email est déjà utilisé.")]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -35,13 +37,13 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $nom = null;
+    private ?string $nom = null; 
 
     #[ORM\Column(length: 255)]
-    private ?string $adresse = null;
+    private ?string $adresse = null; 
 
     #[ORM\Column]
-    private ?int $cp = null;
+    private ?int $cp = null; 
 
     #[ORM\Column(length: 255)]
     private ?string $ville = null;
@@ -50,7 +52,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $phone = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $typeUser = null;
+    private ?string $typeUser = null; 
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $nomContact  = null;
@@ -74,7 +76,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $siret = null;
 
     #[ORM\Column]
-    private ?bool $isVerified = null;
+    private ?bool $isVerified = false;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $secteurActivite = null;
@@ -83,7 +85,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $feauturedImage = null;
 
     #[ORM\Column(nullable: true)]
-    private ?bool $isNewsletter = null;
+    private ?bool $isNewsletter = false;
 
     /**
      * @var Collection<int, Missions>
@@ -441,4 +443,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
 }
