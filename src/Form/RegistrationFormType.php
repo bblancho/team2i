@@ -61,7 +61,7 @@ class RegistrationFormType extends AbstractType
                     'maxlenght' => '50',
                 ],
                 'required' => false,
-                'label' => 'Adress',
+                'label' => 'Adresse',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
                 ],

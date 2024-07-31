@@ -3,14 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Users;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Form\RegistrationFormType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
@@ -18,49 +18,44 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_about');
+            return $this->redirectToRoute('app_mission');
         }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-        
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('pages/security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
-    #[Route(path: '/deconnexion', name: 'security.logout' , methods: ['GET'])]
+    #[Route(path: '/deconnexion', name: 'security.logout')]
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
     /**
-     * This controller allow us to register 
-     *
-     * @param Request $request
-     * @param EntityManagerInterface $manager
-     * @return Response
+     * This controller allow us to register.
      */
     #[Route('/inscription', 'security.registration', methods: ['GET', 'POST'])]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new Users();
         $user->setRoles(['ROLE_USER']);
-        $pass= "azerty";
+        $plaintextPassword = 'azerty';
 
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $pass
-                )
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $plaintextPassword
             );
+
+            $user->setPassword($hashedPassword);
             $user->setTypeUser('client');
 
             $entityManager->persist($user);
@@ -80,5 +75,6 @@ class SecurityController extends AbstractController
             'registrationForm' => $form,
         ]);
     }
+
 
 }

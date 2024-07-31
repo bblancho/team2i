@@ -336,7 +336,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isVerified(): ?bool
+    public function getIsVerified(): ?bool
     {
         return $this->isVerified;
     }
@@ -372,7 +372,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isNewsletter(): ?bool
+    public function getIsNewsletter(): ?bool
     {
         return $this->isNewsletter;
     }
