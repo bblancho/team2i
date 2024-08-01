@@ -10,10 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: "Cette email est déjà utilisé.")]
+#[UniqueEntity(fields: ['email'], message: "Cet email est déjà utilisé.")]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -22,36 +23,76 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank()]
+    #[Assert\Email(
+        message: "Cet adresse {{ value }}, n'est pas une email valid.",
+    )]
     private ?string $email = null;
 
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
+    #[Assert\NotNull()]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 8,
+        minMessage: "Le mot de passe doit faire minimum {{ limit }} caractères.",
+    )]
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: "Le nom doit faire minimum {{ limit }} caractères.",
+        maxMessage: "Le nom doit faire au maximum {{ limit }} caractères."
+    )]
     private ?string $nom = null; 
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: "L'adresse doit faire minimum  {{ limit }} caractères .",
+        maxMessage: "L'adresse doit faire au maximum  {{ limit }} caractères .",
+    )]
     private ?string $adresse = null; 
 
     #[ORM\Column]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 5,
+        max: 5,
+        minMessage: "Le code postal doit faire minimum  {{ limit }} caractères .",
+        maxMessage: "Le code postal doit faire au maximum  {{ limit }} caractères .",
+    )]
     private ?int $cp = null; 
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: "La ville doit faire minimum  {{ limit }} caractères .",
+        maxMessage: "La ville doit faire au maximum  {{ limit }} caractères .",
+    )]
     private ?string $ville = null;
 
     #[ORM\Column(length: 20)]
+    #[Assert\NotBlank()]
     private ?string $phone = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank()]
     private ?string $typeUser = null; 
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -67,6 +108,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?bool $dispo = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotNull()]
     private ?\DateTimeImmutable $dateDispoAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -76,16 +118,26 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $siret = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
     private ?bool $isVerified = false;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: "Le secteur d'activité doit faire minimum  {{ limit }} caractères .",
+        maxMessage: "Le secteur d'activité doit faire au maximum  {{ limit }} caractères .",
+    )]
     private ?string $secteurActivite = null;
 
     #[ORM\Column(length: 255)]
     private ?string $feauturedImage = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotNull]
     private ?bool $isNewsletter = false;
+
+    private $plainPassword;
 
     /**
      * @var Collection<int, Missions>
@@ -167,6 +219,26 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of plainPassword
+     */ 
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * Set the value of plainPassword
+     *
+     * @return  self
+     */ 
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
@@ -443,6 +515,5 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
 
 }

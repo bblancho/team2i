@@ -7,6 +7,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
@@ -15,7 +16,7 @@ class AppFixtures extends Fixture
      */
     private Generator $faker;
 
-    public function __construct()
+    public function __construct( private UserPasswordHasherInterface $hasher)
     {
         $this->faker = Factory::create('fr_FR');
         
@@ -30,7 +31,6 @@ class AppFixtures extends Fixture
         $admin->setNom('Bany Blanchard')
                 ->SetEmail('blanchard@gmail.com')
                 ->setRoles(['ROLE_USER', 'ROLE_ADMIN'])
-                ->setPassword('password')
                 ->setAdresse($this->faker->departmentName())
                 ->setCp($this->faker->postcode())
                 ->setVille($this->faker->city())
@@ -39,6 +39,9 @@ class AppFixtures extends Fixture
                 ->setDescription(  $this->faker->text(300)  )
                 ->setSiret( $this->faker->siret() )
                 ->setIsVerified(true)
+                ->setPassword(
+                    $this->hasher->hashPassword( $admin, "azerty" )
+                )
                 ;
 
         $users[] = $admin;
@@ -50,7 +53,6 @@ class AppFixtures extends Fixture
             $user->setNom($this->faker->company())
                 ->setEmail( $this->faker->email() )
                 ->setRoles(['ROLE_USER'])
-                ->setPassword('password')
                 ->setAdresse($this->faker->secondaryAddress())
                 ->setCp ($this->faker->postcode())
                 ->setVille($this->faker->city())
@@ -58,7 +60,11 @@ class AppFixtures extends Fixture
                 ->setTypeUser('client')
                 ->setDescription(  $this->faker->text(300)) 
                 ->setSiret( $this->faker->siret() )
-                ->setIsVerified( mt_rand(0, 1) == 1 ? true : false ) ;
+                ->setIsVerified( mt_rand(0, 1) == 1 ? true : false ) 
+                ->setPassword(
+                    $this->hasher->hashPassword( $admin, "azerty" )
+                )
+                ;
 
             $users[] = $user;
             $manager->persist($user);

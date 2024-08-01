@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MissionsRepository::class)]
 class Missions
@@ -17,9 +18,21 @@ class Missions
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: "Le nom doit faire minimum {{ limit }} caractères.",
+        maxMessage: "Le nom doit faire au maximum {{ limit }} caractères."
+    )]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 2,
+        minMessage: "Le nom doit faire minimum {{ limit }} caractères.",
+    )]
     private ?string $description = null;
 
     #[ORM\Column(length: 100)]
@@ -29,24 +42,32 @@ class Missions
     private ?int $tarif = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    #[Assert\NotNull()]
     private ?\DateTimeImmutable $startDateAT = null;
 
-    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    private ?\DateTimeImmutable $endDateat = null;
-
     #[ORM\Column]
+    #[Assert\NotBlank()]
     private ?int $duree = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank()]
+    #[Assert\NotNull()]
     private ?bool $isPourvue = null;
 
     #[ORM\Column]
     private ?bool $iSteletravail = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+    )]
     private ?string $lieuMission = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank()]
+    #[Assert\NotNull()]
     private ?bool $isActive = null;
 
     #[ORM\Column]
@@ -132,18 +153,6 @@ class Missions
     public function setStartDateAT(\DateTimeImmutable $startDateAT): static
     {
         $this->startDateAT = $startDateAT;
-
-        return $this;
-    }
-
-    public function getEndDateat(): ?\DateTimeImmutable
-    {
-        return $this->endDateat;
-    }
-
-    public function setEndDateat(\DateTimeImmutable $endDateat): static
-    {
-        $this->endDateat = $endDateat;
 
         return $this;
     }
