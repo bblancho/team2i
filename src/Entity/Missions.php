@@ -62,9 +62,13 @@ class Missions
     #[ORM\ManyToMany(targetEntity: skills::class, inversedBy: 'missions')]
     private Collection $skills;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->skills = new ArrayCollection();
+        $this->startDateAT = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

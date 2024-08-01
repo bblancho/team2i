@@ -144,7 +144,6 @@ class RegistrationFormType extends AbstractType
                     new Assert\Length(['min' => 2, 'max' => 10])
                 ]
             ])
-
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
