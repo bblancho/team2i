@@ -6,6 +6,10 @@
 <div class="container">
     <h1> Créer un compte client </h1>
 
+    <p class="titre_inscription">
+        Déjà membre ? <a href="{{ path('security.login') }}"> Se connecter </a> 
+    </p>
+
     {{ form_errors(registrationForm) }}
 
     {{ form_start(registrationForm) }}

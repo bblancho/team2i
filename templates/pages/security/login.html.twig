@@ -10,6 +10,10 @@
 			Je me connecte
 		</h1>
 
+		<p class="titre_inscription">
+			Pas encore membre ? <a href="{{ path('security.registration') }}"> Inscrivez-vous </a> 
+		</p>
+
 		<form action="{{ path('security.login') }}" method="post" name="login">
 			{% if error %}
 				<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -41,9 +45,9 @@
 			<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
             <div class="form-group">
-                <label class="form-label mt-4">
-                    <input   type="checkbox" name="_remember_me" checked>
-                    Se souvenir de moi
+                <label class="form-label">
+                    <input  class="form-checkbox text-primary mr-2"  type="checkbox" name="_remember_me" checked>
+                    <span> Se souvenir de moi </span>
                 </label>
             </div>
 
