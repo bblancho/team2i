@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\MissionsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Users;
+use App\Entity\Skills;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MissionsRepository;
+use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MissionsRepository::class)]
@@ -36,9 +39,11 @@ class Missions
     private ?string $description = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank()]
     private ?string $slug = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank()]
     private ?int $tarif = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
@@ -48,11 +53,6 @@ class Missions
     #[ORM\Column]
     #[Assert\NotBlank()]
     private ?int $duree = null;
-
-    #[ORM\Column]
-    #[Assert\NotBlank()]
-    #[Assert\NotNull()]
-    private ?bool $isPourvue = null;
 
     #[ORM\Column]
     private ?bool $iSteletravail = null;
@@ -68,20 +68,34 @@ class Missions
     #[ORM\Column]
     #[Assert\NotBlank()]
     #[Assert\NotNull()]
-    private ?bool $isActive = null;
+    private ?bool $isActive = false;
 
     #[ORM\Column]
+    #[Assert\NotBlank()]
+    #[Assert\NotNull()]
     private ?int $experience = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $profil = null;
+
+    #[ORM\Column]
+    #[Assert\NotBlank()]
+    #[Assert\NotNull()]
+    private ?int $nbPersonnes = null;
 
     #[ORM\ManyToOne(inversedBy: 'missions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?users $users = null;
 
     /**
-     * @var Collection<int, skills>
+     * @var Collection<int, Skills>
      */
-    #[ORM\ManyToMany(targetEntity: skills::class, inversedBy: 'missions')]
+    #[ORM\ManyToMany(targetEntity: Skills::class, inversedBy: 'missions')]
     private Collection $skills;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $contraintes = null;
+
 
     /**
      * Constructor
@@ -90,6 +104,10 @@ class Missions
     {
         $this->skills = new ArrayCollection();
         $this->startDateAT = new \DateTimeImmutable();
+    }
+
+    public function prePresist(){
+        $this->slug = (new Slugify())->slugify($this->nom) ;
     }
 
     public function getId(): ?int
@@ -169,19 +187,7 @@ class Missions
         return $this;
     }
 
-    public function isPourvue(): ?bool
-    {
-        return $this->isPourvue;
-    }
-
-    public function setPourvue(bool $isPourvue): static
-    {
-        $this->isPourvue = $isPourvue;
-
-        return $this;
-    }
-
-    public function isTeletravail(): ?bool
+    public function getIsTeletravail(): ?bool
     {
         return $this->iSteletravail;
     }
@@ -210,7 +216,7 @@ class Missions
         return $this->isActive;
     }
 
-    public function setActive(bool $isActive): static
+    public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
 
@@ -229,12 +235,12 @@ class Missions
         return $this;
     }
 
-    public function getUsers(): ?users
+    public function getUsers(): ?Users
     {
         return $this->users;
     }
 
-    public function setUsers(?users $users): static
+    public function setUsers(?Users $users): static
     {
         $this->users = $users;
 
@@ -242,14 +248,14 @@ class Missions
     }
 
     /**
-     * @return Collection<int, skills>
+     * @return Collection<int, Skills>
      */
     public function getSkills(): Collection
     {
         return $this->skills;
     }
 
-    public function addSkill(skills $skill): static
+    public function addSkill(Skills $skill): static
     {
         if (!$this->skills->contains($skill)) {
             $this->skills->add($skill);
@@ -258,10 +264,47 @@ class Missions
         return $this;
     }
 
-    public function removeSkill(skills $skill): static
+    public function removeSkill(Skills $skill): static
     {
         $this->skills->removeElement($skill);
 
         return $this;
     }
+
+    public function getProfil(): ?string
+    {
+        return $this->profil;
+    }
+
+    public function setProfil(?string $profil): static
+    {
+        $this->profil = $profil;
+
+        return $this;
+    }
+
+    public function getNbPersonnes(): ?int
+    {
+        return $this->nbPersonnes;
+    }
+
+    public function setNbPersonnes(int $nbPersonnes): static
+    {
+        $this->nbPersonnes = $nbPersonnes;
+
+        return $this;
+    }
+
+    public function getContraintes(): ?string
+    {
+        return $this->contraintes;
+    }
+
+    public function setContraintes(?string $contraintes): static
+    {
+        $this->contraintes = $contraintes;
+
+        return $this;
+    }
+
 }
