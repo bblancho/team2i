@@ -173,7 +173,6 @@ class MissionType extends AbstractType
             'label' => 'Date de début de mission',
             'widget' => 'single_text',
         ])
-        
         ->add('isActive', CheckboxType::class, [
             'attr' => [
                 'class' => 'form-check-input',

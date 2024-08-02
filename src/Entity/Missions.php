@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MissionsRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Missions
 {
     #[ORM\Id]
@@ -39,7 +40,7 @@ class Missions
     private ?string $description = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank()]
+    // #[Assert\NotBlank()]
     private ?string $slug = null;
 
     #[ORM\Column(nullable: true)]
@@ -53,9 +54,6 @@ class Missions
     #[ORM\Column]
     #[Assert\NotBlank()]
     private ?int $duree = null;
-
-    #[ORM\Column]
-    private ?bool $iSteletravail = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank()]
@@ -106,6 +104,7 @@ class Missions
         $this->startDateAT = new \DateTimeImmutable();
     }
 
+    #[ORM\PrePersist()]
     public function prePresist(){
         $this->slug = (new Slugify())->slugify($this->nom) ;
     }
@@ -146,7 +145,7 @@ class Missions
 
     public function setSlug(string $slug): static
     {
-        $this->slug = $slug;
+        $this->slug = (new Slugify())->slugify($slug) ;
 
         return $this;
     }
@@ -183,18 +182,6 @@ class Missions
     public function setDuree(int $duree): static
     {
         $this->duree = $duree;
-
-        return $this;
-    }
-
-    public function getIsTeletravail(): ?bool
-    {
-        return $this->iSteletravail;
-    }
-
-    public function setIsTeletravail(bool $iSteletravail): static
-    {
-        $this->iSteletravail = $iSteletravail;
 
         return $this;
     }

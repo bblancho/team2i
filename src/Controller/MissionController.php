@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MissionController extends AbstractController
 {
-    #[Route('/missions', name: 'app_mission')]
+    #[Route('/missions', name: 'app_mission', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('pages/missions/index.html.twig', [
@@ -27,18 +27,21 @@ class MissionController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    #[Route('/missions/creation', 'mission.new')]
+    #[Route('/missions/creation',name: 'mission.new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
         EntityManagerInterface $manager
     ): Response {
         $mission = new Missions();
-        $form = $this->createForm(MissionType::class, $mission);
 
+        $form = $this->createForm(MissionType::class, $mission);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $mission = $form->getData();
+
+            // dd($this->getUser());
             $mission->setUsers($this->getUser());
+            $mission->setSlug($form["nom"]->getData()) ;
 
             $manager->persist($mission);
             $manager->flush();
@@ -57,7 +60,7 @@ class MissionController extends AbstractController
     }
 
 
-    #[Route('/missions/show', name: 'app_mission_show')]
+    #[Route('/missions/show', name: 'app_mission_show', methods: ['GET'])]
     public function show(): Response
     {
         return $this->render('pages/missions/show.html.twig', [
