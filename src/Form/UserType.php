@@ -82,7 +82,7 @@ class UserType extends AbstractType
             'attr' => [
                 'class' => 'form-control',
                 'minlenght' => '2',
-                'maxlenght' => '10',
+                // 'maxlenght' => '10',
             ],
             'required' => false,
             'label' => 'Télèphone',
@@ -97,7 +97,6 @@ class UserType extends AbstractType
             'attr' => [
                 'class' => 'form-control',
                 'min' => 1,
-                'max' => 5,
                 'rows'=> 6
             ],
             'label' => 'Description de la société',
@@ -112,7 +111,7 @@ class UserType extends AbstractType
             'attr' => [
                 'class' => 'form-control',
                 'minlenght' => '2',
-                'maxlenght' => '10',
+                'maxlenght' => '20',
             ],
             'required' => false,
             'label' => 'Numéro de siret',
@@ -120,14 +119,14 @@ class UserType extends AbstractType
                 'class' => 'form-label  mt-4'
             ],
             'constraints' => [
-                new Assert\Length(['min' => 2, 'max' => 10])
+                new Assert\Length(['min' => 2, 'max' => 20])
             ]
         ])
-            ->add('submit', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary mt-4'
-                ]
-            ]);
+        ->add('submit', SubmitType::class, [
+            'attr' => [
+                'class' => 'btn btn-primary mt-4'
+            ]
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -64,8 +64,6 @@ class Missions
     private ?string $lieuMission = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank()]
-    #[Assert\NotNull()]
     private ?bool $isActive = false;
 
     #[ORM\Column]

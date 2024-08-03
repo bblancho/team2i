@@ -28,6 +28,7 @@ class UserController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[IsGranted('ROLE_USER')]
     #[Route('/utilisateur/edition/{id}', name: 'user.edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
     public function edit(
         Users $choosenUser,
@@ -75,34 +76,44 @@ class UserController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[IsGranted('ROLE_USER')]
     #[Route('/utilisateur/edition-mot-de-passe/{id}', 'user.edit.password', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
     public function editPassword(
-        Users $choosenUser,
+        Users $user,
         Request $request,
         EntityManagerInterface $manager,
         UserPasswordHasherInterface $hasher
     ): Response {
-        $form = $this->createForm(UserPasswordType::class);
+        $form = $this->createForm(UserPasswordType::class, $user);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-            if ($hasher->isPasswordValid($choosenUser, $form->getData()['plainPassword'])) {
-                //$choosenUser->setUpdatedAt(new \DateTimeImmutable());
-                $choosenUser->setPlainPassword(
-                    $form->getData()['newPassword']
-                );
+            $data = $form->getData();
 
+            // Retrieve the value from the extra field non-mapped !
+            $newpass = $form->get("plainPassword")->getData();
+
+            if ( $hasher->isPasswordValid( $user, $form->get('password')->getData() ) ) {
+                
+                $hasher = $hasher->hashPassword(
+                    $user,
+                    $newpass
+                );
+    
+                $user->setPassword($hasher);
+                
                 $this->addFlash(
                     'success',
                     'Le mot de passe a été modifié.'
                 );
 
-                $manager->persist($choosenUser);
+                $manager->persist($user);
                 $manager->flush();
+                dd('good');
 
-                return $this->redirectToRoute('recipe.index');
+                return $this->redirectToRoute('mes_mission');
             } else {
                 $this->addFlash(
                     'warning',

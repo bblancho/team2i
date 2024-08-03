@@ -108,7 +108,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?bool $dispo = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\NotNull()]
     private ?\DateTimeImmutable $dateDispoAt = null;
 
     #[ORM\Column(nullable: true)]
