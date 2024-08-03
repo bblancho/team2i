@@ -15,30 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MissionController extends AbstractController
 {
-    /**
-     * This controller display all ingredients
-     *
-     * @param MissionsRepository $repository
-     * @param PaginatorInterface $paginator
-     * @param Request $request
-     * @return Response
-     */
-    #[Route('/missions', name: 'app_mission', methods: ['GET'])]
-    public function index(
-        MissionsRepository $missionsRepository,
-        PaginatorInterface $paginator,
-        Request $request
-    ): Response {
-
-        $missions = $paginator->paginate(
-            $missionsRepository->findAll(),
-            $request->query->getInt('page', 1),
-            10
-        );
-        return $this->render('pages/missions/index.html.twig', [
-            "missions" => $missions
-        ]);
-    }
 
     /**
      * This controller display all ingredients
@@ -49,7 +25,7 @@ class MissionController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/missions/user', name: 'mes_mission', methods: ['GET'])]
+    #[Route('/gestion/missions/user', name: 'mes_mission', methods: ['GET'])]
     public function my_mission(
         MissionsRepository $missionsRepository,
         PaginatorInterface $paginator,
@@ -74,7 +50,7 @@ class MissionController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/missions/creation', name: 'mission.new', methods: ['GET', 'POST'])]
+    #[Route('/gestion/missions/creation', name: 'mission.new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
         EntityManagerInterface $manager
@@ -106,13 +82,6 @@ class MissionController extends AbstractController
         ]);
     }
 
-
-    #[Route('/missions/show', name: 'app_mission_show', methods: ['GET'])]
-    public function show(): Response
-    {
-        return $this->render('pages/missions/show.html.twig', []);
-    }
-
     /**
      * This controller allow us to edit an ingredient
      *
@@ -123,7 +92,7 @@ class MissionController extends AbstractController
      */
     ##[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     #[IsGranted('ROLE_USER')]
-    #[Route('/mission/edition/{id}', 'mission.edit', methods: ['GET', 'POST'])]
+    #[Route('/gestion/mission/edition/{id}', 'mission.edit', methods: ['GET', 'POST'])]
     public function edit(
         Missions $mission,
         Request $request,
@@ -159,7 +128,7 @@ class MissionController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/mission/suppression/{id}', 'mission.delete', methods: ['GET'])]
+    #[Route('/gestion/mission/suppression/{id}', 'mission.delete', methods: ['GET'])]
     // #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     public function delete(
         EntityManagerInterface $manager,
@@ -173,6 +142,6 @@ class MissionController extends AbstractController
             'Votre mission a été supprimée avec succès !'
         );
 
-        return $this->redirectToRoute('app_mission.index');
+        return $this->redirectToRoute('app_mission');
     }
 }
