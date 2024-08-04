@@ -30,7 +30,22 @@ class MissionType extends AbstractType
                 'maxlenght' => '50',
             ],
             'required' => true,
-            'label' => 'Titre de la mission',
+            'label' => 'Titre de la mission :',
+            'label_attr' => [
+                'class' => 'form-label  mt-4'
+            ],
+            'constraints' => [
+                new Assert\NotBlank(),
+                new Assert\Length(['min' => 2, 'max' => 50])
+            ]
+        ])
+        ->add('refMission', TextType::class, [
+            'attr' => [
+                'class' => 'form-control',
+                'minlenght' => '2',
+                'maxlenght' => '50',
+            ],
+            'label' => 'Ref annonce :',
             'label_attr' => [
                 'class' => 'form-label  mt-4'
             ],
@@ -47,7 +62,7 @@ class MissionType extends AbstractType
                 'rows'=> 6
             ],
             'required' => true,
-            'label' => 'Description de la mission',
+            'label' => 'Description de la mission :',
             'label_attr' => [
                 'class' => 'form-label mt-4'
             ],
@@ -61,7 +76,7 @@ class MissionType extends AbstractType
                 'minlenght' => '2',
                 'maxlenght' => '50',
             ],
-            'label' => 'Localisation:',
+            'label' => 'Localisation :',
             'label_attr' => [
                 'class' => 'form-label  mt-4'
             ],
@@ -79,7 +94,7 @@ class MissionType extends AbstractType
             ],
             'currency' => 'EUR',
             'required' => true,
-            'label' => 'Budget de la mission',
+            'label' => 'Budget de la mission :',
             'label_attr' => [
                 'class' => 'form-label mt-4'
             ],
@@ -95,7 +110,7 @@ class MissionType extends AbstractType
                 'max' => 24
             ],
             'required' => false,
-            'label' => 'Durée de la mission en mois',
+            'label' => 'Durée de la mission en mois :',
             'label_attr' => [
                 'class' => 'form-label mt-4'
             ],
@@ -112,7 +127,7 @@ class MissionType extends AbstractType
                 'rows'=> 6
             ],
             'required' => false,
-            'label' => "Contraintes de la mission",
+            'label' => "Contraintes de la mission  :",
             'label_attr' => [
                 'class' => 'form-label mt-4'
             ],
@@ -125,7 +140,7 @@ class MissionType extends AbstractType
                 'rows'=> 6
             ],
             'required' => false,
-            'label' => 'Profil recherché',
+            'label' => 'Profil recherché :',
             'label_attr' => [
                 'class' => 'form-label mt-4'
             ],
@@ -149,11 +164,32 @@ class MissionType extends AbstractType
                 new Assert\LessThan(15)
             ]
         ])
+        ->add('startDateAT', null, [
+            'attr' => [
+                'class' => 'form-control',
+            ],
+            'required' => true,
+            'label' => 'Date de début de mission :',
+            'widget' => 'single_text',
+        ])
+        ->add('isActive', CheckboxType::class, [
+            'attr' => [
+                'class' => 'form-check-input',
+            ],
+            'required' => false,
+            'label' => 'Publier ?',
+            'label_attr' => [
+                'class' => 'form-check-label'
+            ],
+            'constraints' => [
+                new Assert\NotNull()
+            ]
+        ])
         ->add('nbPersonnes', IntegerType::class, [
             'attr' => [
                 'class' => 'form-control',
                 'min' => 1,
-                'max' => 2000
+                'max' => 30
             ],
             'required' => true,
             'label' => 'Nombre de poste(s) à pourvoir :',
@@ -162,30 +198,10 @@ class MissionType extends AbstractType
             ],
             'constraints' => [
                 new Assert\Positive(),
-                new Assert\LessThan(2000)
+                new Assert\LessThan(30)
             ]
         ])
-        ->add('startDateAT', null, [
-            'attr' => [
-                'class' => 'form-control',
-            ],
-            'required' => true,
-            'label' => 'Date de début de mission',
-            'widget' => 'single_text',
-        ])
-        ->add('isActive', CheckboxType::class, [
-            'attr' => [
-                'class' => 'form-check-input',
-            ],
-            'required' => false,
-            'label' => 'Publier ? ',
-            'label_attr' => [
-                'class' => 'form-check-label'
-            ],
-            'constraints' => [
-                new Assert\NotNull()
-            ]
-        ])
+        
             // ->add('iSteletravail')
             // ->add('skills', EntityType::class, [
             //     'class' => skills::class,

@@ -129,8 +129,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     private ?string $secteurActivite = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $feauturedImage = null;
+
 
     #[ORM\Column(nullable: true)]
     #[Assert\NotNull]
@@ -149,6 +148,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Skills::class, mappedBy: 'users', orphanRemoval: true)]
     private Collection $skills;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $lastLonginAt = null;
 
     public function __construct()
     {
@@ -431,18 +433,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getFeauturedImage(): ?string
-    {
-        return $this->feauturedImage;
-    }
-
-    public function setFeauturedImage(string $feauturedImage): static
-    {
-        $this->feauturedImage = $feauturedImage;
-
-        return $this;
-    }
-
     public function getIsNewsletter(): ?bool
     {
         return $this->isNewsletter;
@@ -511,6 +501,18 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
                 $skill->setUsers(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLastLonginAt(): ?\DateTimeImmutable
+    {
+        return $this->lastLonginAt;
+    }
+
+    public function setLastLonginAt(?\DateTimeImmutable $lastLonginAt): static
+    {
+        $this->lastLonginAt = $lastLonginAt;
 
         return $this;
     }

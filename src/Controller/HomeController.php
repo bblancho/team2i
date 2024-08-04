@@ -20,7 +20,7 @@ class HomeController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    #[Route('/missions', name: 'app_home', methods: ['GET'])]
+    #[Route('/missions', name: 'app_missions', methods: ['GET'])]
     public function index(
         MissionsRepository $missionsRepository,
         PaginatorInterface $paginator,

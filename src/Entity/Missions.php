@@ -92,6 +92,8 @@ class Missions
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $contraintes = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $refMission = null;
 
     /**
      * Constructor
@@ -291,5 +293,19 @@ class Missions
 
         return $this;
     }
+
+    public function getRefMission(): ?string
+    {
+        return $this->refMission;
+    }
+
+    public function setRefMission(?string $refMission): static
+    {
+        $this->refMission = $refMission;
+
+        return $this;
+    }
+
+ 
 
 }

@@ -20,7 +20,7 @@ final class Version20240802124600 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE missions ADD contraintes LONGTEXT DEFAULT NULL');
+        // $this->addSql('ALTER TABLE missions ADD contraintes LONGTEXT DEFAULT NULL');
     }
 
     public function down(Schema $schema): void

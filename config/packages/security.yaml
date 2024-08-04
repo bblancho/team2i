@@ -22,7 +22,7 @@ security:
             #     check_path: security.login
             logout:
                 path: security.logout
-                target: app_home
+                target: app_missions
 
             remember_me:
                 secret: '%kernel.secret%'
