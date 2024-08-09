@@ -3,19 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\Users;
-use App\Form\UserPasswordType;
 use App\Form\UserType;
+use App\Form\UserPasswordType;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Requirement\Requirement;
-use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints\Expression;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 class UserController extends AbstractController
@@ -31,12 +32,15 @@ class UserController extends AbstractController
     #[IsGranted('ROLE_USER')]
     #[Route('/utilisateur/edition/{id}', name: 'user.edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
     public function edit(
-        Users $choosenUser,
+        Users $user,
         Request $request,
         EntityManagerInterface $manager,
-        UserPasswordHasherInterface $hasher
+        UserPasswordHasherInterface $hasher,
+        UploaderHelper $helper
     ): Response {
-        $form = $this->createForm(UserType::class, $choosenUser);
+        $form = $this->createForm(UserType::class, $user);
+
+        $cheminFichier  = $helper->asset($user, 'imageFile') ;
 
         $form->handleRequest($request);
         $user = $this->getUser() ;
