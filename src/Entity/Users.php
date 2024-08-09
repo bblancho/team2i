@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: "Cet email est déjà utilisé.")]
 #[Vich\Uploadable]
-class Users implements UserInterface, PasswordAuthenticatedUserInterface, \Serializable
+class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -563,26 +563,26 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface, \Seria
         return $this->imageName;
     }
 
-    public function serialize()
-    {
-        return serialize(array(
-            $this->id,
-            $this->nom,
-            $this->password,
-            // see section on salt below
-            // $this->salt,
-        ));
-    }
+    // public function serialize()
+    // {
+    //     return serialize(array(
+    //         $this->id,
+    //         $this->nom,
+    //         $this->password,
+    //         // see section on salt below
+    //         // $this->salt,
+    //     ));
+    // }
 
-    public function unserialize($serialized)
-    {
-        list (
-            $this->id,
-            $this->nom,
-            $this->password,
-            // see section on salt below
-            // $this->salt
-        ) = unserialize($serialized);
-    }
+    // public function unserialize($serialized)
+    // {
+    //     list (
+    //         $this->id,
+    //         $this->nom,
+    //         $this->password,
+    //         // see section on salt below
+    //         // $this->salt
+    //     ) = unserialize($serialized);
+    // }
 
 }
