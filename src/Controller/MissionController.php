@@ -14,7 +14,31 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MissionController extends AbstractController
-{
+{   
+        /**
+     * This controller allow us to see a recipe if this one is public
+     *
+     * @param MissionsRepository $missionsRepository
+     * @return Response
+     */
+    #[IsGranted('ROLE_USER')]
+    #[Route('/mission/{id}', 'mission.show', methods: ['GET', 'POST'])]
+    public function show(
+        Missions $mission,
+        Request $request,
+        MissionsRepository $missionsRepository,
+        EntityManagerInterface $manager
+    ): Response {
+
+        $mission =  $missionsRepository->findOneBy([
+        'id' => $id,
+
+        ]);
+
+        return $this->render('pages/missions/show.html.twig', [
+            'mission' => $mission
+        ]);
+    }
 
     /**
      * This controller display all ingredients
@@ -25,18 +49,30 @@ class MissionController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/gestion/missions/user', name: 'mes_mission', methods: ['GET'])]
+    #[Route('/gestion/missions/user', name: 'mes_missions', methods: ['GET'])]
     public function my_mission(
         MissionsRepository $missionsRepository,
         PaginatorInterface $paginator,
         Request $request
     ): Response {
 
+        /** @var \App\Entity\Users $user */
+        $user =  $this->getUser() ;
+        $userId = $user->getId();
+
         $missions = $paginator->paginate(
-            $missionsRepository->findAll(),
+            $user->getMissions(),
             $request->query->getInt('page', 1),
             10
         );
+
+        // dd($user) ;
+
+        // $products = $missionsRepository->findBy(
+        //     ['users_id' => $userId],
+        //     ['id' => 'DESC']
+        // );
+
         return $this->render('pages/missions/mes_missions.html.twig', [
             "missions" => $missions
         ]);
@@ -112,7 +148,7 @@ class MissionController extends AbstractController
                 'Votre mission a été modifiée avec succès !'
             );
 
-            return $this->redirectToRoute('app_mission');
+            return $this->redirectToRoute('mes_missions');
         }
 
         return $this->render('pages/missions/edit.html.twig', [
@@ -142,6 +178,6 @@ class MissionController extends AbstractController
             'Votre mission a été supprimée avec succès !'
         );
 
-        return $this->redirectToRoute('app_mission');
+        return $this->redirectToRoute('mes_missions');
     }
 }

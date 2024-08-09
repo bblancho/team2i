@@ -48,8 +48,8 @@ class SecurityController extends AbstractController
     {
         $user = new Users();
         $user->setRoles(['ROLE_USER']);
-        $plaintextPassword = 'azerty';
-
+        $user->setTypeUser('client');
+        
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -57,11 +57,10 @@ class SecurityController extends AbstractController
             // encode the plain password
             $hashedPassword = $passwordHasher->hashPassword(
                 $user,
-                $plaintextPassword
+                $form["password"]->getData()
             );
 
             $user->setPassword($hashedPassword);
-            $user->setTypeUser('client');
 
             $entityManager->persist($user);
             $entityManager->flush();

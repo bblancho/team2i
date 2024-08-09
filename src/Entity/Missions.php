@@ -79,7 +79,7 @@ class Missions
     #[Assert\NotNull()]
     private ?int $nbPersonnes = null;
 
-    #[ORM\ManyToOne(inversedBy: 'missions')]
+    #[ORM\ManyToOne(targetEntity: Users::class, inversedBy: 'missions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?users $users = null;
 
@@ -227,7 +227,7 @@ class Missions
         return $this->users;
     }
 
-    public function setUsers(?Users $users): static
+    public function setUsers(?Users $users): self
     {
         $this->users = $users;
 

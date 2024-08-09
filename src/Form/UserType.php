@@ -4,13 +4,14 @@ namespace App\Form;
 
 use App\Entity\Users;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Symfony\Component\Validator\Constraints as Assert;
+
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class UserType extends AbstractType
@@ -32,6 +33,16 @@ class UserType extends AbstractType
                 new Assert\NotBlank(),
                 new Assert\Length(['min' => 2, 'max' => 50])
             ]
+        ])
+        ->add('imageFile', FileType::class,[
+            'attr' => [
+                'class' => 'form-control',
+            ],
+            'required' => false,
+            'label' => 'Logo',
+            'label_attr' => [
+                'class' => 'form-label  mt-4'
+            ],
         ])
         ->add('adresse', TextType::class, [
             'attr' => [
@@ -125,7 +136,8 @@ class UserType extends AbstractType
         ->add('submit', SubmitType::class, [
             'attr' => [
                 'class' => 'btn btn-primary mt-4'
-            ]
+            ],
+            'label' => 'Valider',
         ]);
     }
 

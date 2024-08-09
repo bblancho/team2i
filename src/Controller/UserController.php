@@ -39,32 +39,25 @@ class UserController extends AbstractController
         $form = $this->createForm(UserType::class, $choosenUser);
 
         $form->handleRequest($request);
+        $user = $this->getUser() ;
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if ($hasher->isPasswordValid($choosenUser, $form->getData()->getPlainPassword())) {
+            $user = $form->getData();
+            $manager->persist($user);
+            $manager->flush();
 
-                $user = $form->getData();
-                $manager->persist($user);
-                $manager->flush();
+            $this->addFlash(
+                'success',
+                'Les informations de votre compte ont bien été modifiées.'
+            );
 
-                $this->addFlash(
-                    'success',
-                    'Les informations de votre compte ont bien été modifiées.'
-                );
-
-                return $this->redirectToRoute('recipe.index');
-
-            } else {
-                $this->addFlash(
-                    'warning',
-                    'Le mot de passe renseigné est incorrect.'
-                );
-            }
+            return $this->redirectToRoute('mes_missions');
         }
 
         return $this->render('pages/user/edit.html.twig', [
             'form' => $form->createView(),
+            'user' => $user
         ]);
     }
 
@@ -89,21 +82,21 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $data = $form->getData();
 
             // Retrieve the value from the extra field non-mapped !
             $newpass = $form->get("plainPassword")->getData();
 
-            if ( $hasher->isPasswordValid( $user, $form->get('password')->getData() ) ) {
-                
+            if ($hasher->isPasswordValid($user, $form->get('password')->getData())) {
+
                 $hasher = $hasher->hashPassword(
                     $user,
                     $newpass
                 );
-    
+
                 $user->setPassword($hasher);
-                
+
                 $this->addFlash(
                     'success',
                     'Le mot de passe a été modifié.'

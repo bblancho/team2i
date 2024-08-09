@@ -49,9 +49,13 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
         
        /** @var Users $user */
-        // $user = $this->user->getUser();
+        $user = $this->user->getUser();
 
         // dd($user) ;
+
+        if( $user->getTypeUser() == "client" ){
+            return new RedirectResponse($this->urlGenerator->generate('mes_missions'));
+        }
 
         return new RedirectResponse($this->urlGenerator->generate('app_missions'));
     }
