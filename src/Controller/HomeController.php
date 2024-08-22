@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Missions;
 use App\Repository\MissionsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,11 +38,21 @@ class HomeController extends AbstractController
         ]);
     }
 
-    
-    #[Route('/missions/show', name: 'app_mission_show', methods: ['GET'])]
-    public function show(): Response
+    /**
+     * This controller allow us to see one mission if this one is public
+     *
+     * @return Response
+     */
+    #[Route('/mission/{id}', name: 'app_mission_show', requirements: ['id' => '\d+'], methods: ["GET"])]
+    public function show(Missions $mission): Response
     {
-        return $this->render('pages/missions/show.html.twig', []);
+        if ( !$mission ) {
+            throw $this->createNotFoundException('Aucune mission trouvée.') ;
+        }
+
+        return $this->render('pages/missions/show.html.twig', [
+            'mission' => $mission,
+        ]);
     }
 
     #[Route('/mentions-legales', name: 'app_mentions')]

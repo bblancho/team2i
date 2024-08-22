@@ -31,7 +31,6 @@
 						<th scope="col">Lieu</th>
 						<th scope="col">Budget</th>
 						<th scope="col">Seniorité</th>
-						<th scope="col">Nb de poste(s)</th>
 						<th scope="col">Durée</th>
 						<th scope="col">Publié</th>
 						<th scope="col" colspan="3">Actions</th>
@@ -48,9 +47,9 @@
 								{{ mission.tarif }} €
 							</td>
 							<td>{{ mission.experience }} an(s) </td>
-							<td>{{ mission.nbPersonnes }} </td>
+							
 							<td>{{ mission.duree }} mois </td>
-							<td>{{ mission.isActive }}</td>
+							<td>{{ mission.isActive ? 'oui' : 'non'}}  </td>
 							<td>
 								<a href="{{ path('mission.edit', { id: mission.id }) }}" class="btn btn-primary"> Afficher </a>
 							</td>

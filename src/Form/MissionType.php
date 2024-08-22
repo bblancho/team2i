@@ -155,7 +155,7 @@ class MissionType extends AbstractType
                 'max' => 15
             ],
             'required' => false,
-            'label' => "nombre d'année d'expérience minimum :",
+            'label' => "Nombre d'année d'expérience minimum :",
             'label_attr' => [
                 'class' => 'form-label mt-4'
             ],
@@ -185,22 +185,22 @@ class MissionType extends AbstractType
                 new Assert\NotNull()
             ]
         ])
-        ->add('nbPersonnes', IntegerType::class, [
-            'attr' => [
-                'class' => 'form-control',
-                'min' => 1,
-                'max' => 30
-            ],
-            'required' => true,
-            'label' => 'Nombre de poste(s) à pourvoir :',
-            'label_attr' => [
-                'class' => 'form-label mt-4'
-            ],
-            'constraints' => [
-                new Assert\Positive(),
-                new Assert\LessThan(30)
-            ]
-        ])
+        // ->add('nbPersonnes', IntegerType::class, [
+        //     'attr' => [
+        //         'class' => 'form-control',
+        //         'min' => 1,
+        //         'max' => 30
+        //     ],
+        //     'required' => true,
+        //     'label' => 'Nombre de poste(s) à pourvoir :',
+        //     'label_attr' => [
+        //         'class' => 'form-label mt-4'
+        //     ],
+        //     'constraints' => [
+        //         new Assert\Positive(),
+        //         new Assert\LessThan(30)
+        //     ]
+        // ])
         
             // ->add('iSteletravail')
             // ->add('skills', EntityType::class, [

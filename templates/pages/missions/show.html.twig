@@ -5,13 +5,82 @@
 
 {% block body %}
 
-
 	<div class="container">
-		<h1>Nos derniéres missions</h1>
+		<h1>{{ mission.nom }}</h1>
 
-		<div class="album py-5 bg-body-tertiary">
-			
+		<div class="row">
 
+			<div class="col-md-9" >
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h2 class="info-offre text-xl font-semibold mb-4"> Description de la mission : </h2>
+						<p>
+							Tech Valley renforce ses équipes de consultants / consultantes. Afin de répondre aux besoins de nos clients et dans le cadre de nos projets d’évolution, nous recrutons un(e) Testeur(se) automaticien(ne) à Lyon.
+
+							Vos missions : <br/>
+
+							Concevoir des tests automatisés utiles et pérennes, orchestrer et exécuter des campagnes de tests automatisés  <br/>
+
+							Connaître l’environnement technique web  <br/>
+
+							Gérer les environnements et les données de test  <br/>
+
+							Installer et configurer des applications sous Unix  <br/>
+
+							Mettre en place un serveur d’intégration continue et intégrer ensemble différents types de contrôles (qualimétrie, performance, tests unitaires et d’intégration, tests fonctionnels)
+						</p>
+					</div>
+				</div><br/>
+
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h2 class="info-offre text-xl font-semibold mb-4"> Profil recherché : </h2>
+						De formation Bac+2 à Bac +5 Ingénieur ou formation équivalente en informatique, vous justifiez d’une expérience similaire.<br/>
+
+						Vous êtes à l’aise dans l’environnement technique suivant :<br/>
+
+						Maîtriser les outils Selenium, Robotframework, Jenkins, SoaopUI, NeoLoad, Squash, SonarQube<br/>
+
+						Maîtriser la qualimétrie, les tests de performance et les tests de sécurité<br/>
+
+						Maîtriser les concepts de la livraison continue et du déploiement continu<br/>
+
+						Expérience : 5 ans minimum hors stage et alternance<br/>
+
+						Rémunération selon profil<br/>
+
+						Cet environnement technique vous parle et vous souhaitez vous investir sur des missions innovantes ? N’attendez plus et envoyez votre CV pour rejoindre nos équipes.<br/>
+					</div>
+				</div><br/> 
+
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h2 class="info-offre text-xl font-semibold mb-4"> Environnement de travail : </h2>
+
+						Télétravail Hybride <br/>
+
+						Début de la mission : Immédiatement <br/>
+
+						Lieu : Issy les Moulineaux <br/>
+
+						Autres compétences/souhaitées : <br/>
+
+						Modelio <br/>
+
+						Excel <br/>
+
+						Analyse des données avec Dremio, Microstrategy<br/>
+
+						Niveau en anglais : Bilingue
+					</div>
+				</div><br/>
+
+			</div>
+
+			<div class="col-md-3" >
+				tpp
+			</div>
+			{# <div class="album py-5 bg-body-tertiary px">
 				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 					<div class="col">
 						<div class="card shadow-sm">
@@ -19,8 +88,12 @@
 								<title>Développeur confirmé PHP (H/F)</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
 							</svg>
 							<div class="card-body">
-                                <h4> Développeur confirmé PHP (H/F) </h4>
-                                <h5> BNP PARISBAS </h5>
+								<h4>
+									Développeur confirmé PHP (H/F)
+								</h4>
+								<h5>
+									BNP PARISBAS
+								</h5>
 								<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
@@ -37,8 +110,12 @@
 								<title>Développeur·se PHP/Javascript</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
 							</svg>
 							<div class="card-body">
-                                <h4> Développeur·se PHP/Javascript </h4>
-                                <h5> Webnet </h5>
+								<h4>
+									Développeur·se PHP/Javascript
+								</h4>
+								<h5>
+									Webnet
+								</h5>
 								<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
@@ -55,12 +132,16 @@
 								<title>Développeur PHP (H/F) - Lille</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
 							</svg>
 							<div class="card-body">
-                                <h4> Développeur PHP (H/F) - Lille </h4>
-                                <h5> SOfinco </h5>
+								<h4>
+									Développeur PHP (H/F) - Lille
+								</h4>
+								<h5>
+									SOfinco
+								</h5>
 								<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
-								        <button type="button" class="btn btn-sm btn-outline-secondary">Postuler</button>
+										<button type="button" class="btn btn-sm btn-outline-secondary">Postuler</button>
 									</div>
 									<small class="text-body-secondary">9 mins</small>
 								</div>
@@ -74,8 +155,12 @@
 								<title>Développeur Fullstack PHP/JS Senior H/F</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
 							</svg>
 							<div class="card-body">
-                                <h4> Développeur Fullstack PHP/JS Senior H/F </h4>
-                                <h5> CIC </h5>
+								<h4>
+									Développeur Fullstack PHP/JS Senior H/F
+								</h4>
+								<h5>
+									CIC
+								</h5>
 								<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
@@ -92,8 +177,12 @@
 								<title>Développeur Fullstack PHP/JS Senior H/F</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
 							</svg>
 							<div class="card-body">
-                                <h4> Développeur Fullstack PHP/JS Senior H/F </h4>
-                                <h5> LA poste </h5>
+								<h4>
+									Développeur Fullstack PHP/JS Senior H/F
+								</h4>
+								<h5>
+									LA poste
+								</h5>
 								<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
@@ -110,7 +199,9 @@
 								<title>Développeur Fullstack PHP / JS Senior H/F</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
 							</svg>
 							<div class="card-body">
-                                <h4> Développeur Fullstack PHP / JS Senior H/F </h4>
+								<h4>
+									Développeur Fullstack PHP / JS Senior H/F
+								</h4>
 								<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
@@ -128,8 +219,10 @@
 								<title>Développeur PHP Back-end (F/H)</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
 							</svg>
 							<div class="card-body">
-                                <h4>Développeur PHP Back-end (F/H)</h4>
-                                <h5> ELKO </h5>
+								<h4>Développeur PHP Back-end (F/H)</h4>
+								<h5>
+									ELKO
+								</h5>
 								<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
@@ -146,8 +239,10 @@
 								<title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
 							</svg>
 							<div class="card-body">
-                                <h4>UX DESIGNER</h4>
-                                <h5> NOkia </h5>
+								<h4>UX DESIGNER</h4>
+								<h5>
+									NOkia
+								</h5>
 								<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
@@ -164,7 +259,7 @@
 								<title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
 							</svg>
 							<div class="card-body">
-                                <h4>Chef de projet</h4>
+								<h4>Chef de projet</h4>
 								<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
@@ -176,7 +271,9 @@
 						</div>
 					</div>
 				</div>
-			</div>
-		
+			</div> #}
+		</div>
+
 	</div>
+
 {% endblock %}

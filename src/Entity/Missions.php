@@ -74,10 +74,10 @@ class Missions
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $profil = null;
 
-    #[ORM\Column]
-    #[Assert\NotBlank()]
-    #[Assert\NotNull()]
-    private ?int $nbPersonnes = null;
+    // #[ORM\Column]
+    // #[Assert\NotBlank()]
+    // #[Assert\NotNull()]
+    // private ?int $nbPersonnes = null;
 
     #[ORM\ManyToOne(targetEntity: Users::class, inversedBy: 'missions')]
     #[ORM\JoinColumn(nullable: false)]
@@ -270,17 +270,17 @@ class Missions
         return $this;
     }
 
-    public function getNbPersonnes(): ?int
-    {
-        return $this->nbPersonnes;
-    }
+    // public function getNbPersonnes(): ?int
+    // {
+    //     return $this->nbPersonnes;
+    // }
 
-    public function setNbPersonnes(int $nbPersonnes): static
-    {
-        $this->nbPersonnes = $nbPersonnes;
+    // public function setNbPersonnes(int $nbPersonnes): static
+    // {
+    //     $this->nbPersonnes = $nbPersonnes;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getContraintes(): ?string
     {

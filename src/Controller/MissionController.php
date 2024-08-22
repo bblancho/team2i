@@ -95,6 +95,7 @@ class MissionController extends AbstractController
 
         $form = $this->createForm(MissionType::class, $mission);
         $form->handleRequest($request);
+        // dd($form->getData()) ;
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -110,7 +111,7 @@ class MissionController extends AbstractController
                 'Votre mission a été créé avec succès !'
             );
 
-            return $this->redirectToRoute('app_mission');
+            return $this->redirectToRoute('mes_missions');
         }
 
         return $this->render('pages/missions/new.html.twig', [
