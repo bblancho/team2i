@@ -51,7 +51,7 @@
 							<td>{{ mission.duree }} mois </td>
 							<td>{{ mission.isActive ? 'oui' : 'non'}}  </td>
 							<td>
-								<a href="{{ path('mission.edit', { id: mission.id }) }}" class="btn btn-primary"> Afficher </a>
+								<a  href="{{ path('app_mission_show', {id: mission.id}) }}" class="btn btn-primary"> Afficher </a>
 							</td>
 							<td>
 								<a href="{{ path('mission.edit', { id: mission.id }) }}" class="btn btn-info">Modifier</a>
