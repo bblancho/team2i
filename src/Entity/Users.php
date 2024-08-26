@@ -10,14 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: "Cet email est déjà utilisé.")]
-#[Vich\Uploadable]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -98,23 +95,8 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank()]
     private ?string $typeUser = null; 
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $nomContact  = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $phoneContact = null;
-
     #[ORM\Column(nullable: true)]
-    private ?bool $dispo = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $dateDispoAt = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $tjm = null;
+    private ?\DateTimeImmutable $dateInscriptionAt ;
 
     #[ORM\Column(length: 255)]
     private ?string $siret = null;
@@ -123,36 +105,11 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotNull]
     private ?bool $isVerified = false;
 
-    #[Vich\UploadableField(mapping: 'clients', fileNameProperty: 'imageName')]
-    #[Assert\Image()]
-    private ?File $imageFile = null;
-
-    #[ORM\Column( length: 255, nullable: true)]
-    private ?string $imageName = null;
-
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(
-        min: 2,
-        max: 50,
-        minMessage: "Le secteur d'activité doit faire minimum  {{ limit }} caractères .",
-        maxMessage: "Le secteur d'activité doit faire au maximum  {{ limit }} caractères .",
-    )]
-    private ?string $secteurActivite = null;
-
-
-
     #[ORM\Column(nullable: true)]
     #[Assert\NotNull]
     private ?bool $isNewsletter = false;
 
     private $plainPassword;
-
-    /**
-     * @var Collection<int, Missions>
-     */
-    #[ORM\OneToMany(targetEntity: Missions::class, mappedBy: 'users', orphanRemoval: true)]
-    private Collection $missions;
 
     /**
      * @var Collection<int, Skills>
@@ -165,7 +122,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->missions = new ArrayCollection();
         $this->skills = new ArrayCollection();
     }
 
@@ -336,74 +292,14 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getNomContact(): ?string
+    public function getDateInscriptionAt(): ?\DateTimeImmutable
     {
-        return $this->nomContact;
+        return $this->dateInscriptionAt;
     }
 
-    public function setNomContact(?string $nomContact): static
+    public function setDateInscriptionAt(?\DateTimeImmutable $dateInscriptionAt): static
     {
-        $this->nomContact = $nomContact;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getPhoneContact(): ?string
-    {
-        return $this->phoneContact;
-    }
-
-    public function setPhoneContact(?string $phoneContact): static
-    {
-        $this->phoneContact = $phoneContact;
-
-        return $this;
-    }
-
-    public function isDispo(): ?bool
-    {
-        return $this->dispo;
-    }
-
-    public function setDispo(?bool $dispo): static
-    {
-        $this->dispo = $dispo;
-
-        return $this;
-    }
-
-    public function getDateDispoAt(): ?\DateTimeImmutable
-    {
-        return $this->dateDispoAt;
-    }
-
-    public function setDateDispoAt(?\DateTimeImmutable $dateDispoAt): static
-    {
-        $this->dateDispoAt = $dateDispoAt;
-
-        return $this;
-    }
-
-    public function getTjm(): ?int
-    {
-        return $this->tjm;
-    }
-
-    public function setTjm(?int $tjm): static
-    {
-        $this->tjm = $tjm;
+        $this->dateInscriptionAt = $dateInscriptionAt;
 
         return $this;
     }
@@ -432,18 +328,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getSecteurActivite(): ?string
-    {
-        return $this->secteurActivite;
-    }
-
-    public function setSecteurActivite(?string $secteurActivite): static
-    {
-        $this->secteurActivite = $secteurActivite;
-
-        return $this;
-    }
-
     public function getIsNewsletter(): ?bool
     {
         return $this->isNewsletter;
@@ -452,36 +336,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNewsletter(?bool $isNewsletter): static
     {
         $this->isNewsletter = $isNewsletter;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Missions>
-     */
-    public function getMissions(): Collection
-    {
-        return $this->missions;
-    }
-
-    public function addMission(Missions $mission): static
-    {
-        if (!$this->missions->contains($mission)) {
-            $this->missions->add($mission);
-            $mission->setUsers($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMission(Missions $mission): static
-    {
-        if ($this->missions->removeElement($mission)) {
-            // set the owning side to null (unless already changed)
-            if ($mission->getUsers() === $this) {
-                $mission->setUsers(null);
-            }
-        }
 
         return $this;
     }
@@ -527,62 +381,5 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    /**
-     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
-     * of 'UploadedFile' is injected into this setter to trigger the update. If this
-     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
-     * must be able to accept an instance of 'File' as the bundle will inject one here
-     * during Doctrine hydration.
-     *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
-     */
-    public function setImageFile(?File $imageFile = null): void
-    {
-        $this->imageFile = $imageFile;
-
-        // if (null !== $imageFile) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
-        //     $this->updatedAt = new \DateTimeImmutable();
-        // }
-    }
-
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-    public function setImageName(?string $imageName): void
-    {
-        $this->imageName = $imageName;
-    }
-
-    public function getImageName(): ?string
-    {
-        return $this->imageName;
-    }
-
-    // public function serialize()
-    // {
-    //     return serialize(array(
-    //         $this->id,
-    //         $this->nom,
-    //         $this->password,
-    //         // see section on salt below
-    //         // $this->salt,
-    //     ));
-    // }
-
-    // public function unserialize($serialized)
-    // {
-    //     list (
-    //         $this->id,
-    //         $this->nom,
-    //         $this->password,
-    //         // see section on salt below
-    //         // $this->salt
-    //     ) = unserialize($serialized);
-    // }
 
 }

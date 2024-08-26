@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Users;
+use App\Entity\Societes;
 use App\Entity\Skills;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -94,6 +95,10 @@ class Missions
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $refMission = null;
+
+    #[ORM\ManyToOne(inversedBy: 'missions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Societes $societes = null;
 
     /**
      * Constructor
@@ -305,6 +310,19 @@ class Missions
 
         return $this;
     }
+
+    public function getSocietes(): ?Societes
+    {
+        return $this->societes;
+    }
+
+    public function setSocietes(?Societes $societes): static
+    {
+        $this->societes = $societes;
+
+        return $this;
+    }
+
 
  
 

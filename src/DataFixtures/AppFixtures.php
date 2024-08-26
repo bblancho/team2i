@@ -58,13 +58,13 @@ class AppFixtures extends Fixture
                 ->setVille($this->faker->city())
                 ->setPhone($this->faker->mobileNumber())
                 ->setTypeUser('client')
-                ->setDescription(  $this->faker->text(300)) 
+                // ->setDescription(  $this->faker->text(300)) 
                 ->setSiret( $this->faker->siret() )
                 ->setIsVerified( mt_rand(0, 1) == 1 ? true : false ) 
                 ->setPassword(
                     $this->hasher->hashPassword( $user, "password" )
                 )
-                ;
+            ;
 
             $users[] = $user;
             $manager->persist($user);
