@@ -13,6 +13,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
+#[ORM\InheritanceType("JOINED")] // ou "SINGLE_TABLE" Mise e place de l'héritage pour les tables clients / Sociétés
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')] // heritage
+#[ORM\DiscriminatorMap(['societes' => Societes::class, 'clients' => Clients::class])]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: "Cet email est déjà utilisé.")]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface

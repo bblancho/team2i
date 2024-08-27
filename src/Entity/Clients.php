@@ -2,17 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ClientsRepository;
+use App\Entity\Users;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ClientsRepository;
 
 #[ORM\Entity(repositoryClass: ClientsRepository::class)]
-class Clients
+class Clients extends Users
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\Column]
     private ?int $tjm = null;
 
@@ -21,11 +17,6 @@ class Clients
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $dateDispoAt = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getTjm(): ?int
     {

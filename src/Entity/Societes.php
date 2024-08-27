@@ -2,23 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\SocietesRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Users;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\SocietesRepository;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SocietesRepository::class)]
 #[Vich\Uploadable]
-class Societes
+class Societes extends Users
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(
@@ -51,11 +48,6 @@ class Societes
         maxMessage: "Le secteur d'activité doit faire au maximum  {{ limit }} caractères .",
     )]
     private ?string $secteurActivite = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getNomContact(): ?string
     {
