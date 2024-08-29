@@ -41,6 +41,7 @@ class Societes extends Users
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank()]
     #[Assert\Length(
         min: 2,
         max: 50,
@@ -48,7 +49,8 @@ class Societes extends Users
         maxMessage: "Le secteur d'activité doit faire au maximum  {{ limit }} caractères .",
     )]
     private ?string $secteurActivite = null;
-
+    
+    
     public function getNomContact(): ?string
     {
         return $this->nomContact;

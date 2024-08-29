@@ -20,7 +20,7 @@ final class Version20240804120557 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE missions ADD ref_mission VARCHAR(100) DEFAULT NULL');
+        // $this->addSql('ALTER TABLE missions ADD ref_mission VARCHAR(100) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
