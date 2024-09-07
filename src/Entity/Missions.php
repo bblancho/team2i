@@ -84,6 +84,10 @@ class Missions
     #[ORM\JoinColumn(nullable: false)]
     private ?users $users = null;
 
+    #[ORM\ManyToOne(targetEntity: Societes::class, inversedBy: 'missions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Societes $societes = null;
+
     /**
      * @var Collection<int, Skills>
      */
@@ -95,10 +99,6 @@ class Missions
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $refMission = null;
-
-    #[ORM\ManyToOne(inversedBy: 'missions')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Societes $societes = null;
 
     /**
      * Constructor

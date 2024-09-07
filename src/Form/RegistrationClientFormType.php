@@ -26,6 +26,7 @@ class RegistrationClientFormType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
@@ -41,6 +42,7 @@ class RegistrationClientFormType extends AbstractType
                 ]
             ])
             ->add('email', EmailType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
@@ -57,12 +59,12 @@ class RegistrationClientFormType extends AbstractType
                 ]
             ])
             ->add('adresse', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '50',
                 ],
-                'required' => false,
                 'label' => 'Adresse',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
@@ -72,12 +74,12 @@ class RegistrationClientFormType extends AbstractType
                 ]
             ])
             ->add('cp', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '5',
                     'maxlenght' => '5',
                 ],
-                'required' => false,
                 'label' => 'Code postal',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
@@ -87,12 +89,12 @@ class RegistrationClientFormType extends AbstractType
                 ]
             ])
             ->add('ville', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '50',
                 ],
-                'required' => false,
                 'label' => 'Ville',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
@@ -102,12 +104,12 @@ class RegistrationClientFormType extends AbstractType
                 ]
             ])
             ->add('phone', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '10',
                 ],
-                'required' => false,
                 'label' => 'Télèphone',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
@@ -116,32 +118,14 @@ class RegistrationClientFormType extends AbstractType
                     new Assert\Length(['min' => 2, 'max' => 10])
                 ]
             ])
-            ->add('tjm', MoneyType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                    'max' => 2000,
-                    'type' => 'number',
-                    'placeholder' => '0.00'
-                ],
-                'currency' => 'EUR',
-                'required' => true,
-                'label' => 'Taux journalier :',
-                'label_attr' => [
-                    'class' => 'form-label mt-4'
-                ],
-                'constraints' => [
-                    new Assert\Positive(),
-                    new Assert\LessThan(2000)
-                ]
-            ])
             ->add('siret', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '10',
                 ],
-                'required' => false,
-                'label' => 'Numéro de siret',
+                'label' => 'Numéro de siret/siren',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
                 ],
@@ -149,30 +133,10 @@ class RegistrationClientFormType extends AbstractType
                     new Assert\Length(['min' => 2, 'max' => 10])
                 ]
             ])
-            ->add('dispo', CheckboxType::class, [
-                'attr' => [
-                    'class' => 'form-check-input',
-                ],
-                'required' => false,
-                'label' => "Disponible immédiatement",
-                'label_attr' => [
-                    'class' => 'form-check-label'
-                ],
-                'constraints' => [
-                    new Assert\NotNull()
-                ]
-            ])
-            ->add('dateDispoAt', null, [
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-                'required' => true,
-                'label' => 'Date de disponibilité :',
-                'widget' => 'single_text',
-            ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
+                    'required' => true,
                     'attr' => [
                         'class' => 'form-control'
                     ],
@@ -182,6 +146,7 @@ class RegistrationClientFormType extends AbstractType
                     ]
                 ],
                 'second_options' => [
+                    'required' => true,
                     'attr' => [
                         'class' => 'form-control'
                     ],
@@ -192,6 +157,48 @@ class RegistrationClientFormType extends AbstractType
                 ],
                 'invalid_message' => 'Les mots de passe ne correspondent pas.'
             ])
+            // ->add('tjm', MoneyType::class, [
+            //     'required' => false,
+            //     'attr' => [
+            //         'class' => 'form-control',
+            //         'max' => 2000,
+            //         'type' => 'number',
+            //         'placeholder' => '0.00'
+            //     ],
+            //     'currency' => 'EUR',
+            //     'required' => true,
+            //     'label' => 'Taux journalier :',
+            //     'label_attr' => [
+            //         'class' => 'form-label mt-4'
+            //     ],
+            //     'constraints' => [
+            //         new Assert\Positive(),
+            //         new Assert\LessThan(2000)
+            //     ]
+            // ])
+            // ->add('dispo', CheckboxType::class, [
+            //     'attr' => [
+            //         'class' => 'form-check-input',
+            //     ],
+            //     'required' => false,
+            //     'label' => "Disponible immédiatement",
+            //     'label_attr' => [
+            //         'class' => 'form-check-label'
+            //     ],
+            //     'constraints' => [
+            //         new Assert\NotNull()
+            //     ]
+            // ])
+            // ->add('dateDispoAt', null, [
+            //        'required' => false,
+            //     'attr' => [
+            //         'class' => 'form-control',
+            //     ],
+            //     'required' => true,
+            //     'label' => 'Date de disponibilité :',
+            //     'widget' => 'single_text',
+            // ])
+            
         ;
     }
 

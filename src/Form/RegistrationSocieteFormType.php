@@ -25,12 +25,13 @@ class RegistrationSocieteFormType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '50',
                 ],
-                'label' => 'Nom / Prénom',
+                'label' => "Raison sociale",
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
                 ],
@@ -40,6 +41,7 @@ class RegistrationSocieteFormType extends AbstractType
                 ]
             ])
             ->add('secteurActivite', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
@@ -65,6 +67,7 @@ class RegistrationSocieteFormType extends AbstractType
                 ],
             ])
             ->add('email', EmailType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
@@ -81,12 +84,12 @@ class RegistrationSocieteFormType extends AbstractType
                 ]
             ])
             ->add('adresse', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '50',
                 ],
-                'required' => false,
                 'label' => 'Adresse',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
@@ -96,12 +99,12 @@ class RegistrationSocieteFormType extends AbstractType
                 ]
             ])
             ->add('cp', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '5',
                     'maxlenght' => '5',
                 ],
-                'required' => false,
                 'label' => 'Code postal',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
@@ -111,12 +114,12 @@ class RegistrationSocieteFormType extends AbstractType
                 ]
             ])
             ->add('ville', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '50',
                 ],
-                'required' => false,
                 'label' => 'Ville',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
@@ -126,12 +129,12 @@ class RegistrationSocieteFormType extends AbstractType
                 ]
             ])
             ->add('phone', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '10',
                 ],
-                'required' => false,
                 'label' => 'Télèphone',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
@@ -141,6 +144,7 @@ class RegistrationSocieteFormType extends AbstractType
                 ]
             ])
             ->add('description', TextareaType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'min' => 1,
@@ -156,6 +160,7 @@ class RegistrationSocieteFormType extends AbstractType
                 ]
             ])
             ->add('nomContact', TextType::class, [
+                'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
@@ -170,12 +175,12 @@ class RegistrationSocieteFormType extends AbstractType
                 ]
             ])
             ->add('numContact', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '10',
                 ],
-                'required' => false,
                 'label' => "Numéro du contact",
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
@@ -185,12 +190,12 @@ class RegistrationSocieteFormType extends AbstractType
                 ]
             ])
             ->add('siret', TextType::class, [
+                'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '10',
                 ],
-                'required' => false,
                 'label' => 'Numéro de siret',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
@@ -202,6 +207,7 @@ class RegistrationSocieteFormType extends AbstractType
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
+                    'required' => true,
                     'attr' => [
                         'class' => 'form-control'
                     ],
@@ -211,6 +217,7 @@ class RegistrationSocieteFormType extends AbstractType
                     ]
                 ],
                 'second_options' => [
+                    'required' => true,
                     'attr' => [
                         'class' => 'form-control'
                     ],

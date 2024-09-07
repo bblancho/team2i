@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Missions;
 use App\Repository\MissionsRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Requirement\Requirement;
 
 class HomeController extends AbstractController
 {
@@ -16,7 +18,7 @@ class HomeController extends AbstractController
     /**
      * This controller display all ingredients
      *
-     * @param MissionsRepository $repository
+     * @param MissionsRepository $missionsRepository
      * @param PaginatorInterface $paginator
      * @param Request $request
      * @return Response
@@ -28,31 +30,54 @@ class HomeController extends AbstractController
         Request $request
     ): Response {
 
-        $missions = $paginator->paginate(
-            $missionsRepository->findAll(),
-            $request->query->getInt('page', 1),
-            10
-        );
+        // $missions = $paginator->paginate(
+        //     $missionsRepository->findAll(),
+        //     $request->query->getInt('page', 1),
+        //     10
+        // 
+        $offre = $missionsRepository->find(70) ;
+
+        dd("ss") ;
         return $this->render('pages/missions/index.html.twig', [
-            "missions" => $missions
+            "missions" => $offre
         ]);
     }
+
+    /**
+     * This controller allow us to see a recipe if this one is public
+     *
+     * @param MissionsRepository $missionsRepository
+     * @return Response
+     */
+    #[Route('/mission/{id}', name: 'mission.show', methods: ['GET'], requirements: ['id' =>Requirement::DIGITS])]
+    public function show(
+        Request $request,
+        MissionsRepository $missionsRepository,
+        EntityManagerInterface $manager
+    ): Response {
+
+        $mission =  $missionsRepository->findOneBy(['id' => $id]);
+
+        return $this->render('pages/missions/show.html.twig', [
+            'mission' => $mission
+        ]);
+    }
+
+    
 
     /**
      * This controller allow us to see one mission if this one is public
      *
      * @return Response
      */
-    #[Route('/mission/{id}', name: 'app_mission_show', requirements: ['id' => '\d+'], methods: ["GET"])]
-    public function show(Missions $mission): Response
+    #[Route('/missiontest', name: 'app_mission_show', methods: ["GET"])]
+    public function showtest(): Response
     {
-        if ( !$mission ) {
-            throw $this->createNotFoundException('Aucune mission trouvée.') ;
-        }
+        // if ( !$mission ) {
+        //     throw $this->createNotFoundException('Aucune mission trouvée.') ;
+        // }
 
-        return $this->render('pages/missions/show.html.twig', [
-            'mission' => $mission,
-        ]);
+        return $this->render('pages/missions/show.html.twig');
     }
 
     #[Route('/mentions-legales', name: 'app_mentions')]

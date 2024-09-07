@@ -6,7 +6,7 @@
 {% block body %}
 	<div class="container">
 		<h1>
-			Créer un compte free-lance
+			Créer un compte client
 		</h1>
 
 		<p class="titre_inscription">
@@ -27,6 +27,13 @@
 						{{ form_widget(registrationForm.nom) }}
 						<div class="form-error">
 							{{ form_errors(registrationForm.nom) }}
+						</div>
+					</div>
+					<div class="form-group">
+						{{ form_label(registrationForm.imageFile) }}
+						{{ form_widget(registrationForm.imageFile) }}
+						<div class="form-error">
+							{{ form_errors(registrationForm.imageFile) }}
 						</div>
 					</div>
 
@@ -55,10 +62,10 @@
 					</div>
 
 					<div class="form-group">
-						{{ form_label(registrationForm.tjm) }}
-						{{ form_widget(registrationForm.tjm) }}
+						{{ form_label(registrationForm.description) }}
+						{{ form_widget(registrationForm.description) }}
 						<div class="form-error">
-							{{ form_errors(registrationForm.tjm) }}
+							{{ form_errors(registrationForm.description) }}
 						</div>
 					</div>
 				</div>
@@ -89,22 +96,6 @@
 					</div>
 
 					<div class="form-group">
-						{{ form_label(registrationForm.dispo) }}
-						{{ form_widget(registrationForm.dispo) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.dispo) }}
-						</div>
-					</div>
-
-					<div class="form-group">
-						{{ form_label(registrationForm.dateDispoAt) }}
-						{{ form_widget(registrationForm.dateDispoAt) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.dateDispoAt) }}
-						</div>
-					</div>
-
-					<div class="form-group">
 						{{ form_label(registrationForm.password) }}
 						{{ form_widget(registrationForm.password) }}
 						<div class="form-error">
@@ -114,7 +105,7 @@
 				</div>
 			</div>
 
-			<button class="btn btn-primary mt-4" type="submit">S'inscrire en tant que Free-lance</button>
+			<button class="btn btn-primary mt-4" type="submit">S'inscrire</button>
 
 		{{ form_end(registrationForm) }}
 

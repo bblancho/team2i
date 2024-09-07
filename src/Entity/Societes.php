@@ -67,14 +67,14 @@ class Societes extends Users
     private ?string $phoneContact = null;
 
     /**
-     * @var Collection<int, Missions>
+     * @var Collection<int, Offres>
      */
-    #[ORM\OneToMany(targetEntity: Missions::class, mappedBy: 'societes', orphanRemoval: true)]
-    private Collection $missions;
+    #[ORM\OneToMany(targetEntity: Offres::class, mappedBy: 'societes', orphanRemoval: true)]
+    private Collection $offres;
 
     public function __construct()
     {
-        $this->missions = new ArrayCollection();
+        $this->offres = new ArrayCollection();
     }
 
     public function getNumContact(): ?string
@@ -161,29 +161,29 @@ class Societes extends Users
     }
 
     /**
-     * @return Collection<int, Missions>
+     * @return Collection<int, Offres>
      */
-    public function getMissions(): Collection
+    public function getOffres(): Collection
     {
-        return $this->missions;
+        return $this->offres;
     }
 
-    public function addMission(Missions $mission): static
+    public function addOffre(Offres $offre): static
     {
-        if (!$this->missions->contains($mission)) {
-            $this->missions->add($mission);
-            $mission->setSocietes($this);
+        if (!$this->offres->contains($offre)) {
+            $this->offres->add($offre);
+            $offre->setSocietes($this);
         }
 
         return $this;
     }
 
-    public function removeMission(Missions $mission): static
+    public function removeOffre(Offres $offre): static
     {
-        if ($this->missions->removeElement($mission)) {
+        if ($this->offres->removeElement($offre)) {
             // set the owning side to null (unless already changed)
-            if ($mission->getSocietes() === $this) {
-                $mission->setSocietes(null);
+            if ($offre->getSocietes() === $this) {
+                $offre->setSocietes(null);
             }
         }
 

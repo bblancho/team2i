@@ -3,9 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Users;
+use App\Entity\Clients;
+use App\Entity\Societes;
 use App\Service\UserService;
 use App\Form\RegistrationFormType;
+use App\Form\RegistrationClientFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Form\RegistrationSocieteFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -43,14 +47,64 @@ class SecurityController extends AbstractController
     /**
      * This controller allow us to register.
      */
-    #[Route('/inscription', 'security.registration', methods: ['GET', 'POST'])]
+    // #[Route('/inscription', 'security.registration', methods: ['GET', 'POST'])]
+    // public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
+    // {
+    //     $user = new Users();
+    //     $user->setRoles(['ROLE_USER']);
+    //     $user->setTypeUser('client');
+        
+    //     $form = $this->createForm(RegistrationFormType::class, $user);
+    //     $form->handleRequest($request);
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         // encode the plain password
+    //         $hashedPassword = $passwordHasher->hashPassword(
+    //             $user,
+    //             $form["password"]->getData()
+    //         );
+
+    //         $user->setPassword($hashedPassword);
+
+    //         $entityManager->persist($user);
+    //         $entityManager->flush();
+
+    //         $this->addFlash(
+    //             'success',
+    //             'Votre compte a bien été créé.'
+    //         );
+
+    //         // do anything else you need here, like send an email
+
+    //         return $this->redirectToRoute('security.login');
+    //     }
+
+    //     return $this->render('pages/register/register.html.twig', [
+    //         'registrationForm' => $form,
+    //     ]);
+    // }
+
+    /**
+     * This controller allow us to register.
+     */
+    #[Route('/inscription', 'security.registration', methods: ['GET'])]
     public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
-        $user = new Users();
-        $user->setRoles(['ROLE_USER']);
-        $user->setTypeUser('client');
         
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        return $this->render('pages/register/register.html.twig');
+    }
+
+    /**
+     * This controller allow us to register.
+     */
+    #[Route('/inscription-client', 'security.registration-client', methods: ['GET', 'POST'])]
+    public function registerClient(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
+    {
+        $user = new Clients();
+        $user->setRoles(['ROLE_USER']);
+        $user->setTypeUser('clients');
+        
+        $form = $this->createForm(RegistrationClientFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -75,7 +129,47 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('security.login');
         }
 
-        return $this->render('pages/register/register.html.twig', [
+        return $this->render('pages/register/registerClient.html.twig', [
+            'registrationForm' => $form,
+        ]);
+    }
+
+    /**
+     * This controller allow us to register.
+     */
+    #[Route('/inscription-societe', 'security.registration.societe', methods: ['GET', 'POST'])]
+    public function registerSociete(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
+    {
+        $user = new Societes();
+        $user->setRoles(['ROLE_USER']);
+        $user->setTypeUser('societes');
+        
+        $form = $this->createForm(RegistrationSocieteFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $form["password"]->getData()
+            );
+
+            $user->setPassword($hashedPassword);
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre compte a bien été créé.'
+            );
+
+            // do anything else you need here, like send an email
+
+            return $this->redirectToRoute('security.login');
+        }
+
+        return $this->render('pages/register/registerSociete.html.twig', [
             'registrationForm' => $form,
         ]);
     }
