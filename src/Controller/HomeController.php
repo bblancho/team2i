@@ -3,14 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Missions;
+use App\Repository\OffresRepository;
 use App\Repository\MissionsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
@@ -18,28 +19,26 @@ class HomeController extends AbstractController
     /**
      * This controller display all ingredients
      *
-     * @param MissionsRepository $missionsRepository
+     * @param OffresRepository $offresRepository
      * @param PaginatorInterface $paginator
      * @param Request $request
      * @return Response
      */
     #[Route('/missions', name: 'app_missions', methods: ['GET'])]
     public function index(
-        MissionsRepository $missionsRepository,
+        OffresRepository $offresRepository,
         PaginatorInterface $paginator,
         Request $request
     ): Response {
 
-        // $missions = $paginator->paginate(
-        //     $missionsRepository->findAll(),
-        //     $request->query->getInt('page', 1),
-        //     10
-        // 
-        $offre = $missionsRepository->find(70) ;
+        $missions =  $paginator->paginate(
+            $offresRepository->findAll(),
+            $request->query->getInt('page', 1),
+            10
+        );
 
-        dd("ss") ;
         return $this->render('pages/missions/index.html.twig', [
-            "missions" => $offre
+            'missions' => $missions
         ]);
     }
 

@@ -1,15 +1,17 @@
-{% extends "admin/admin.html.twig" %}
+{% extends "base.html.twig" %}
 
 {% block title %}
-	Création d'une mission
+	Modification de la mission
 {% endblock %}
 
 {% block body %}
 	<div class="container">
 
 		<h1 class="mt-4">
-			Création d'une mission
+			Edition d'une mission
 		</h1>
+		<div> <a  href="{{ path('mes_missions') }}" class="btn btn-primary"> Retour </a> </div>
+
 
 		{{ form_start(form) }}
 			<div class="row mb-2">
@@ -35,20 +37,20 @@
 							{{ form_errors(form.description) }}
 						</div>
 					</div>
-					{# <div class="form-group mt-3">
+					<div class="form-group mt-3">
 						{{ form_label(form.startDateAT) }}
 						{{ form_widget(form.startDateAT) }}
 						<div class="form-error">
 							{{ form_errors(form.startDateAT) }}
 						</div>
-					</div> #}
-					{# <div class="form-group">
+					</div>
+					<div class="form-group">
 						{{ form_label(form.lieuMission) }}
 						{{ form_widget(form.lieuMission) }}
 						<div class="form-error">
 							{{ form_errors(form.lieuMission) }}
 						</div>
-					</div> #}
+					</div>
 					<div class="form-group">
 						{{ form_label(form.tarif) }}
 						{{ form_widget(form.tarif) }}
@@ -56,25 +58,25 @@
 							{{ form_errors(form.tarif) }}
 						</div>
 					</div>
-					{# <div class="form-group">
+					<div class="form-group">
 						{{ form_label(form.experience) }}
 						{{ form_widget(form.experience) }}
 						<div class="form-error">
 							{{ form_errors(form.experience) }}
 						</div>
-					</div> #}
+					</div>
 				</div>
 
 				<div class="col-md-6">
-					{# <div class="form-group">
+					<div class="form-group">
 						{{ form_label(form.profil) }}
 						{{ form_widget(form.profil) }}
 						<div class="form-error">
 							{{ form_errors(form.profil) }}
 						</div>
-					</div> #}
+					</div>
 
-					{# <div class="form-group">
+					<div class="form-group">
 						{{ form_label(form.duree) }}
 						{{ form_widget(form.duree) }}
 						<div class="form-error">
@@ -87,7 +89,7 @@
 						<div class="form-error">
 							{{ form_errors(form.contraintes) }}
 						</div>
-					</div> #}
+					</div>
 					<div class="form-group mt-3">
 						{{ form_label(form.isActive) }}
 						{{ form_widget(form.isActive) }}
@@ -100,7 +102,7 @@
 					</div>
 				</div>
 
-				<button class="btn btn-primary mt-4" type="submit">Créer la mission</button>
+				<button class="btn btn-primary mt-4" type="submit">Valider</button>
 			</div>
 		{{ form_end(form) }}
 		

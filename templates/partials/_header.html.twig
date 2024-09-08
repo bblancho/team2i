@@ -8,32 +8,34 @@
 
 		<div class="container" id="navbarColor01">
 			<ul class="justify-content-center navbar-nav me-auto">
+				{% if is_granted('ROLE_ADMIN') %}
+					<li class="nav-item">
+						<a class="nav-link {{ app.current_route == 'admin' ? 'active' : '' }}" href="{{ path('admin') }}">Administration
+							<span class="visually-hidden">(current)</span>
+						</a>
+					</li>
+				{% endif %}
 				<li class="nav-item">
-					<a class="nav-link {{ app.current_route == 'admin' ? 'active' : '' }}" href="{{ path('admin') }}">Administration
+					<a class="nav-link {{ app.current_route == 'admin' ? 'active' : '' }}" href="{{ path('app_missions') }}">Accueil
 						<span class="visually-hidden">(current)</span>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link active" href="{{ path('app_missions') }}">Accueil
-						<span class="visually-hidden">(current)</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_missions') }}">NOS MISSIONS
+					<a class="nav-link {{ app.current_route == 'app_missions' ? 'active' : '' }}" href="{{ path('app_missions') }}">NOS MISSIONS
 					</a>
 				</li>
 	
 				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_missions') }}">Contact
+					<a class="nav-link {{ app.current_route == 'contact' ? 'active' : '' }}" href="{{ path('app_missions') }}">Contact
 					</a>
 				</li>
 				{% if app.user %}
 					<li class="nav-item">
-						<a class="nav-link" href="{{ path('mes_missions') }}">Mes missions
+						<a class="nav-link {{ app.current_route == 'admin' ? 'active' : '' }}" href="{{ path('mes_missions') }}">Mes missions
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{{ path('mission.new') }}">Créér une mission
+						<a class="nav-link {{ app.current_route == 'admin' ? 'active' : '' }}" href="{{ path('mission.new') }}">Créér une mission
 						</a>
 					</li>
 				{% endif %}

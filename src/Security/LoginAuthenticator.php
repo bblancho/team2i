@@ -56,6 +56,10 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
         if( $user->getTypeUser() == "client" ){
             return new RedirectResponse($this->urlGenerator->generate('mes_missions'));
         }
+        
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('admin'));
+        }
 
         return new RedirectResponse($this->urlGenerator->generate('app_missions'));
     }

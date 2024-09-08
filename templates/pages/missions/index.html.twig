@@ -17,7 +17,7 @@
 
 			<div class="album py-5 bg-body-tertiary px">
 				
-				<div class="row mb-2">
+				<div class="row mb-4">
 					<div class="count"> Votre recherche renvoie  
 						{{ missions.getTotalItemCount }} résultat(s)
 					</div>
@@ -30,8 +30,8 @@
 				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 					<div class="row mb-2 col-md-12">
 						{% for mission in missions %}
-						<div class="card shadow-sm">
-							<div class="card-body">
+						<div class="card shadow-sm mb-3">
+							<div class="card-body ">
 								<div class=" border rounded mb-4 shadow-sm ">
 									<div class="d-flex">
 										<div class="col-md-9 p-4">
@@ -39,7 +39,7 @@
 												{{ mission.nom | upper }}
 											</h4>
 											<h5>
-												Nom du client : {{ mission.users.nom | capitalize  }}
+												Nom du client : {{ mission.societes.nom | capitalize  }}
 											</h5>
 
 											<div class="d-flex">

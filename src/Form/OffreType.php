@@ -70,21 +70,21 @@ class OffreType extends AbstractType
                     new Assert\NotBlank()
                 ]
             ])
-            ->add('lieuMission', TextType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                    'minlenght' => '2',
-                    'maxlenght' => '50',
-                ],
-                'label' => 'Localisation :',
-                'label_attr' => [
-                    'class' => 'form-label  mt-4'
-                ],
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length(['min' => 2, 'max' => 50])
-                ]
-            ])
+            // ->add('lieuMission', TextType::class, [
+            //     'attr' => [
+            //         'class' => 'form-control',
+            //         'minlenght' => '2',
+            //         'maxlenght' => '50',
+            //     ],
+            //     'label' => 'Localisation :',
+            //     'label_attr' => [
+            //         'class' => 'form-label  mt-4'
+            //     ],
+            //     'constraints' => [
+            //         new Assert\NotBlank(),
+            //         new Assert\Length(['min' => 2, 'max' => 50])
+            //     ]
+            // ])
             ->add('tarif', MoneyType::class, [
                 'attr' => [
                     'class' => 'form-control',
@@ -103,88 +103,88 @@ class OffreType extends AbstractType
                     new Assert\LessThan(2000)
                 ]
             ])
-            ->add('duree', IntegerType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                    'min' => 1,
-                    'max' => 24
-                ],
-                'required' => false,
-                'label' => 'Durée de la mission en mois :',
-                'label_attr' => [
-                    'class' => 'form-label mt-4'
-                ],
-                'constraints' => [
-                    new Assert\Positive(),
-                    new Assert\LessThan(24)
-                ]
-            ])
-            ->add('contraintes', TextareaType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                    'min' => 1,
-                    'max' => 5,
-                    'rows'=> 6
-                ],
-                'required' => false,
-                'label' => "Contraintes de la mission  :",
-                'label_attr' => [
-                    'class' => 'form-label mt-4'
-                ],
-            ])
-            ->add('profil', TextareaType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                    'min' => 1,
-                    'max' => 5,
-                    'rows'=> 6
-                ],
-                'required' => false,
-                'label' => 'Profil recherché :',
-                'label_attr' => [
-                    'class' => 'form-label mt-4'
-                ],
-                'constraints' => [
-                    new Assert\NotBlank()
-                ]
-            ])
-            ->add('experience', IntegerType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                    'min' => 1,
-                    'max' => 15
-                ],
-                'required' => false,
-                'label' => "Nombre d'année d'expérience minimum :",
-                'label_attr' => [
-                    'class' => 'form-label mt-4'
-                ],
-                'constraints' => [
-                    new Assert\Positive(),
-                    new Assert\LessThan(15)
-                ]
-            ])
-            ->add('startDateAT', null, [
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-                'required' => true,
-                'label' => 'Date de début de mission :',
-                'widget' => 'single_text',
-            ])
-            ->add('isActive', CheckboxType::class, [
-                'attr' => [
-                    'class' => 'form-check-input',
-                ],
-                'required' => false,
-                'label' => 'Publier ?',
-                'label_attr' => [
-                    'class' => 'form-check-label'
-                ],
-                'constraints' => [
-                    new Assert\NotNull()
-                ]
-            ])
+            // ->add('duree', IntegerType::class, [
+            //     'attr' => [
+            //         'class' => 'form-control',
+            //         'min' => 1,
+            //         'max' => 24
+            //     ],
+            //     'required' => false,
+            //     'label' => 'Durée de la mission en mois :',
+            //     'label_attr' => [
+            //         'class' => 'form-label mt-4'
+            //     ],
+            //     'constraints' => [
+            //         new Assert\Positive(),
+            //         new Assert\LessThan(24)
+            //     ]
+            // ])
+            // ->add('contraintes', TextareaType::class, [
+            //     'attr' => [
+            //         'class' => 'form-control',
+            //         'min' => 1,
+            //         'max' => 5,
+            //         'rows'=> 6
+            //     ],
+            //     'required' => false,
+            //     'label' => "Contraintes de la mission  :",
+            //     'label_attr' => [
+            //         'class' => 'form-label mt-4'
+            //     ],
+            // ])
+            // ->add('profil', TextareaType::class, [
+            //     'attr' => [
+            //         'class' => 'form-control',
+            //         'min' => 1,
+            //         'max' => 5,
+            //         'rows'=> 6
+            //     ],
+            //     'required' => false,
+            //     'label' => 'Profil recherché :',
+            //     'label_attr' => [
+            //         'class' => 'form-label mt-4'
+            //     ],
+            //     'constraints' => [
+            //         new Assert\NotBlank()
+            //     ]
+            // ])
+            // ->add('experience', IntegerType::class, [
+            //     'attr' => [
+            //         'class' => 'form-control',
+            //         'min' => 1,
+            //         'max' => 15
+            //     ],
+            //     'required' => false,
+            //     'label' => "Nombre d'année d'expérience minimum :",
+            //     'label_attr' => [
+            //         'class' => 'form-label mt-4'
+            //     ],
+            //     'constraints' => [
+            //         new Assert\Positive(),
+            //         new Assert\LessThan(15)
+            //     ]
+            // ])
+            // ->add('startDateAT', null, [
+            //     'attr' => [
+            //         'class' => 'form-control',
+            //     ],
+            //     'required' => true,
+            //     'label' => 'Date de début de mission :',
+            //     'widget' => 'single_text',
+            // ])
+            // ->add('isActive', CheckboxType::class, [
+            //     'attr' => [
+            //         'class' => 'form-check-input',
+            //     ],
+            //     'required' => false,
+            //     'label' => 'Publier ?',
+            //     'label_attr' => [
+            //         'class' => 'form-check-label'
+            //     ],
+            //     'constraints' => [
+            //         new Assert\NotNull()
+            //     ]
+            // ])
         ;
     }
 

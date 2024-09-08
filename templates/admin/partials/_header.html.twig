@@ -6,27 +6,29 @@
 			</a>
 		</div>
 
-		<div class="container" id="navbarColor01">
-			<ul class="justify-content-center navbar-nav me-auto">
-				<li class="nav-item">
-					<a class="nav-link {{ app.current_route == 'admin' ? 'active' : '' }}" href="{{ path('admin') }}">Administration
-						<span class="visually-hidden">(current)</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('admin.offres.index') }}"> MISSIONS
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_missions') }}"> SOCEIETES
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_missions') }}"> FREE-LANCE
-					</a>
-				</li>
-			</ul>
-		</div>
+		{% if is_granted('ROLE_ADMIN') %}
+			<div class="container" id="navbarColor01">
+				<ul class="justify-content-center navbar-nav me-auto">
+					<li class="nav-item">
+						<a class="nav-link {{ app.current_route == 'admin' ? 'active' : '' }}" href="{{ path('admin') }}">Administration
+							<span class="visually-hidden">(current)</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('admin.offres.index') }}"> MISSIONS
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_missions') }}"> SOCEIETES
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_missions') }}"> FREE-LANCE
+						</a>
+					</li>
+				</ul>
+			</div>
+		{% endif %}
 
 		<div class="d-flex">
 			<ul class="navbar-nav me-auto">
