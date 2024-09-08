@@ -53,7 +53,7 @@ class OffreController extends AbstractController
      */
     ##[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     #[IsGranted('ROLE_USER')]
-    #[Route('/{id}/edition', 'edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
+    #[Route('/{id}/edition', 'edit', requirements: ['id' => Requirement::DIGITS], methods: ['GET', 'POST'])]
     public function edit(
         Offres $offre,
         Request $request,
@@ -77,7 +77,8 @@ class OffreController extends AbstractController
         }
 
         return $this->render('admin/missions/edit.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'offre' => $offre
         ]);
     }
 
@@ -128,7 +129,7 @@ class OffreController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/{id}/activer',  name: 'activer', methods: ['GET'], requirements: ['id' => Requirement::DIGITS])]
+    #[Route('/{id}/activer',  name: 'activer', requirements: ['id' => Requirement::DIGITS], methods: ['GET'] )]
     // #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     public function activer(
         EntityManagerInterface $manager,
@@ -152,13 +153,13 @@ class OffreController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/{id}/desactiver',  name: 'desactiver', methods: ['GET'], requirements: ['id' => Requirement::DIGITS])]
+    #[Route('/{id}/desactiver',  name: 'desactiver', requirements: ['id' => Requirement::DIGITS], methods: ['GET'] )]
     // #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     public function desactiver(
         EntityManagerInterface $manager,
         Offres $offre
     ): Response {
-        $manager->remove($offre);
+
         $manager->flush();
 
         $this->addFlash(
@@ -177,18 +178,17 @@ class OffreController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/{id}/suppression',  name: 'delete', methods: ['DELETE'], requirements: ['id' => Requirement::DIGITS])]
+    #[Route('/{id}/suppression',  name: 'delete', requirements: ['id' => Requirement::DIGITS], methods: ['DELETE'] )]
     // #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
-    public function delete(
-        EntityManagerInterface $manager,
-        Offres $offre
+    public function delete( Offres $offre,
+        EntityManagerInterface $manager
     ): Response {
         $manager->remove($offre);
         $manager->flush();
 
         $this->addFlash(
             'success',
-            'Votre mission a été supprimée avec succès !'
+            'Votre offre a été supprimée avec succès !'
         );
 
         return $this->redirectToRoute('admin.offres.index');

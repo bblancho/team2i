@@ -2,17 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\OffresRepository;
 use App\Entity\Skills;
+use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Cocur\Slugify\Slugify;
+use App\Repository\OffresRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: OffresRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[UniqueEntity('slug')]
 class Offres
 {
     #[ORM\Id]
@@ -33,17 +35,20 @@ class Offres
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank()]
     #[Assert\Length(
-        min: 2,
-        minMessage: "Le nom doit faire minimum {{ limit }} caractères.",
+        min: 5,
+        minMessage: "La description doit faire minimum {{ limit }} caractères.",
     )]
     private ?string $description = null;
 
     #[ORM\Column(length: 100)]
-    // #[Assert\NotBlank()]
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 5)]
+    #[Assert\Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: "Invalid Slug")]
     private ?string $slug = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\NotBlank()]
+    #[Assert\Positive()]
     private ?int $tarif = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
@@ -52,6 +57,7 @@ class Offres
 
     #[ORM\Column]
     #[Assert\NotBlank()]
+    #[Assert\Positive()]
     private ?int $duree = null;
 
     #[ORM\Column(length: 100)]
@@ -67,7 +73,7 @@ class Offres
 
     #[ORM\Column]
     #[Assert\NotBlank()]
-    #[Assert\NotNull()]
+    #[Assert\Positive()]
     private ?int $experience = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

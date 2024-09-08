@@ -1,17 +1,14 @@
 {% extends "admin/admin.html.twig" %}
 
-{% block title %}
-	Modification de la mission
-{% endblock %}
+{% block title "Modifier la mission" ~ offre.nom %}
 
 {% block body %}
 	<div class="container">
-
+			<div> <a  href="{{ path('admin.offres.index') }}" class="btn btn-primary"> Retour </a> </div>
+			
 		<h1 class="mt-4">
-			Edition d'une mission
+			Modification de l'offre: {{ offre.nom }} 
 		</h1>
-		<div> <a  href="{{ path('mes_missions') }}" class="btn btn-primary"> Retour </a> </div>
-
 
 		{{ form_start(form) }}
 			<div class="row mb-2">
