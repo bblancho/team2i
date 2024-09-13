@@ -146,8 +146,7 @@
 										</g>
 									</g>
 								</svg>
-								{# {{ mission.startDateAT|date('d/m/Y') }} #}
-								28/08/2028
+								{{ mission.startDateAT|date('d/m/Y') }}
 							</span>
 							<span>
 								Durée :
@@ -164,9 +163,7 @@
 								mois
 							</span>
 							<span>
-								Budget :
-								{# {{ mission.tarif }} #} 500
-								€
+								Budget : {{ mission.tarif }} €
 							</span>
 							<span>
 								Lieu :<svg width="15px" height="15px" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -181,17 +178,15 @@
 							</span>
 							<span>
 								Ref mission:
-								#PJBH855{# {{ mission.id }} #}
-							</span> <br/>
-							<a href="#" class="btn btn-primary">
-								Postuler
-							</a>
+								#{{ mission.refMission }} 
+							</span> 
+
+							{% if app.user.typeUser == "client"  %}
+								<a href="#" class="btn btn-primary"> Postuler </a>
+							{% endif %}
 							
-							{% if app.user %}
-							<a href="#" class="btn btn-info">
-								Modifier
-							</a>
-							<a  href="" class="btn btn-secondary"> Mes missions </a> 
+							{% if app.user.typeUser == "societes"  %}
+								<a href="{{ path('offres.edit', {id: mission.id}) }}" class="btn btn-info"> Modifier </a>
 							{% endif %}
 							
 						</div>

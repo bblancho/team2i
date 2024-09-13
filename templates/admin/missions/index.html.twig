@@ -42,7 +42,7 @@
 					{% for mission in missions %}
 						<tr>
 							<th scope="row">{{ mission.refMission }}</th>
-							<td><a href="{{ path('mission.show', {id: mission.id}) }}"> {{ mission.nom }}  </a></td>
+							<td><a href="{{ path('offres.show', {id: mission.id}) }}"> {{ mission.nom }}  </a></td>
 							<td>{{ mission.startDateAT|date('d/m/Y') }}</td>
 							<td>{{ mission.lieuMission }}</td>
 							<td>

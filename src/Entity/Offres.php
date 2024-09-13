@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Skills;
 use Cocur\Slugify\Slugify;
+use App\Entity\Societes;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\OffresRepository;
@@ -41,7 +42,7 @@ class Offres
     private ?string $description = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank()]
+    // #[Assert\NotBlank()]
     #[Assert\Length(min: 5)]
     #[Assert\Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: "Invalid Slug")]
     private ?string $slug = null;
@@ -55,13 +56,13 @@ class Offres
     #[Assert\NotNull()]
     private ?\DateTimeImmutable $startDateAT = null;
 
-    #[ORM\Column]
-    #[Assert\NotBlank()]
+    #[ORM\Column(nullable: true)]
+    // #[Assert\NotBlank()]
     #[Assert\Positive()]
     private ?int $duree = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank()]
+    // #[Assert\NotBlank()]
     #[Assert\Length(
         min: 2,
         max: 50,
@@ -71,8 +72,8 @@ class Offres
     #[ORM\Column]
     private ?bool $isActive = false;
 
-    #[ORM\Column]
-    #[Assert\NotBlank()]
+    #[ORM\Column(nullable: true)]
+    // #[Assert\NotBlank()]
     #[Assert\Positive()]
     private ?int $experience = null;
 
@@ -84,19 +85,20 @@ class Offres
     // #[Assert\NotNull()]
     // private ?int $nbPersonnes = null;
 
-    /**
-     * @var Collection<int, Skills>
-     */
-    #[ORM\ManyToMany(targetEntity: Skills::class, inversedBy: 'missions')]
-    private Collection $skills;
-
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $contraintes = null;
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $refMission = null;
 
-    #[ORM\ManyToOne(inversedBy: 'offres')]
+    /**
+     * @var Collection<int, Skills>
+     */
+    #[ORM\ManyToMany(targetEntity: Skills::class, inversedBy: 'offres')]
+    #[ORM\JoinColumn(nullable: true)]
+    private Collection $skills;
+
+    #[ORM\ManyToOne(targetEntity: Societes::class, inversedBy: 'offres')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Societes $societes = null;
 

@@ -8,14 +8,13 @@
 	<div class="container">
 
 		<h1 class="mt-4">
-			Edition d'une mission
+			Edition de la mission : {{ offre.nom }}
 		</h1>
-		<div> <a  href="{{ path('mes_missions') }}" class="btn btn-primary"> Retour </a> </div>
-
+		<div> <a  href="{{ path('offres.mes_offres', {id: offre.id}) }}" class="btn btn-primary"> Mes offres </a> </div>
 
 		{{ form_start(form) }}
-			<div class="row mb-2">
-				<div class="col-md-6">
+			<div class="container mb-2">
+				<div class="row ">
 					<div class="form-group">
 						{{ form_label(form.nom) }}
 						{{ form_widget(form.nom) }}
@@ -37,57 +36,11 @@
 							{{ form_errors(form.description) }}
 						</div>
 					</div>
-					<div class="form-group mt-3">
-						{{ form_label(form.startDateAT) }}
-						{{ form_widget(form.startDateAT) }}
-						<div class="form-error">
-							{{ form_errors(form.startDateAT) }}
-						</div>
-					</div>
-					<div class="form-group">
-						{{ form_label(form.lieuMission) }}
-						{{ form_widget(form.lieuMission) }}
-						<div class="form-error">
-							{{ form_errors(form.lieuMission) }}
-						</div>
-					</div>
 					<div class="form-group">
 						{{ form_label(form.tarif) }}
 						{{ form_widget(form.tarif) }}
 						<div class="form-error">
 							{{ form_errors(form.tarif) }}
-						</div>
-					</div>
-					<div class="form-group">
-						{{ form_label(form.experience) }}
-						{{ form_widget(form.experience) }}
-						<div class="form-error">
-							{{ form_errors(form.experience) }}
-						</div>
-					</div>
-				</div>
-
-				<div class="col-md-6">
-					<div class="form-group">
-						{{ form_label(form.profil) }}
-						{{ form_widget(form.profil) }}
-						<div class="form-error">
-							{{ form_errors(form.profil) }}
-						</div>
-					</div>
-
-					<div class="form-group">
-						{{ form_label(form.duree) }}
-						{{ form_widget(form.duree) }}
-						<div class="form-error">
-							{{ form_errors(form.duree) }}
-						</div>
-					</div>
-					<div class="form-group">
-						{{ form_label(form.contraintes) }}
-						{{ form_widget(form.contraintes) }}
-						<div class="form-error">
-							{{ form_errors(form.contraintes) }}
 						</div>
 					</div>
 					<div class="form-group mt-3">
@@ -102,7 +55,7 @@
 					</div>
 				</div>
 
-				<button class="btn btn-primary mt-4" type="submit">Valider</button>
+				<button class="btn btn-primary mt-4" type="submit"> Modifier </button>
 			</div>
 		{{ form_end(form) }}
 		

@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
 
-    /**
+     /**
      * This controller display all ingredients
      *
      * @param OffresRepository $offresRepository
@@ -42,56 +42,19 @@ class HomeController extends AbstractController
         ]);
     }
 
-    /**
-     * This controller allow us to see a recipe if this one is public
-     *
-     * @param MissionsRepository $missionsRepository
-     * @return Response
-     */
-    #[Route('/mission/{id}', name: 'mission.show', methods: ['GET'], requirements: ['id' =>Requirement::DIGITS])]
-    public function show(
-        Request $request,
-        MissionsRepository $missionsRepository,
-        EntityManagerInterface $manager
-    ): Response {
-
-        $mission =  $missionsRepository->findOneBy(['id' => $id]);
-
-        return $this->render('pages/missions/show.html.twig', [
-            'mission' => $mission
-        ]);
-    }
-
     
-
     /**
-     * This controller allow us to see one mission if this one is public
+     * On va lister les missions d'une société
      *
      * @return Response
      */
-    #[Route('/missiontest', name: 'app_mission_show', methods: ["GET"])]
-    public function showtest(): Response
+    #[Route('/societe-{slug}', name: 'app_societe_offres', methods: ["GET"])]
+    public function offresSociete(): Response
     {
-        // if ( !$mission ) {
-        //     throw $this->createNotFoundException('Aucune mission trouvée.') ;
-        // }
 
         return $this->render('pages/missions/show.html.twig');
     }
 
-    #[Route('/mentions-legales', name: 'app_mentions')]
-    public function mentions(): Response
-    {
-        return $this->render('pages/mentions.html.twig', [
-            
-        ]);
-    }
 
-    #[Route('/a-propos', name: 'app_about')]
-    public function about(): Response
-    {
-        return $this->render('pages/a-propos.html.twig', [
-            
-        ]);
-    }
+
 }

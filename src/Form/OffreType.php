@@ -24,12 +24,12 @@ class OffreType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '50',
                 ],
-                'required' => true,
                 'label' => 'Titre de la mission :',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
@@ -40,6 +40,7 @@ class OffreType extends AbstractType
                 ]
             ])
             ->add('refMission', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
@@ -55,13 +56,12 @@ class OffreType extends AbstractType
                 ]
             ])
             ->add('description', TextareaType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'min' => 1,
-                    'max' => 5,
-                    'rows'=> 6
+                    'rows'=> 9
                 ],
-                'required' => true,
                 'label' => 'Description de la mission :',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
@@ -70,21 +70,6 @@ class OffreType extends AbstractType
                     new Assert\NotBlank()
                 ]
             ])
-            // ->add('lieuMission', TextType::class, [
-            //     'attr' => [
-            //         'class' => 'form-control',
-            //         'minlenght' => '2',
-            //         'maxlenght' => '50',
-            //     ],
-            //     'label' => 'Localisation :',
-            //     'label_attr' => [
-            //         'class' => 'form-label  mt-4'
-            //     ],
-            //     'constraints' => [
-            //         new Assert\NotBlank(),
-            //         new Assert\Length(['min' => 2, 'max' => 50])
-            //     ]
-            // ])
             ->add('tarif', MoneyType::class, [
                 'attr' => [
                     'class' => 'form-control',
@@ -103,6 +88,34 @@ class OffreType extends AbstractType
                     new Assert\LessThan(2000)
                 ]
             ])
+            ->add('isActive', CheckboxType::class, [
+                'attr' => [
+                    'class' => 'form-check-input',
+                ],
+                'required' => false,
+                'label' => 'Publier ?',
+                'label_attr' => [
+                    'class' => 'form-check-label'
+                ],
+                'constraints' => [
+                    new Assert\NotNull()
+                ]
+            ])
+            // ->add('lieuMission', TextType::class, [
+            //     'attr' => [
+            //         'class' => 'form-control',
+            //         'minlenght' => '2',
+            //         'maxlenght' => '50',
+            //     ],
+            //     'label' => 'Localisation :',
+            //     'label_attr' => [
+            //         'class' => 'form-label  mt-4'
+            //     ],
+            //     'constraints' => [
+            //         new Assert\NotBlank(),
+            //         new Assert\Length(['min' => 2, 'max' => 50])
+            //     ]
+            // ])
             // ->add('duree', IntegerType::class, [
             //     'attr' => [
             //         'class' => 'form-control',
@@ -172,19 +185,7 @@ class OffreType extends AbstractType
             //     'label' => 'Date de début de mission :',
             //     'widget' => 'single_text',
             // ])
-            // ->add('isActive', CheckboxType::class, [
-            //     'attr' => [
-            //         'class' => 'form-check-input',
-            //     ],
-            //     'required' => false,
-            //     'label' => 'Publier ?',
-            //     'label_attr' => [
-            //         'class' => 'form-check-label'
-            //     ],
-            //     'constraints' => [
-            //         new Assert\NotNull()
-            //     ]
-            // ])
+            
         ;
     }
 

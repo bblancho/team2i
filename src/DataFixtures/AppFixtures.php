@@ -6,6 +6,7 @@ use Faker\Factory;
 use Faker\Generator;
 use App\Entity\Users;
 use App\Entity\Missions;
+use App\Entity\Societes;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -48,26 +49,26 @@ class AppFixtures extends Fixture
         // $users[] = $admin;
         // $manager->persist($admin);
 
-        for ($i = 0; $i < 2; $i++) {
-            $user = new Users();
-            $user->setNom($this->faker->company())
+        for ($i = 0; $i < 6; $i++) {
+            $societe = new Societes();
+            $societe->setNom($this->faker->company())
                 ->setEmail( $this->faker->email() )
                 ->setRoles(['ROLE_USER'])
                 ->setAdresse($this->faker->secondaryAddress())
                 ->setCp ($this->faker->postcode())
                 ->setVille($this->faker->city())
                 ->setPhone($this->faker->mobileNumber())
-                ->setTypeUser('client')
-                // ->setDescription(  $this->faker->text(300)) 
+                ->setTypeUser('societe')
+                ->setDescription(  $this->faker->text(300)) 
                 ->setSiret( $this->faker->siret() )
                 ->setIsVerified( mt_rand(0, 1) == 1 ? true : false ) 
                 ->setPassword(
-                    $this->hasher->hashPassword( $user, "password" )
+                    $this->hasher->hashPassword( $societe, "password" )
                 )
             ;
 
-            $users[] = $user;
-            $manager->persist($user);
+            //$societes[] = $societe;
+            $manager->persist($societe);
         }
 
         //Missions
