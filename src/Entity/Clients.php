@@ -11,7 +11,7 @@ use App\Repository\ClientsRepository;
 #[ORM\Entity(repositoryClass: ClientsRepository::class)]
 class Clients extends Users
 {
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $tjm = null;
 
     #[ORM\Column(nullable: true)]

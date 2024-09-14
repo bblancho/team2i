@@ -40,4 +40,34 @@ class OffresRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+/**
+*
+* @return Offres[]
+*/
+public function offreIsPublish(): array
+{
+	return $this->createQueryBuilder('o')
+        ->where('o.isActive = 1')
+        ->orderBy('o.id', 'DESC')
+        ->getQuery() // On génère un objet Query
+        ->getResult() ;
+}
+
+
+/**
+*
+* @return Offres[]
+*/
+public function offreNotPublish(): array
+{
+
+	return $this->createQueryBuilder('o')
+        ->where('o.isActive = 0')
+        ->orderBy('o.id', 'DESC')
+        ->getQuery() // On génère un objet Query
+        ->getResult() ;
+}
+
+
 }

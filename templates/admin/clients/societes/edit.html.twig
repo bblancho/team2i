@@ -1,17 +1,13 @@
 {% extends "base.html.twig" %}
 
-{% block title %}
-	Modification de la mission
-{% endblock %}
+{% block title "Modification de la mission" %}
 
 {% block body %}
 	<div class="container">
 
-		<h1 class="mt-4">
-			Edition d'une mission
-		</h1>
-		<div> <a  href="{{ path('mes_missions') }}" class="btn btn-primary"> Retour </a> </div>
-
+		<h1 class="mt-4"> Edition d'une mission </h1>
+		
+		<div> <a class="btn btn-primary" href="{{ path('mes_missions') }}" > Retour </a> </div>
 
 		{{ form_start(form) }}
 			<div class="row mb-2">

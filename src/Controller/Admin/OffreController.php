@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Offres;
-use App\Form\OffreType;
+use App\Form\OffreAdminType;
 use App\Repository\OffresRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -59,7 +59,7 @@ class OffreController extends AbstractController
         Request $request,
         EntityManagerInterface $manager
     ): Response {
-        $form = $this->createForm(OffreType::class, $offre);
+        $form = $this->createForm(OffreAdminType::class, $offre);
         $form->handleRequest($request);
 
         if ( $form->isSubmitted() && $form->isValid() ) {
@@ -97,13 +97,15 @@ class OffreController extends AbstractController
     ): Response {
         $offre = new Offres();
 
-        $form = $this->createForm(OffreType::class, $offre);
+        $form = $this->createForm(OffreAdminType::class, $offre);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $societe = $form["societes"]->getData() ;
+            
             $offre->setSlug($form["nom"]->getData());
-            $offre->setSocietes($this->getUser());
+            $offre->setSocietes($societe);
 
             $manager->persist($offre);
             $manager->flush();

@@ -1,6 +1,6 @@
 {% extends "admin/admin.html.twig" %}
 
-{% block title %} Les missions {% endblock %}
+{% block title 'Les missions ' %} 
 
 {% block body %}
 	<div class="container mt-4">
@@ -42,7 +42,7 @@
 					{% for mission in missions %}
 						<tr>
 							<th scope="row">{{ mission.refMission }}</th>
-							<td><a href="{{ path('offres.show', {id: mission.id}) }}"> {{ mission.nom }}  </a></td>
+							<td><a href="{{ path('offres.show', {id: mission.id, slug: mission.slug}) }}"> {{ mission.nom }}  </a></td>
 							<td>{{ mission.startDateAT|date('d/m/Y') }}</td>
 							<td>{{ mission.lieuMission }}</td>
 							<td>
@@ -58,10 +58,11 @@
 									<a href="{{ path('admin.offres.activer', { id: mission.id }) }}" class="btn btn-info bt btn-sm">Activer</a>
 									<a href="{{ path('admin.offres.desactiver', { id: mission.id }) }}" class="btn btn-warning btn-sm">Désactiver</a>
 
-									<form action="{{ path('admin.offres.delete', { id: mission.id }) }}" method="post">
+									<form method="post" action="{{ path('admin.offres.delete', { id: mission.id }) }}" onsubmit="return confirm('Êtes-vous sur de vouloir supprimer cet article ?');" >
 										<input type="hidden" name="_method" value="DELETE">
 										<button type="submit" class="btn btn-danger btn-sm"> Supprimer </button>
 									</form>
+
 								</div>
 							</td>
 						</tr>

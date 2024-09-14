@@ -51,13 +51,16 @@
 							<td>{{ mission.duree }} mois </td>
 							<td>{{ mission.isActive ? 'oui' : 'non'}}  </td>
 							<td>
-								<a  href="{{ path('offres.show', {id: mission.id}) }}" class="btn btn-primary"> Afficher </a>
+								<a  href="{{ path('offres.show', {id: mission.id, slug: mission.slug}) }}" class="btn btn-primary"> Afficher </a>
 							</td>
 							<td>
 								<a href="{{ path('offres.edit', { id: mission.id }) }}" class="btn btn-info">Modifier</a>
 							</td>
 							<td>
-								<a href="{{ path('offres.delete', { id: mission.id }) }}" class="btn btn-warning">Pourvu</a>
+								<form method="post" action="{{ path('offres.delete', { id: mission.id }) }}" onsubmit="return confirm('Êtes-vous sur de vouloir supprimer cette mission ?');" >
+									<input type="hidden" name="_method" value="DELETE">
+									<button type="submit" class="btn btn-danger btn-sm"> Supprimer </button>
+								</form>
 							</td>
 						</tr>
 					{% endfor %}

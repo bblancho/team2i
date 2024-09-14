@@ -35,7 +35,6 @@ class UserController extends AbstractController
         Users $user,
         Request $request,
         EntityManagerInterface $manager,
-        UserPasswordHasherInterface $hasher,
         UploaderHelper $helper
     ): Response {
         $form = $this->createForm(UserType::class, $user);
@@ -56,7 +55,7 @@ class UserController extends AbstractController
                 'Les informations de votre compte ont bien été modifiées.'
             );
 
-            return $this->redirectToRoute('mes_missions');
+            return $this->redirectToRoute('offres.mes_offres', ['id' => $user->getId()]);
         }
 
         return $this->render('pages/user/edit.html.twig', [

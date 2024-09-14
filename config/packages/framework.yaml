@@ -3,8 +3,9 @@ framework:
     secret: '%env(APP_SECRET)%'
     #csrf_protection: true
     annotations: false
-    http_method_override: false
+    http_method_override: true # on dit à sf qu'on peut modifier la méthode grâce à un champs caché <input type="hidden" name="_method" value="DELETE">
     handle_all_throwables: true
+
 
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
     # Remove or comment this section to explicitly disable session support.

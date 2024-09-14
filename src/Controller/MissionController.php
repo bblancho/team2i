@@ -107,27 +107,23 @@ class MissionController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/societe/{id}/mes-offres', name: 'mes_offres',  requirements: ['id' => Requirement::DIGITS], methods: ['GET'])]
+    #[Route('/societe/mes-offres', name: 'mes_offres',  requirements: ['id' => Requirement::DIGITS], methods: ['GET'])]
     public function mesOffres(
         OffresRepository $offresRepository,
         PaginatorInterface $paginator,
         Request $request,
-        Societes $societe
     ): Response {
 
         /** @var Societes $societe */
-        //$societe =  $this->getUser() ;
-
-        //dd($societe) ;
-
-       // $offres = $offresRepository->findBy(array('societes ' => $societe),array('id' => 'DESC')) ;
+        $societe =  $this->getUser() ;
+        $userId = $societe->getId();
+        
+        $offres = $offresRepository->findBy(['societes' => $userId]) ;
     
-        // dd($offres);
-        // // dd($societe) ;
-        // $userId = $user->getId();
+       // $societe->getOffres(),
 
         $missions = $paginator->paginate(
-            $societe->getOffres(),
+            $offres,
             $request->query->getInt('page', 1),
             10
         );
@@ -140,6 +136,67 @@ class MissionController extends AbstractController
         // );
 
         return $this->render('pages/missions/mes_missions.html.twig', [
+            "missions" => $missions
+        ]);
+    }
+
+    /**
+     * 
+     * @param OffresRepository $offresRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     */
+    #[IsGranted('ROLE_USER')]
+    #[Route('/societe/mes-offres', name: 'mes_offres_non_publiees', methods: ['GET'])]
+    public function mesOffresNonPubliees(
+        OffresRepository $offresRepository,
+        PaginatorInterface $paginator,
+        Request $request,
+    ): Response {
+
+        
+        //$offres = $offresRepository->findBy(['societes' => $userId]) ;
+    
+       // $societe->getOffres(),
+
+        // $missions = $paginator->paginate(
+        //     $offres,
+        //     $request->query->getInt('page', 1),
+        //     10
+        // );
+
+        // dd($user) ;
+
+        // $products = $OffresRepository->findBy(
+        //     ['users_id' => $userId],
+        //     ['id' => 'DESC']
+        // );
+
+        $missions ='';
+
+        return $this->render('pages/missions/mes_missions_non_publiees.html.twig', [
+            "missions" => $missions
+        ]);
+    }
+
+    /**
+     * @param OffresRepository $offresRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     */
+    #[IsGranted('ROLE_USER')]
+    #[Route('/societe/mes-offres', name: 'mes_offres_non_publiees', methods: ['GET'])]
+    public function mesOffresPubliees(
+        OffresRepository $offresRepository,
+        PaginatorInterface $paginator,
+        Request $request,
+    ): Response {
+
+        $missions ='';
+
+        return $this->render('pages/missions/mes_missions_publiees.html.twig', [
             "missions" => $missions
         ]);
     }
@@ -186,13 +243,19 @@ class MissionController extends AbstractController
     /**
      * This controller allow us to see a recipe if this one is public
      *
-     * @param MissionsRepository $missionsRepository
+     * @param OffresRepository $offresRepository
      * @return Response
      */
-    #[Route('/{id}', name: 'show', methods: ['GET'], requirements: ['id' =>Requirement::DIGITS])]
+    #[Route('/{slug}-{id}', name: 'show', methods: ['GET'], requirements: ['id' => '\d+' , 'slug' => '[a-z0-9-]+'] )]
     public function show(
-        Offres $mission
+        OffresRepository $offresRepository, int $id, string $slug
     ): Response {
+
+        $mission = $offresRepository->find($id);
+
+        if( $mission->getSlug() != $slug){
+            return $this->redirectToRoute('offre.show', ['slug' => $mission->getSlug() , 'id' => $mission->getId()]) ;
+        }
 
         return $this->render('pages/missions/show.html.twig', [
             'mission' => $mission

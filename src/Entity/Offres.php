@@ -100,7 +100,7 @@ class Offres
 
     #[ORM\ManyToOne(targetEntity: Societes::class, inversedBy: 'offres')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Societes $societes = null;
+    private  $societes;
 
     /**
      * Constructor

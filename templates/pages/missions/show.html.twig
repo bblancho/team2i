@@ -180,13 +180,13 @@
 								Ref mission:
 								#{{ mission.refMission }} 
 							</span> 
-
-							{% if app.user.typeUser == "client"  %}
-								<a href="#" class="btn btn-primary"> Postuler </a>
-							{% endif %}
 							
-							{% if app.user.typeUser == "societes"  %}
-								<a href="{{ path('offres.edit', {id: mission.id}) }}" class="btn btn-info"> Modifier </a>
+							<a href="#" class="btn btn-primary"> Postuler </a>
+							
+							{% if app.user  %}
+								{% if app.user.typeUser == "societes"  %}
+									<a href="{{ path('offres.edit', {id: mission.id}) }}" class="btn btn-info"> Modifier </a>
+								{% endif %}
 							{% endif %}
 							
 						</div>
