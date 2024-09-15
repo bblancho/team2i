@@ -26,17 +26,6 @@ class Skills
     #[ORM\JoinColumn(nullable: false)]
     private ?users $users = null;
 
-    /**
-     * @var Collection<int, Missions>
-     */
-    #[ORM\ManyToMany(targetEntity: Missions::class, mappedBy: 'skills')]
-    private Collection $missions;
-
-    public function __construct()
-    {
-        $this->missions = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -78,30 +67,6 @@ class Skills
         return $this;
     }
 
-    /**
-     * @return Collection<int, Missions>
-     */
-    public function getMissions(): Collection
-    {
-        return $this->missions;
-    }
 
-    public function addMission(Missions $mission): static
-    {
-        if (!$this->missions->contains($mission)) {
-            $this->missions->add($mission);
-            $mission->addSkill($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMission(Missions $mission): static
-    {
-        if ($this->missions->removeElement($mission)) {
-            $mission->removeSkill($this);
-        }
-
-        return $this;
-    }
+    
 }

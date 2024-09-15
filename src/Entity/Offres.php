@@ -31,7 +31,7 @@ class Offres
         minMessage: "Le nom doit faire minimum {{ limit }} caractères.",
         maxMessage: "Le nom doit faire au maximum {{ limit }} caractères."
     )]
-    private ?string $nom = null;
+    private string $nom = '';
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank()]
@@ -39,13 +39,12 @@ class Offres
         min: 5,
         minMessage: "La description doit faire minimum {{ limit }} caractères.",
     )]
-    private ?string $description = null;
+    private string $description = '';
 
     #[ORM\Column(length: 100)]
-    // #[Assert\NotBlank()]
     #[Assert\Length(min: 5)]
     #[Assert\Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: "Invalid Slug")]
-    private ?string $slug = null;
+    private string $slug = '';
 
     #[ORM\Column(nullable: true)]
     #[Assert\NotBlank()]
@@ -108,7 +107,7 @@ class Offres
     public function __construct()
     {
         $this->skills = new ArrayCollection();
-        $this->startDateAT = new \DateTimeImmutable();
+        // $this->startDateAT = new \DateTimeImmutable();
     }
 
     #[ORM\PrePersist()]
@@ -121,7 +120,7 @@ class Offres
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getNom(): string
     {
         return $this->nom;
     }
@@ -133,7 +132,7 @@ class Offres
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -145,7 +144,7 @@ class Offres
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }

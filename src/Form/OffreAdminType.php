@@ -4,26 +4,35 @@ namespace App\Form;
 
 use App\Entity\Offres;
 use App\Entity\Societes;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Event\PreSubmitEvent;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Event\PostSubmitEvent;
 
+use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class OffreAdminType extends AbstractType
 {
+    public function __construct( private SluggerInterface $slugger){
+	
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+
             ->add('nom', TextType::class, [
                 'required' => true,
                 'attr' => [
@@ -35,6 +44,21 @@ class OffreAdminType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
                 ],
+            ])
+            ->add('societes', EntityType::class, [
+                'required' => true,
+                'class' => Societes::class , // nom de l'entité
+                'choice_label' => 'nom', // choix du champ à afficher
+                'label' => ' Choisir rune société :',
+                'label_attr' => [
+                    'class' => 'form-label  mt-4'
+                ],
+                'multiple' => false ,
+                // 'expanded' => true, // checkbox
+                'by_reference' => false ,
+            ])
+            ->add('slug', HiddenType::class, [
+                'empty_data' => '',
             ])
             ->add('refMission', TextType::class, [
                 'required' => true,
@@ -53,7 +77,7 @@ class OffreAdminType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                     'min' => 1,
-                    'rows'=> 9
+                    'rows' => 9
                 ],
                 'label' => 'Description de la mission :',
                 'label_attr' => [
@@ -62,12 +86,11 @@ class OffreAdminType extends AbstractType
             ])
             ->add('tarif', MoneyType::class, [
                 'required' => false,
-                'empty_data' => '',
                 'attr' => [
                     'class' => 'form-control',
                     'max' => 2000,
                     'type' => 'number',
-                    'placeholder' => '0.00'
+                    'placeholder' => ''
                 ],
                 'currency' => 'EUR',
                 'label' => 'Budget de la mission :',
@@ -88,7 +111,6 @@ class OffreAdminType extends AbstractType
             ])
             ->add('lieuMission', TextType::class, [
                 'required' => false,
-                'empty_data' => '',
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
@@ -101,7 +123,6 @@ class OffreAdminType extends AbstractType
             ])
             ->add('duree', IntegerType::class, [
                 'required' => false,
-                'empty_data' => '',
                 'attr' => [
                     'class' => 'form-control',
                     'min' => 1,
@@ -114,10 +135,9 @@ class OffreAdminType extends AbstractType
             ])
             ->add('contraintes', TextareaType::class, [
                 'required' => false,
-                'empty_data' => '',
                 'attr' => [
                     'class' => 'form-control',
-                    'rows'=> 6
+                    'rows' => 6
                 ],
                 'label' => "Contraintes de la mission  :",
                 'label_attr' => [
@@ -126,10 +146,9 @@ class OffreAdminType extends AbstractType
             ])
             ->add('profil', TextareaType::class, [
                 'required' => false,
-                'empty_data' => '',
                 'attr' => [
                     'class' => 'form-control',
-                    'rows'=> 6
+                    'rows' => 6
                 ],
                 'label' => 'Profil recherché :',
                 'label_attr' => [
@@ -138,7 +157,6 @@ class OffreAdminType extends AbstractType
             ])
             ->add('experience', IntegerType::class, [
                 'required' => false,
-                'empty_data' => '',
                 'attr' => [
                     'class' => 'form-control',
                     'min' => 1,
@@ -157,18 +175,54 @@ class OffreAdminType extends AbstractType
                 'label' => 'Date de début de mission :',
                 'widget' => 'single_text',
             ])
-            ->add('societes', EntityType::class, [
-                'required' => true,
-                'class' => Societes::class , // nom de l'entité
-                'choice_label' => 'nom', // choix du champ à afficher
-                'label' => 'Sociétés :',
-                'multiple' => false ,
-                // 'expanded' => true, // checkbox
-                'by_reference' => false ,
-            ])
+
+            ->addEventListener( FormEvents::PRE_SUBMIT, $this->autoSlug(...) ) // callable 
+            ->addEventListener( FormEvents::POST_SUBMIT, $this->timestamp(...) ) 
             
         ;
     }
+
+
+    public function autoSlug(PreSubmitEvent $event): void
+	{
+        $data = $event->getData(); // On récupère les données lors de la soumission du formulaire
+
+        if( empty($data['slug']) ) 
+        {
+            // On crée le slug à partir du champs voulu passé en paramétre
+            $data['slug'] = strtolower( $this->slugger->slug($data["nom"]) ) ;
+            
+            $event->setData($data) ;
+        }
+
+		
+		// return function(PreSubmitEvent $event) use($fields){
+			
+		// 	$data = $event->getData(); // On récupère les données lors de la soumission du formulaire
+		// 	if( empty($data['slug']) ) 
+		// 	{
+		// 		// On crée le slug à partir du champs voulu passé en paramétre
+		// 		$data['slug'] = strtolower( $this->slugger->slug($data[$fields]) ) ;
+		// 		$event->setData($data) ;
+		// 	}
+
+		// }		
+	}
+
+
+    public function timestamp(PostSubmitEvent $event): void
+	{
+		
+        $data = $event->getData();
+
+        if( !$data->getId() ) // Lors de la création 
+        {
+            $data->setStartDateAT( new \DateTimeImmutable() ) ;
+        }
+
+	}
+
+
 
     public function configureOptions(OptionsResolver $resolver): void
     {
