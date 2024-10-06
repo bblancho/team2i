@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Missions;
+use App\Entity\Candidatures;
 use App\Repository\OffresRepository;
 use App\Repository\MissionsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,8 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
-
-     /**
+    /**
      * This controller display all ingredients
      *
      * @param OffresRepository $offresRepository
@@ -24,7 +24,7 @@ class HomeController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    #[Route('/missions', name: 'app_missions', methods: ['GET'])]
+    #[Route('/', name: 'app_index', methods: ['GET'])]
     public function index(
         OffresRepository $offresRepository,
         PaginatorInterface $paginator,
@@ -42,7 +42,70 @@ class HomeController extends AbstractController
         ]);
     }
 
-    
+    /**
+     * This controller allow us to see a recipe if this one is public
+     *
+     * @param OffresRepository $offresRepository
+     * @return Response
+     */
+    #[Route('/{slug}-{id}', name: 'app_show', methods: ['GET'], requirements: ['id' => '\d+' , 'slug' => '[a-z0-9-]+'] )]
+    public function show(
+        OffresRepository $offresRepository, int $id, string $slug
+    ): Response {
+
+        $mission = $offresRepository->find($id);
+
+        if( $mission->getSlug() != $slug){
+            return $this->redirectToRoute('offre.show', ['slug' => $mission->getSlug() , 'id' => $mission->getId()]) ;
+        }
+
+        return $this->render('pages/missions/show.html.twig', [
+            'mission' => $mission
+        ]);
+    }
+
+    /**
+     * This controller allow us to see a recipe if this one is public
+     *
+     * @param OffresRepository $offresRepository
+     * @return Response
+     */
+    #[Route('/{slug}-{id}/postuler', name: 'app_postuler', methods: ['GET'], requirements: ['id' => '\d+' , 'slug' => '[a-z0-9-]+'] )]
+    public function postuler(
+        OffresRepository $offresRepository, 
+        int $id, 
+        string $slug ,
+        EntityManagerInterface $manager
+    ): Response {
+
+        $mission = $offresRepository->find($id);
+
+        if( $mission->getSlug() != $slug){
+            return $this->redirectToRoute('offre.show', ['slug' => $mission->getSlug() , 'id' => $mission->getId()]) ;
+        }
+
+        $freeLance = $this->getUser() ;
+        $id_offre = $mission->getId() ;
+
+        $candidature = new Candidatures() ;
+
+        $candidature->setOffres($mission)
+            ->setClients($freeLance)
+            ->setConsulte(false)
+            ->setCreatedAt(new \DateTimeImmutable())
+        ;
+
+        $manager->persist($candidature);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            'Votre candidature a été bien été prise en compte !'
+        );
+
+        return $this->redirectToRoute('app_index');
+    }
+
     /**
      * On va lister les missions d'une société
      *
@@ -54,6 +117,20 @@ class HomeController extends AbstractController
 
         return $this->render('pages/missions/show.html.twig');
     }
+
+    /**
+     * On va lister la liste des candidatures d'un user
+     *
+     * @return Response
+     */
+    #[Route('/mes-candidatures', name: 'app_mes_candidatures', methods: ["GET"])]
+    public function mesCandidatures(): Response
+    {
+
+        return $this->render('pages/missions/show.html.twig');
+    }
+
+    
 
 
 

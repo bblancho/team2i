@@ -6,3 +6,7 @@ vich_uploader:
             uri_prefix: /images/clients
             upload_destination: "%kernel.project_dir%/public/images/clients"
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+        societes:
+            uri_prefix: /images/societes
+            upload_destination: "%kernel.project_dir%/public/images/societes"
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

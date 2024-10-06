@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
+use Serializable;
 use App\Entity\Users;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SocietesRepository;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Attribute\Ignore;
+use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,8 +31,12 @@ class Societes extends Users
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $numContact = null;
 
-    #[Vich\UploadableField(mapping: 'clients', fileNameProperty: 'imageName')]
-    #[Assert\Image()]
+    #[Vich\UploadableField(mapping: 'societes', fileNameProperty: 'imageName')]
+    #[Assert\Image(
+        mimeTypes:["image/jpeg", "image/jpg", "image/png"],
+        mimeTypesMessage: "Ce type de document {{ type }} n'est pas accepté.",
+    )]
+    #[Ignore()]
     private ?File $imageFile = null;
 
     #[ORM\Column( length: 255, nullable: true)]
@@ -50,21 +56,9 @@ class Societes extends Users
     )]
     private ?string $secteurActivite = null;
     
-    
-    public function getNomContact(): ?string
-    {
-        return $this->nomContact;
-    }
-
-    public function setNomContact(?string $nomContact): static
-    {
-        $this->nomContact = $nomContact;
-
-        return $this;
-    }
-
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $phoneContact = null;
+    
 
     /**
      * @var Collection<int, Offres>
@@ -75,6 +69,18 @@ class Societes extends Users
     public function __construct()
     {
         $this->offres = new ArrayCollection();
+    }
+
+    public function getNomContact(): ?string
+    {
+        return $this->nomContact;
+    }
+
+    public function setNomContact(?string $nomContact): static
+    {
+        $this->nomContact = $nomContact;
+
+        return $this;
     }
 
     public function getNumContact(): ?string
@@ -189,6 +195,24 @@ class Societes extends Users
 
         return $this;
     }
+
+    // public function serialize()
+    // {
+    //     return serialize(array(
+    //         $this->imageName,
+    //         // see section on salt below
+    //         // $this->salt,
+    //     ));
+    // }
+
+    // public function unserialize($serialized)
+    // {
+    //     list (
+    //         $this->imageName,
+    //         // see section on salt below
+    //         // $this->salt
+    //     ) = unserialize($serialized);
+    // }
 
 
 }

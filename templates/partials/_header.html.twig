@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg">
 	<div class="container-fluid">
 		<div class="col-md-3 mb-2 mb-md-0">
-			<a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+			<a href="{{ path('app_index') }}" class="d-inline-flex link-body-emphasis text-decoration-none">
 				<img src="{{ asset('assets/images/logo.jpg') }}" alt="logo Team2i">
 			</a>
 		</div>
@@ -16,7 +16,7 @@
 					</li>
 				{% endif %}
 				<li class="nav-item">
-					<a class="nav-link {{ app.current_route == 'offres.index' ? 'active' : '' }}" href="{{ path('offres.index') }}">OFFRES
+					<a class="nav-link {{ app.current_route == 'app_index' ? 'active' : '' }}" href="{{ path('app_index') }}">OFFRES
 					</a>
 				</li>
 	
@@ -39,10 +39,16 @@
 							<a class="nav-link {{ app.current_route == 'admin' ? 'active' : '' }}" href="{{ path('offres.non_publiee') }}">OFFRES NON publiées
 							</a>
 						</li>
-					{% endif %}
+
+					{% elseif app.user.typeUser == "clients"%} 
+						<li class="nav-item">
+							<a class="nav-link {{ app.current_route == 'app_mes_candidatures' ? 'active' : '' }}" href="{{ path('app_mes_candidatures') }}">Mes candidatures 
+							</a>
+						</li>
+					{% endif %}  
 				{% endif %}
 				<li class="nav-item">
-					<a class="nav-link {{ app.current_route == 'contact' ? 'active' : '' }}" href="{{ path('offres.index') }}">Contact
+					<a class="nav-link {{ app.current_route == 'contact' ? 'active' : '' }}" href="{{ path('app_index') }}">Contact
 					</a>
 				</li>
 			</ul>
@@ -58,7 +64,7 @@
 							<a class="dropdown-item" href="{{ path('user.edit.password', {id : app.user.id}) }}">Changer mot de passe</a>
 							<div class="dropdown-divider"></div>
 							{% if 'ROLE_ADMIN' in app.user.roles %}
-								<a class="dropdown-item" href="{{ path('offres.index') }}">Administration</a>
+								<a class="dropdown-item" href="{{ path('app_index') }}">Administration</a>
 								<div class="dropdown-divider"></div>
 							{% endif %}
 							<a class="dropdown-item" href="{{ path('security.logout') }}">Déconnexion</a>

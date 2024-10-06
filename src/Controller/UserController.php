@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Users;
 use App\Form\UserType;
+use App\Entity\Clients;
+use App\Form\ClientType;
 use App\Form\UserPasswordType;
+use App\Repository\OffresRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,40 +25,38 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class UserController extends AbstractController
 {
     /**
-     * This controller allow us to edit user's profile
+     * This controller allow us to edit user profile
      *
-     * @param Users $choosenUser
+     * @param Clients $user
      * @param Request $request
      * @param EntityManagerInterface $manager
+     * 
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
     #[Route('/utilisateur/edition/{id}', name: 'user.edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
     public function edit(
-        Users $user,
+        Clients $user,
         Request $request,
         EntityManagerInterface $manager,
-        UploaderHelper $helper
     ): Response {
-        $form = $this->createForm(UserType::class, $user);
 
-        $cheminFichier  = $helper->asset($user, 'imageFile') ;
+        $form = $this->createForm(ClientType::class, $user) ;
 
-        $form->handleRequest($request);
+        $form->handleRequest($request) ;
         $user = $this->getUser() ;
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $user = $form->getData();
-            $manager->persist($user);
-            $manager->flush();
+            $user = $form->getData() ;
+            $manager->flush() ;
 
             $this->addFlash(
                 'success',
                 'Les informations de votre compte ont bien été modifiées.'
             );
 
-            return $this->redirectToRoute('offres.mes_offres', ['id' => $user->getId()]);
+            return $this->redirectToRoute('offres.mes_offres', [ 'id' => $user->getId() ]);
         }
 
         return $this->render('pages/user/edit.html.twig', [
@@ -75,7 +76,7 @@ class UserController extends AbstractController
     #[IsGranted('ROLE_USER')]
     #[Route('/utilisateur/edition-mot-de-passe/{id}', 'user.edit.password', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
     public function editPassword(
-        Users $user,
+        Clients $user,
         Request $request,
         EntityManagerInterface $manager,
         UserPasswordHasherInterface $hasher
@@ -122,4 +123,59 @@ class UserController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * This controller allow us to edit user's profile
+     *
+     * @param Users $choosenUser
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[IsGranted('ROLE_USER')]
+    #[Route('/candidature/offre-{id}-{slug}', name: 'user.candidature', methods: ['GET'], requirements: ['id' => Requirement::DIGITS, 'slug' => Requirement::ASCII_SLUG])]
+    public function candidature(
+        OffresRepository $offresRepository, 
+        int $id, 
+        string $slug ,
+        EntityManagerInterface $manager
+    ): Response {
+        
+        $mission    = $offresRepository->find($id);
+        $freeLance  = $this->getUser() ;
+
+        if( $mission->getSlug() != $slug ){
+            return $this->redirectToRoute('offre.show', ['slug' => $mission->getSlug() , 'id' => $mission->getId()]) ;
+        }
+
+        // On vérifie que le user n'ai pas déjà postulé
+            // On fait la redirection sur la page show
+        // On crée notre objet Candidature
+        // On le sauvegarde
+        // On fait la redirection sur la page show + message
+
+        return $this->redirectToRoute('offre.show', ['slug' => $mission->getSlug() , 'id' => $mission->getId()]) ;
+    }
+
+    /**
+     * This controller allow us to edit user's profile
+     *
+     * @param Users $choosenUser
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[IsGranted('ROLE_USER')]
+    #[Route('/utilisateur/mes-candidatures', name: 'user.mesCandidature', methods: ['GET'])]
+    public function mesCandidatures(
+    
+    ): Response {
+        
+
+        return $this->render('pages/user/edit.html.twig', [
+            
+        ]);
+    }
+
+
 }

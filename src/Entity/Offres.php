@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use App\Entity\Skills;
-use Cocur\Slugify\Slugify;
 use App\Entity\Societes;
+use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\OffresRepository;
@@ -31,7 +31,7 @@ class Offres
         minMessage: "Le nom doit faire minimum {{ limit }} caractères.",
         maxMessage: "Le nom doit faire au maximum {{ limit }} caractères."
     )]
-    private string $nom = '';
+    private string $nom ;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank()]
@@ -39,15 +39,14 @@ class Offres
         min: 5,
         minMessage: "La description doit faire minimum {{ limit }} caractères.",
     )]
-    private string $description = '';
+    private string $description ;
 
     #[ORM\Column(length: 100)]
     #[Assert\Length(min: 5)]
-    #[Assert\Regex('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: "Invalid Slug")]
+    #[Assert\Regex("/^[a-z0-9]+(?:-[a-z0-9]+)*$/", message: "Invalid Slug")]
     private string $slug = '';
 
     #[ORM\Column(nullable: true)]
-    #[Assert\NotBlank()]
     #[Assert\Positive()]
     private ?int $tarif = null;
 
@@ -56,12 +55,10 @@ class Offres
     private ?\DateTimeImmutable $startDateAT = null;
 
     #[ORM\Column(nullable: true)]
-    // #[Assert\NotBlank()]
     #[Assert\Positive()]
     private ?int $duree = null;
 
     #[ORM\Column(length: 100)]
-    // #[Assert\NotBlank()]
     #[Assert\Length(
         min: 2,
         max: 50,
@@ -72,17 +69,11 @@ class Offres
     private ?bool $isActive = false;
 
     #[ORM\Column(nullable: true)]
-    // #[Assert\NotBlank()]
     #[Assert\Positive()]
     private ?int $experience = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $profil = null;
-
-    // #[ORM\Column]
-    // #[Assert\NotBlank()]
-    // #[Assert\NotNull()]
-    // private ?int $nbPersonnes = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $contraintes = null;
@@ -102,12 +93,19 @@ class Offres
     private  $societes;
 
     /**
+     * @var Collection<int, Candidatures>
+     */
+    #[ORM\OneToMany(targetEntity: Candidatures::class, mappedBy: 'offres')]
+    private Collection $candidatures;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->skills = new ArrayCollection();
         // $this->startDateAT = new \DateTimeImmutable();
+        $this->candidatures = new ArrayCollection();
     }
 
     #[ORM\PrePersist()]
@@ -264,18 +262,6 @@ class Offres
         return $this;
     }
 
-    // public function getNbPersonnes(): ?int
-    // {
-    //     return $this->nbPersonnes;
-    // }
-
-    // public function setNbPersonnes(int $nbPersonnes): static
-    // {
-    //     $this->nbPersonnes = $nbPersonnes;
-
-    //     return $this;
-    // }
-
     public function getContraintes(): ?string
     {
         return $this->contraintes;
@@ -308,6 +294,36 @@ class Offres
     public function setSocietes(?Societes $societes): static
     {
         $this->societes = $societes;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Candidatures>
+     */
+    public function getCandidatures(): Collection
+    {
+        return $this->candidatures;
+    }
+
+    public function addCandidature(Candidatures $candidature): static
+    {
+        if (!$this->candidatures->contains($candidature)) {
+            $this->candidatures->add($candidature);
+            $candidature->setOffres($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidature(Candidatures $candidature): static
+    {
+        if ($this->candidatures->removeElement($candidature)) {
+            // set the owning side to null (unless already changed)
+            if ($candidature->getOffres() === $this) {
+                $candidature->setOffres(null);
+            }
+        }
 
         return $this;
     }

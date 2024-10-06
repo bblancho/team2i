@@ -6,7 +6,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
@@ -24,6 +23,8 @@ class UserPasswordType extends AbstractType
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
+                'mapped' =>false,
+                'required' => true,
                 'first_options' => [
                     'attr' => [
                         'class' => 'form-control'
@@ -32,8 +33,6 @@ class UserPasswordType extends AbstractType
                     'label_attr' => [
                         'class' => 'form-label  mt-4'
                     ],
-                    'required' => true,
-                    'mapped' =>false,
                     'constraints' => [new Assert\NotBlank()]
                 ],
                 'second_options' => [
@@ -45,15 +44,27 @@ class UserPasswordType extends AbstractType
                         'class' => 'form-label  mt-4'
                     ],
                     'required' => true,
-                    'constraints' => [new Assert\NotBlank()]
+                    'constraints' => [
+                        new Assert\NotBlank(),
+                    ]
                 ],
-                'invalid_message' => 'Les mots de passe ne correspondent pas.'
+                'constraints' => [
+                    new Assert\NotBlank(['message' => "Ce champ est obligatoire."]),
+                    new Assert\Length([
+                        'min' => 8,
+                        'max' => 20,
+                        'minMessage' => 'Le mot de passe doit comporter plus de {{ limit }} caractères.',
+                        'maxMessage' => 'Le mot de passe doit comporter au maximum de {{ limit }} caractères.',
+                    ]),
+                ],
+                'invalid_message' => 'Le mot de passe doit être identique.',
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary mt-4'
                 ],
                 'label' => 'Changer mon mot de passe'
-            ]);
+            ])
+        ;
     }
 }

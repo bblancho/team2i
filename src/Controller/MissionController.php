@@ -20,29 +20,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class MissionController extends AbstractController
 {   
 
+    
+
     /**
-     * This controller display all ingredients
+     * This controller allow us to see a recipe if this one is public
      *
      * @param OffresRepository $offresRepository
-     * @param PaginatorInterface $paginator
-     * @param Request $request
      * @return Response
      */
-    #[Route('/', name: 'index', methods: ['GET'])]
-    public function index(
-        OffresRepository $offresRepository,
-        PaginatorInterface $paginator,
-        Request $request
+    #[Route('client/{slug}-{id}', name: 'show', methods: ['GET'], requirements: ['id' => '\d+' , 'slug' => '[a-z0-9-]+'] )]
+    public function show(
+        OffresRepository $offresRepository, int $id, string $slug
     ): Response {
 
-        $missions =  $paginator->paginate(
-            $offresRepository->findAll(),
-            $request->query->getInt('page', 1),
-            10
-        );
+        $mission = $offresRepository->find($id);
 
-        return $this->render('pages/missions/index.html.twig', [
-            'missions' => $missions
+        if( $mission->getSlug() != $slug){
+            return $this->redirectToRoute('offre.show', ['slug' => $mission->getSlug() , 'id' => $mission->getId()]) ;
+        }
+
+        return $this->render('pages/missions/client_show.html.twig', [
+            'mission' => $mission
         ]);
     }
 
@@ -100,14 +98,13 @@ class MissionController extends AbstractController
 
     /**
      * 
-     *
      * @param OffresRepository $offresRepository
      * @param PaginatorInterface $paginator
      * @param Request $request
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/societe/mes-offres', name: 'mes_offres',  requirements: ['id' => Requirement::DIGITS], methods: ['GET'])]
+    #[Route('/societe/mes-offres-en-ligne', name: 'mes_offres',  requirements: ['id' => Requirement::DIGITS], methods: ['GET'])]
     public function mesOffres(
         OffresRepository $offresRepository,
         PaginatorInterface $paginator,
@@ -148,7 +145,7 @@ class MissionController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/societe/mes-offres', name: 'mes_offres_non_publiees', methods: ['GET'])]
+    #[Route('/societe/mes-offres-non-publiee', name: 'mes_offres_non_publiees', methods: ['GET'])]
     public function mesOffresNonPubliees(
         OffresRepository $offresRepository,
         PaginatorInterface $paginator,
@@ -237,28 +234,6 @@ class MissionController extends AbstractController
 
         return $this->render('pages/missions/new.html.twig', [
             'form' => $form->createView()
-        ]);
-    }
-
-    /**
-     * This controller allow us to see a recipe if this one is public
-     *
-     * @param OffresRepository $offresRepository
-     * @return Response
-     */
-    #[Route('/{slug}-{id}', name: 'show', methods: ['GET'], requirements: ['id' => '\d+' , 'slug' => '[a-z0-9-]+'] )]
-    public function show(
-        OffresRepository $offresRepository, int $id, string $slug
-    ): Response {
-
-        $mission = $offresRepository->find($id);
-
-        if( $mission->getSlug() != $slug){
-            return $this->redirectToRoute('offre.show', ['slug' => $mission->getSlug() , 'id' => $mission->getId()]) ;
-        }
-
-        return $this->render('pages/missions/show.html.twig', [
-            'mission' => $mission
         ]);
     }
 

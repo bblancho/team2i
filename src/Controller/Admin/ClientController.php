@@ -14,6 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route("/admin/clients", 'admin.clients.')]
+#[IsGranted('ROLE_ADMIN')]
 class ClientController extends AbstractController
 {
     #[Route('/', name: 'index')]

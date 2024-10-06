@@ -2,10 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\RegionsRepository;
+use Assert\Regex;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\SlugifySlugify;
+use App\Repository\RegionsRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RegionsRepository::class)]
+#[UniqueEntity('slug')]
+#[UniqueEntity('nom')]
 class Regions
 {
     #[ORM\Id]
@@ -14,9 +21,15 @@ class Regions
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+    )]
     private ?string $nom = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Length(min: 3)]
+    #[Assert\Regex("/^[a-z0-9]+(?:-[a-z0-9]+)*$/", message: "Invalid Slug")]
     private ?string $slug = null;
 
     public function getId(): ?int
@@ -36,14 +49,14 @@ class Regions
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }
 
     public function setSlug(string $slug): static
     {
-        $this->slug = $slug;
+        $this->slug = (new Slugify())->slugify($slug) ;
 
         return $this;
     }

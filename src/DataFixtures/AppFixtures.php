@@ -6,6 +6,7 @@ use Faker\Factory;
 use Faker\Generator;
 use App\Entity\Users;
 use App\Entity\Offres;
+use App\Entity\Clients;
 use App\Entity\Missions;
 use App\Entity\Societes;
 use App\Repository\SocietesRepository;
@@ -75,7 +76,7 @@ class AppFixtures extends Fixture
         //     $manager->persist($societe);
         // }
 
-        $societes = $this->repoSocietes->findAll();
+        // $societes = $this->repoSocietes->findAll();
         // $products = $this->repoSocietes->findBy(
         //     ['setTypeUser' => 'societes'],
         // );
@@ -84,24 +85,46 @@ class AppFixtures extends Fixture
 
         //Missions
         $jobs = [];
-        for ($j = 0; $j < 40; $j++) {
+        // for ($j = 0; $j < 40; $j++) {
 
-            $job = new Offres();
+        //     $job = new Offres();
 
-            $job->setNom($this->faker->word(8))
-                ->setDescription(  $this->faker->text(300)  )
-                ->setLieuMission( $this->faker->city() )
-                ->setIsActive(mt_rand(0, 1) == 1 ? true : false)
-                ->setSocietes($societes[mt_rand(0, count($societes) - 1)]) 
-                ->setTarif( mt_rand(100, 1000) )
-                ->setDuree(mt_rand(1, 24))
-                ->setContraintes($this->faker->text(150))
-                ->setProfil($this->faker->text(200))
-                ->setExperience(mt_rand(1, 15))
-                // ->setNbPersonnes(mt_rand(1, 10));
+        //     $job->setNom($this->faker->word(8))
+        //         ->setDescription(  $this->faker->text(300)  )
+        //         ->setLieuMission( $this->faker->city() )
+        //         ->setIsActive(mt_rand(0, 1) == 1 ? true : false)
+        //         ->setSocietes($societes[mt_rand(0, count($societes) - 1)]) 
+        //         ->setTarif( mt_rand(100, 1000) )
+        //         ->setDuree(mt_rand(1, 24))
+        //         ->setContraintes($this->faker->text(150))
+        //         ->setProfil($this->faker->text(200))
+        //         ->setExperience(mt_rand(1, 15))
+        //         // ->setNbPersonnes(mt_rand(1, 10));
+        //     ;
+
+        //     $manager->persist($job);
+        // }
+
+        for ($i = 0; $i < 15; $i++) {
+
+            $client = new Clients();
+
+            $client->setNom($this->faker->userName())
+                ->setEmail( $this->faker->email() )
+                ->setRoles(['ROLE_USER'])
+                ->setAdresse($this->faker->secondaryAddress())
+                ->setCp ($this->faker->postcode())
+                ->setVille($this->faker->city())
+                ->setPhone($this->faker->mobileNumber())
+                ->setTypeUser('clients')
+                ->setSiret( $this->faker->siret() )
+                ->setIsVerified( mt_rand(0, 1) == 1 ? true : false ) 
+                ->setPassword(
+                    $this->hasher->hashPassword( $client, "password" )
+                )
             ;
-
-            $manager->persist($job);
+            
+            $manager->persist($client);
         }
 
 

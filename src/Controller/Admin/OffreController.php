@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Requirement\Requirement;
 
 #[Route("/admin/offres", 'admin.offres.')]
+#[IsGranted('ROLE_ADMIN')]
 class OffreController extends AbstractController
 {   
     /**
@@ -40,6 +41,28 @@ class OffreController extends AbstractController
 
         return $this->render('admin/missions/index.html.twig', [
             'missions' => $missions
+        ]);
+    }
+
+    /**
+     * This controller allow us to see a recipe if this one is public
+     *
+     * @param OffresRepository $offresRepository
+     * @return Response
+     */
+    #[Route('/{slug}-{id}', name: 'show', methods: ['GET'], requirements: ['id' => '\d+' , 'slug' => '[a-z0-9-]+'] )]
+    public function show(
+        OffresRepository $offresRepository, int $id, string $slug
+    ): Response {
+
+        $mission = $offresRepository->find($id);
+
+        if( $mission->getSlug() != $slug){
+            return $this->redirectToRoute('offre.show', ['slug' => $mission->getSlug() , 'id' => $mission->getId()]) ;
+        }
+
+        return $this->render('admin/missions/show.html.twig', [
+            'mission' => $mission
         ]);
     }
 
