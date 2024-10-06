@@ -56,7 +56,7 @@ class UserController extends AbstractController
                 'Les informations de votre compte ont bien été modifiées.'
             );
 
-            return $this->redirectToRoute('offres.mes_offres', [ 'id' => $user->getId() ]);
+            return $this->redirectToRoute('user.mesCandidatures');
         }
 
         return $this->render('pages/user/edit.html.twig', [
@@ -66,33 +66,33 @@ class UserController extends AbstractController
     }
 
     /**
-     * This controller allow us to edit user's profile
+     * This controller allow us to edit your password
      *
      * @param Users $choosenUser
      * @param Request $request
      * @param EntityManagerInterface $manager
+     * 
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
     #[Route('/utilisateur/edition-mot-de-passe/{id}', 'user.edit.password', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
     public function editPassword(
-        Clients $user,
+        Users $user,
         Request $request,
         EntityManagerInterface $manager,
         UserPasswordHasherInterface $hasher
     ): Response {
         $form = $this->createForm(UserPasswordType::class, $user);
-
+        
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $data = $form->getData();
-
             // Retrieve the value from the extra field non-mapped !
             $newpass = $form->get("plainPassword")->getData();
 
-            if ($hasher->isPasswordValid($user, $form->get('password')->getData())) {
+            if ( $hasher->isPasswordValid($user, $form->get('password')->getData()) ) {
 
                 $hasher = $hasher->hashPassword(
                     $user,
@@ -106,20 +106,20 @@ class UserController extends AbstractController
                     'Le mot de passe a été modifié.'
                 );
 
-                $manager->persist($user);
+                dd('good') ;
                 $manager->flush();
-                dd('good');
 
-                return $this->redirectToRoute('mes_mission');
-            } else {
-                $this->addFlash(
-                    'warning',
-                    'Le mot de passe renseigné est incorrect.'
-                );
-            }
+                return $this->redirectToRoute('user.mesCandidatures');
+            } 
+
+            $this->addFlash(
+                'warning',
+                'Le mot de passe renseigné est incorrect.'
+            );
+
         }
 
-        return $this->render('pages/user/edit_password.html.twig', [
+        return $this->render('pages/user/edit-password.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -160,19 +160,15 @@ class UserController extends AbstractController
     /**
      * This controller allow us to edit user's profile
      *
-     * @param Users $choosenUser
-     * @param Request $request
-     * @param EntityManagerInterface $manager
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/utilisateur/mes-candidatures', name: 'user.mesCandidature', methods: ['GET'])]
+    #[Route('/utilisateur/mes-candidatures', name: 'user.mesCandidatures', methods: ['GET'])]
     public function mesCandidatures(
-    
-    ): Response {
-        
 
-        return $this->render('pages/user/edit.html.twig', [
+    ): Response {
+
+        return $this->render('pages/user/mes-candidatures.html.twig', [
             
         ]);
     }
