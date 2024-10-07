@@ -31,7 +31,7 @@ class Offres
         minMessage: "Le nom doit faire minimum {{ limit }} caractères.",
         maxMessage: "Le nom doit faire au maximum {{ limit }} caractères."
     )]
-    private string $nom ;
+    private string $nom  = '' ;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank()]
@@ -39,7 +39,7 @@ class Offres
         min: 5,
         minMessage: "La description doit faire minimum {{ limit }} caractères.",
     )]
-    private string $description ;
+    private string $description  = '' ;
 
     #[ORM\Column(length: 100)]
     #[Assert\Length(min: 5)]

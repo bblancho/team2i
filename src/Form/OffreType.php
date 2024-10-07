@@ -9,7 +9,7 @@ use Symfony\Component\Form\Event\PreSubmitEvent;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\String\Slugger\AsciiSlugger;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -161,23 +161,23 @@ class OffreType extends AbstractType
                 'widget' => 'single_text',
             ])
 
-            ->addEventListener( FormEvents::PRE_SUBMIT, $this->autoSlug(...) ) // callable 
-            ->addEventListener( FormEvents::POST_SUBMIT, $this->timestamp(...) ) 
+            // ->addEventListener( FormEvents::PRE_SUBMIT, $this->autoSlug(...) ) // callable 
+            // ->addEventListener( FormEvents::POST_SUBMIT, $this->timestamp(...) ) 
         ;
     }
 
 
     public function autoSlug(PreSubmitEvent $event): void
 	{
-        $data = $event->getData(); // On récupère les données lors de la soumission du formulaire
+        // $data = $event->getData(); // On récupère les données lors de la soumission du formulaire
 
-        if( empty($data['slug']) ) 
-        {
-            // On crée le slug à partir du champs voulu passé en paramétre
-            $data['slug'] = strtolower( $this->slugger->slug($data["nom"]) ) ;
+        // if( empty($data['slug']) ) 
+        // {
+        //     // On crée le slug à partir du champs voulu passé en paramétre
+        //     $data['slug'] = strtolower( $this->slugger->slug($data["nom"]) ) ;
             
-            $event->setData($data) ;
-        }
+        //     $event->setData($data) ;
+        // }
 
 		
 		// return function(PreSubmitEvent $event) use($fields){

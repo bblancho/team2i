@@ -50,6 +50,10 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         max: 100,
         minMessage: "Le mot de passe doit faire minimum {{ limit }} caractères.",
     )]
+    #[Assert\Regex(
+        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/",
+        message: "Le mot de passe est invalid Slug"
+    )]
     private string $password ;
 
     #[ORM\Column(length: 50)]
@@ -60,7 +64,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: "Le nom doit faire minimum {{ limit }} caractères.",
         maxMessage: "Le nom doit faire au maximum {{ limit }} caractères."
     )]
-    private string $nom ; 
+    private string $nom = " " ; 
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank()] // Interdit les valeurs vides , rajoute l'attribut required
@@ -70,7 +74,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: "L'adresse doit faire minimum  {{ limit }} caractères .",
         maxMessage: "L'adresse doit faire au maximum  {{ limit }} caractères .",
     )]
-    private string $adresse ; 
+    private string $adresse = " " ; 
 
     #[ORM\Column]
     #[Assert\NotBlank()] // Interdit les valeurs vides , rajoute l'attribut required
@@ -80,7 +84,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: "Le code postal doit faire minimum  {{ limit }} caractères .",
         maxMessage: "Le code postal doit faire au maximum  {{ limit }} caractères .",
     )]
-    private int $cp ; 
+    private int $cp = " "; 
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank()] // Interdit les valeurs vides , rajoute l'attribut required
@@ -90,15 +94,15 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: "La ville doit faire minimum  {{ limit }} caractères .",
         maxMessage: "La ville doit faire au maximum  {{ limit }} caractères .",
     )]
-    private string $ville ;
+    private string $ville = " ";
 
     #[ORM\Column(length: 20)]
     #[Assert\NotBlank()]
-    private string $phone ;
+    private string $phone = " ";
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank()]
-    private string $typeUser ; 
+    private string $typeUser = " "; 
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $dateInscriptionAt ;
@@ -111,7 +115,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: "Le numéro de siret doit faire au minimum  {{ limit }} caractères .",
         maxMessage: "Le numéro de siret doit faire au maximum  {{ limit }} caractères .",
     )]
-    private string $siret;
+    private string $siret = " ";
 
     #[ORM\Column]
     #[Assert\NotNull]
