@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class UserPasswordType extends AbstractType
 {
@@ -58,6 +59,15 @@ class UserPasswordType extends AbstractType
                         'minMessage' => 'Le mot de passe doit comporter plus de {{ limit }} caractères.',
                         'maxMessage' => 'Le mot de passe doit comporter au maximum de {{ limit }} caractères.',
                     ]),
+                    new Regex(
+                        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/",
+                        "Votre mot de passe doit faire au minimum 8 caractères est contenir: \n
+                            Au moins une majuscule \n
+                            Au moins une minuscule \n
+                            Au moins un chiffre \n
+                            Au moins un caractère spécial : #?!@$%^&*-
+                        "
+                    )
                 ],
                 'invalid_message' => 'Le mot de passe doit être identique.',
             ])

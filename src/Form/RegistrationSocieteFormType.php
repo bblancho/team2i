@@ -201,43 +201,65 @@ class RegistrationSocieteFormType extends AbstractType
                 ]
             ])
             ->add('siret', TextType::class, [
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
-                    'minlenght' => '2',
+                    'minlenght' => '8',
                     'maxlenght' => '10',
                 ],
-                'label' => 'Numéro de siret',
+                'label' => 'Numéro de siret/siren',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
                 ],
                 'constraints' => [
-                    new Assert\Length(['min' => 2, 'max' => 10])
+                    new Assert\Length(['min' => 8, 'max' => 10])
                 ]
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
+                'required' => true,
                 'first_options' => [
-                    'required' => true,
                     'attr' => [
                         'class' => 'form-control'
                     ],
-                    'label' => 'Mot de passe',
+                    'label' => ' Nouveau mot de passe',
                     'label_attr' => [
                         'class' => 'form-label  mt-4'
-                    ]
+                    ],
+                    'constraints' => [new Assert\NotBlank()]
                 ],
                 'second_options' => [
-                    'required' => true,
                     'attr' => [
                         'class' => 'form-control'
                     ],
                     'label' => 'Confirmation du mot de passe',
                     'label_attr' => [
                         'class' => 'form-label  mt-4'
+                    ],
+                    'required' => true,
+                    'constraints' => [
+                        new Assert\NotBlank(),
                     ]
                 ],
-                'invalid_message' => 'Les mots de passe ne correspondent pas.'
+                'constraints' => [
+                    new Assert\NotBlank(['message' => "Ce champ est obligatoire."]),
+                    new Assert\Length([
+                        'min' => 8,
+                        'max' => 20,
+                        'minMessage' => 'Le mot de passe doit comporter plus de {{ limit }} caractères.',
+                        'maxMessage' => 'Le mot de passe doit comporter au maximum de {{ limit }} caractères.',
+                    ]),
+                    new Regex(
+                        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/",
+                        "Votre mot de passe doit faire au minimum 8 caractères est contenir: \n
+                            Au moins une majuscule \n
+                            Au moins une minuscule \n
+                            Au moins un chiffre \n
+                            Au moins un caractère spécial : #?!@$%^&*-
+                        "
+                    )
+                ],
+                'invalid_message' => 'Les mots de passe doivent être identique.',
             ])
         ;
     }

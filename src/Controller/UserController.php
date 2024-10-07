@@ -68,7 +68,7 @@ class UserController extends AbstractController
     /**
      * This controller allow us to edit your password
      *
-     * @param Users $choosenUser
+     * @param Users $user
      * @param Request $request
      * @param EntityManagerInterface $manager
      * 

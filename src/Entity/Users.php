@@ -51,8 +51,8 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: "Le mot de passe doit faire minimum {{ limit }} caractères.",
     )]
     #[Assert\Regex(
-        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/",
-        message: "Le mot de passe est invalid Slug"
+        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/",
+        message: "Le mot de passe est incorrect."
     )]
     private string $password ;
 
@@ -84,7 +84,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: "Le code postal doit faire minimum  {{ limit }} caractères .",
         maxMessage: "Le code postal doit faire au maximum  {{ limit }} caractères .",
     )]
-    private int $cp = " "; 
+    private int $cp ; 
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank()] // Interdit les valeurs vides , rajoute l'attribut required

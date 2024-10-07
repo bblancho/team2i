@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Skills;
 use App\Entity\Societes;
+use App\Entity\Candidatures;
 use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -50,10 +51,6 @@ class Offres
     #[Assert\Positive()]
     private ?int $tarif = null;
 
-    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    #[Assert\NotNull()]
-    private ?\DateTimeImmutable $startDateAT = null;
-
     #[ORM\Column(nullable: true)]
     #[Assert\Positive()]
     private ?int $duree = null;
@@ -80,6 +77,10 @@ class Offres
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $refMission = null;
+
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    #[Assert\NotNull()]
+    private ?\DateTimeImmutable $startDateAT = null;
 
     /**
      * @var Collection<int, Skills>

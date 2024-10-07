@@ -19,9 +19,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route("/offres", 'offres.')]
 class MissionController extends AbstractController
 {   
-
-    
-
     /**
      * This controller allow us to see a recipe if this one is public
      *
@@ -268,7 +265,7 @@ class MissionController extends AbstractController
                 'Votre mission a été modifiée avec succès !'
             );
 
-            return $this->redirectToRoute('offres.index');
+            return $this->redirectToRoute('offres.mes_offres');
         }
 
         return $this->render('pages/missions/edit.html.twig', [

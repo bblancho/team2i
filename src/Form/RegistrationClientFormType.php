@@ -6,6 +6,7 @@ use App\Entity\Clients;
 use Symfony\Component\Form\AbstractType;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -14,8 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -123,7 +124,7 @@ class RegistrationClientFormType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'class' => 'form-control',
-                    'minlenght' => '2',
+                    'minlenght' => '8',
                     'maxlenght' => '10',
                 ],
                 'label' => 'Numéro de siret/siren',
@@ -131,44 +132,66 @@ class RegistrationClientFormType extends AbstractType
                     'class' => 'form-label  mt-4'
                 ],
                 'constraints' => [
-                    new Assert\Length(['min' => 2, 'max' => 10])
+                    new Assert\Length(['min' => 8, 'max' => 10])
                 ]
-            ])
-            ->add('cvFile', VichFileType::class,[
-                'required'  => false,
-                'mapped'    => false,
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-                'label' => 'Cv',
-                'label_attr' => [
-                    'class' => 'form-label  mt-4'
-                ],
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
+                'required' => true,
                 'first_options' => [
-                    'required' => true,
                     'attr' => [
                         'class' => 'form-control'
                     ],
-                    'label' => 'Mot de passe',
+                    'label' => ' Nouveau mot de passe',
                     'label_attr' => [
                         'class' => 'form-label  mt-4'
-                    ]
+                    ],
+                    'constraints' => [new Assert\NotBlank()]
                 ],
                 'second_options' => [
-                    'required' => true,
                     'attr' => [
                         'class' => 'form-control'
                     ],
                     'label' => 'Confirmation du mot de passe',
                     'label_attr' => [
                         'class' => 'form-label  mt-4'
+                    ],
+                    'required' => true,
+                    'constraints' => [
+                        new Assert\NotBlank(),
                     ]
                 ],
-                'invalid_message' => 'Les mots de passe ne correspondent pas.'
+                'constraints' => [
+                    new Assert\NotBlank(['message' => "Ce champ est obligatoire."]),
+                    new Assert\Length([
+                        'min' => 8,
+                        'max' => 20,
+                        'minMessage' => 'Le mot de passe doit comporter plus de {{ limit }} caractères.',
+                        'maxMessage' => 'Le mot de passe doit comporter au maximum de {{ limit }} caractères.',
+                    ]),
+                    new Regex(
+                        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/",
+                        "Votre mot de passe doit faire au minimum 8 caractères est contenir: \n
+                            Au moins une majuscule \n
+                            Au moins une minuscule \n
+                            Au moins un chiffre \n
+                            Au moins un caractère spécial : #?!@$%^&*-
+                        "
+                    )
+                ],
+                'invalid_message' => 'Les mots de passe doivent être identique.',
             ])
+            // ->add('cvFile', VichFileType::class,[
+            //     'required'  => false,
+            //     'mapped'    => false,
+            //     'attr' => [
+            //         'class' => 'form-control',
+            //     ],
+            //     'label' => 'Cv',
+            //     'label_attr' => [
+            //         'class' => 'form-label  mt-4'
+            //     ],
+            // ])
             // ->add('tjm', MoneyType::class, [
             //     'required' => false,
             //     'attr' => [

@@ -20,11 +20,11 @@ class Candidatures
 
     #[ORM\ManyToOne(targetEntity: Offres::class,inversedBy: 'candidatures')]
     #[ORM\JoinColumn(nullable: false)]
-    private Offres $offres = '' ;
+    private Offres $offres  ;
 
     #[ORM\ManyToOne(targetEntity: Clients::class , inversedBy: 'candidatures')]
     #[ORM\JoinColumn(nullable: false)]
-    private Clients $clients = '' ;
+    private Clients $clients ;
 
     #[ORM\Column(nullable: true)]
     private ?bool $consulte = null;
