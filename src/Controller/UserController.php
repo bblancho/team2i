@@ -41,6 +41,14 @@ class UserController extends AbstractController
         EntityManagerInterface $manager,
     ): Response {
 
+        if( !$this->getUser() ){
+            return $this->redirectToRoute('security.login');
+        }
+
+        if( $this->getUser() !== $user ){
+            return $this->redirectToRoute('app_index');
+        }
+
         $form = $this->createForm(ClientType::class, $user) ;
 
         $form->handleRequest($request) ;

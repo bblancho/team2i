@@ -60,7 +60,7 @@ class UserPasswordType extends AbstractType
                         'maxMessage' => 'Le mot de passe doit comporter au maximum de {{ limit }} caractères.',
                     ]),
                     new Regex(
-                        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/",
+                        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,20}$/",
                         "Votre mot de passe doit faire au minimum 8 caractères est contenir: \n
                             Au moins une majuscule \n
                             Au moins une minuscule \n

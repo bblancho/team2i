@@ -47,11 +47,11 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank()]  // Interdit les valeurs vides, rajoute l'attribut required
     #[Assert\Length(
         min: 8,
-        max: 100,
-        minMessage: "Le mot de passe doit faire minimum {{ limit }} caractères.",
+        max: 20,
+        minMessage: "Le mot de passe doit faire au minimum {{ limit }} caractères.",
     )]
     #[Assert\Regex(
-        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/",
+        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,20}$/",
         message: "Le mot de passe est incorrect."
     )]
     private string $password ;

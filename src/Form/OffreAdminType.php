@@ -6,16 +6,17 @@ use App\Entity\Offres;
 use App\Entity\Societes;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
+use App\Service\FormListenerFactoryService;
 use Symfony\Component\Form\Event\PreSubmitEvent;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Event\PostSubmitEvent;
 
+use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -25,7 +26,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class OffreAdminType extends AbstractType
 {
-    public function __construct( private SluggerInterface $slugger){
+    public function __construct( private FormListenerFactoryService $listenerFactroy){
 	
     }
 
@@ -176,52 +177,11 @@ class OffreAdminType extends AbstractType
                 'widget' => 'single_text',
             ])
 
-            ->addEventListener( FormEvents::PRE_SUBMIT, $this->autoSlug(...) ) // callable 
-            ->addEventListener( FormEvents::POST_SUBMIT, $this->timestamp(...) ) 
+            ->addEventListener( FormEvents::PRE_SUBMIT, $this->listenerFactroy->autoSlug("nom") ) 
+            ->addEventListener( FormEvents::POST_SUBMIT, $this->listenerFactroy->timestamp() ) 
             
         ;
     }
-
-
-    public function autoSlug(PreSubmitEvent $event): void
-	{
-        $data = $event->getData(); // On récupère les données lors de la soumission du formulaire
-
-        if( empty($data['slug']) ) 
-        {
-            // On crée le slug à partir du champs voulu passé en paramétre
-            $data['slug'] = strtolower( $this->slugger->slug($data["nom"]) ) ;
-            
-            $event->setData($data) ;
-        }
-
-		
-		// return function(PreSubmitEvent $event) use($fields){
-			
-		// 	$data = $event->getData(); // On récupère les données lors de la soumission du formulaire
-		// 	if( empty($data['slug']) ) 
-		// 	{
-		// 		// On crée le slug à partir du champs voulu passé en paramétre
-		// 		$data['slug'] = strtolower( $this->slugger->slug($data[$fields]) ) ;
-		// 		$event->setData($data) ;
-		// 	}
-
-		// }		
-	}
-
-
-    public function timestamp(PostSubmitEvent $event): void
-	{
-		
-        $data = $event->getData();
-
-        if( !$data->getId() ) // Lors de la création 
-        {
-            $data->setStartDateAT( new \DateTimeImmutable() ) ;
-        }
-
-	}
-
 
 
     public function configureOptions(OptionsResolver $resolver): void

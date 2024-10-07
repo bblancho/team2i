@@ -170,11 +170,11 @@ class RegistrationClientFormType extends AbstractType
                         'maxMessage' => 'Le mot de passe doit comporter au maximum de {{ limit }} caractères.',
                     ]),
                     new Regex(
-                        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/",
-                        "Votre mot de passe doit faire au minimum 8 caractères est contenir: \n
-                            Au moins une majuscule \n
-                            Au moins une minuscule \n
-                            Au moins un chiffre \n
+                        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,20}$/",
+                        "Votre mot de passe doit faire au minimum 8 caractères est contenir: 
+                            Au moins une majuscule
+                            Au moins une minuscule 
+                            Au moins un chiffre 
                             Au moins un caractère spécial : #?!@$%^&*-
                         "
                     )
