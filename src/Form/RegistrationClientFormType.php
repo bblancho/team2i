@@ -131,9 +131,6 @@ class RegistrationClientFormType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
                 ],
-                'constraints' => [
-                    new Assert\Length(['min' => 8, 'max' => 10])
-                ]
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -142,7 +139,7 @@ class RegistrationClientFormType extends AbstractType
                     'attr' => [
                         'class' => 'form-control'
                     ],
-                    'label' => ' Nouveau mot de passe',
+                    'label' => ' Mot de passe',
                     'label_attr' => [
                         'class' => 'form-label  mt-4'
                     ],
@@ -154,7 +151,7 @@ class RegistrationClientFormType extends AbstractType
                     ],
                     'label' => 'Confirmation du mot de passe',
                     'label_attr' => [
-                        'class' => 'form-label  mt-4'
+                        'class' => 'form-label'
                     ],
                     'required' => true,
                     'constraints' => [
@@ -163,18 +160,12 @@ class RegistrationClientFormType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank(['message' => "Ce champ est obligatoire."]),
-                    new Assert\Length([
-                        'min' => 8,
-                        'max' => 20,
-                        'minMessage' => 'Le mot de passe doit comporter plus de {{ limit }} caractères.',
-                        'maxMessage' => 'Le mot de passe doit comporter au maximum de {{ limit }} caractères.',
-                    ]),
                     new Regex(
                         "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,20}$/",
-                        "Votre mot de passe doit faire au minimum 8 caractères est contenir: 
-                            Au moins une majuscule
-                            Au moins une minuscule 
-                            Au moins un chiffre 
+                        "Votre mot de passe doit faire au minimum 8 et au maximum 20 caractères est contenir: 
+                            Au moins une majuscule \n
+                            Au moins une minuscule \n
+                            Au moins un chiffre \n
                             Au moins un caractère spécial : #?!@$%^&*-
                         "
                     )

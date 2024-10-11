@@ -45,13 +45,8 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank()]  // Interdit les valeurs vides, rajoute l'attribut required
-    #[Assert\Length(
-        min: 8,
-        max: 20,
-        minMessage: "Le mot de passe doit faire au minimum {{ limit }} caractères.",
-    )]
     #[Assert\Regex(
-        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,20}$/",
+        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/",
         message: "Le mot de passe est incorrect."
     )]
     private string $password ;
@@ -110,10 +105,8 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank()] 
     #[Assert\Length(
-        min: 8,
-        max: 12,
-        minMessage: "Le numéro de siret doit faire au minimum  {{ limit }} caractères .",
-        maxMessage: "Le numéro de siret doit faire au maximum  {{ limit }} caractères .",
+        exactly: 9,
+        exactMessage: " Le numéro de siret doit faire {{ limit }} caractères. "
     )]
     private string $siret = " ";
 
