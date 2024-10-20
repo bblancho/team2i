@@ -111,7 +111,7 @@ class SecurityController extends AbstractController
             // encode the plain password
             $hashedPassword = $passwordHasher->hashPassword(
                 $user,
-                $form["password"]->getData()
+                $form->get('password')->getData()
             );
 
             $user->setPassword($hashedPassword);
@@ -123,8 +123,6 @@ class SecurityController extends AbstractController
                 'success',
                 'Votre compte a bien été créé.'
             );
-
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('security.login');
         }

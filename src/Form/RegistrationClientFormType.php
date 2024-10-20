@@ -160,12 +160,12 @@ class RegistrationClientFormType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank(['message' => "Ce champ est obligatoire."]),
-                    new Regex(
+                    new Regex(                                      
                         "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,20}$/",
                         "Votre mot de passe doit faire au minimum 8 et au maximum 20 caractères est contenir: 
-                            Au moins une majuscule \n
-                            Au moins une minuscule \n
-                            Au moins un chiffre \n
+                            Au moins une majuscule 
+                            Au moins une minuscule 
+                            Au moins un chiffre
                             Au moins un caractère spécial : #?!@$%^&*-
                         "
                     )

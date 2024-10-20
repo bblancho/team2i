@@ -44,14 +44,15 @@ class UserController extends AbstractController
         if( !$this->getUser() ){
             return $this->redirectToRoute('security.login');
         }
-
+        
         if( $this->getUser() !== $user ){
             return $this->redirectToRoute('app_index');
         }
 
         $form = $this->createForm(ClientType::class, $user) ;
-
+        
         $form->handleRequest($request) ;
+
         $user = $this->getUser() ;
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -90,9 +91,19 @@ class UserController extends AbstractController
         EntityManagerInterface $manager,
         UserPasswordHasherInterface $hasher
     ): Response {
+
+        if( !$this->getUser() ){
+            return $this->redirectToRoute('security.login');
+        }
+
+        if( $this->getUser() !== $user ){
+            return $this->redirectToRoute('app_index');
+        }
+
         $form = $this->createForm(UserPasswordType::class, $user);
         
         $form->handleRequest($request);
+        dd($form->getData()) ;
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -100,8 +111,9 @@ class UserController extends AbstractController
             // Retrieve the value from the extra field non-mapped !
             $newpass = $form->get("plainPassword")->getData();
 
-            if ( $hasher->isPasswordValid($user, $form->get('password')->getData()) ) {
+            if ( $hasher->isPasswordValid( $user , $form->get('password')->getData()) ) {
 
+                dd('good') ;
                 $hasher = $hasher->hashPassword(
                     $user,
                     $newpass
@@ -114,11 +126,12 @@ class UserController extends AbstractController
                     'Le mot de passe a été modifié.'
                 );
 
-                dd('good') ;
                 $manager->flush();
 
                 return $this->redirectToRoute('user.mesCandidatures');
             } 
+
+            dd('bad') ;
 
             $this->addFlash(
                 'warning',

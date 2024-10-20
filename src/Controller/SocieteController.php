@@ -31,7 +31,7 @@ class SocieteController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/societe/edition/{id}', name: 'user.edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
+    #[Route('/societe/edition/{id}', name: 'societe.edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
     public function edit(
         Societes $user,
         Request $request,
@@ -39,9 +39,17 @@ class SocieteController extends AbstractController
         UploaderHelper $helper
     ): Response {
 
+        if( !$this->getUser() ){
+            return $this->redirectToRoute('security.login');
+        }
+        
+        if( $this->getUser() !== $user ){
+            return $this->redirectToRoute('app_index');
+        }
+
         $form = $this->createForm(SocieteType::class, $user);
 
-        $cheminFichier  = $helper->asset($user, 'cvFile') ;
+        $cheminFichier  = $helper->asset($user, 'imageFile') ;
 
         $form->handleRequest($request);
         $user = $this->getUser() ;
@@ -59,7 +67,7 @@ class SocieteController extends AbstractController
             return $this->redirectToRoute('offres.mes_offres', ['id' => $user->getId()]);
         }
 
-        return $this->render('pages/user/edit.html.twig', [
+        return $this->render('pages/societe/edit.html.twig', [
             'form' => $form->createView(),
             'user' => $user
         ]);
@@ -74,7 +82,7 @@ class SocieteController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/societe/edition-mot-de-passe/{id}', 'user.edit.password', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
+    #[Route('/societe/edition-mot-de-passe/{id}', 'societe.edit.password', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
     public function editPassword(
         Societes $societe,
         Request $request,
@@ -118,7 +126,7 @@ class SocieteController extends AbstractController
             }
         }
 
-        return $this->render('pages/user/edit_password.html.twig', [
+        return $this->render('pages/societe/edit_password.html.twig', [
             'form' => $form->createView()
         ]);
     }
