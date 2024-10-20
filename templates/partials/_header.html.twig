@@ -60,7 +60,7 @@
 					<li class="nav-item dropdown" style="margin-right: 5rem;">
 						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.nom }}</a>
 						<div class="dropdown-menu">
-							{% if app.user.typeUser == "client"  %}
+							{% if app.user.typeUser == "clients"  %}
 								<a class="dropdown-item" href="{{ path('user.edit', {id : app.user.id}) }}">Modifier mes informations</a>
 								<a class="dropdown-item" href="{{ path('user.edit.password', {id : app.user.id}) }}">Changer mot de passe</a>
 							{% elseif app.user.typeUser == "societes"%} 
