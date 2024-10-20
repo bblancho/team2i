@@ -23,7 +23,7 @@ class SocieteType extends AbstractType
                     'minlenght' => '2',
                     'maxlenght' => '50',
                 ],
-                'label' => 'Nom / Prénom',
+                'label' => 'Dénomination sociale',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
@@ -84,7 +84,7 @@ class SocieteType extends AbstractType
                 ],
                 'label' => 'Description de la société',
                 'label_attr' => [
-                    'class' => 'form-label mt-4 mt-4'
+                    'class' => 'form-label mt-4'
                 ],
                 'constraints' => [
                     new Assert\NotBlank()
@@ -99,7 +99,7 @@ class SocieteType extends AbstractType
                 'required' => false,
                 'label' => 'Numéro de siret',
                 'label_attr' => [
-                    'class' => 'form-label mt-4  mt-4'
+                    'class' => 'form-label mt-4'
                 ],
                 'constraints' => [
                     new Assert\Length(['min' => 2, 'max' => 20])
@@ -113,7 +113,7 @@ class SocieteType extends AbstractType
                 ],
                 'label' => "S'inscrire à la newsletter ?",
                 'label_attr' => [
-                    'class' => 'form-check-label '
+                    'class' => 'form-check-label'
                 ],
             ])
             ->add('imageFile', VichFileType::class,[
@@ -142,12 +142,11 @@ class SocieteType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
-                    // 'maxlenght' => '10',
                 ],
                 'required' => false,
                 'label' => 'Télèphone du contact',
                 'label_attr' => [
-                    'class' => 'form-label mt-4'
+                    'class' => 'form-label mt-4 mb-4'
                 ],
             ])
             ->add('secteurActivite', TextType::class, [
