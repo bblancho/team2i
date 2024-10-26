@@ -45,18 +45,19 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank()]  // Interdit les valeurs vides, rajoute l'attribut required
+    # 1 minuscule, 1 majuscule , 1 chiffre
     #[Assert\Regex(
-        "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/",
+        pattern:"/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/",
         message: "Le mot de passe est incorrect."
     )]
     private string $password ;
 
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank()] // Interdit les valeurs vides , rajoute l'attribut required
+    #[Assert\NotBlank(message:"Veuillez renseigner votre nom!")] // Interdit les valeurs vides , rajoute l'attribut required
     #[Assert\Length(
         min: 2,
         max: 50,
-        minMessage: "Le nom doit faire minimum {{ limit }} caractères.",
+        minMessage: "Le nom doit faire au moins {{ limit }} caractères.",
         maxMessage: "Le nom doit faire au maximum {{ limit }} caractères."
     )]
     private string $nom = " " ; 

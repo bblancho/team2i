@@ -101,7 +101,7 @@ class SecurityController extends AbstractController
     public function registerClient(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new Clients();
-        $user->setRoles(['ROLE_USER']);
+        $user->setRoles(['ROLE_USER','ROLE_CLIENT']);
         $user->setTypeUser('clients');
         
         $form = $this->createForm(RegistrationClientFormType::class, $user);
@@ -139,7 +139,7 @@ class SecurityController extends AbstractController
     public function registerSociete(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new Societes();
-        $user->setRoles(['ROLE_USER']);
+        $user->setRoles(['ROLE_USER','ROLE_SOCIETE']);
         $user->setTypeUser('societes');
         
         $form = $this->createForm(RegistrationSocieteFormType::class, $user);

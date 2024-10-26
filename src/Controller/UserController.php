@@ -107,7 +107,9 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $data = $form->getData();
+            /** @var Clients $user */
+            $user = $form->getData();
+            
             // Retrieve the value from the extra field non-mapped !
             $newpass = $form->get("plainPassword")->getData();
 

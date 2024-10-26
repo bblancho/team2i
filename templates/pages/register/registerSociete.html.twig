@@ -16,114 +16,61 @@
 			</a>
 		</p>
 
-		{{ form_errors(registrationForm) }}
-
 		{{ form_start(registrationForm) }}
+			{{ form_errors(registrationForm) }}
 
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
-						{{ form_label(registrationForm.nom) }}
-						{{ form_widget(registrationForm.nom) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.nom) }}
-						</div>
+						{{ form_row(registrationForm.nom) }}
 					</div>
 					<div class="form-group">
-						{{ form_label(registrationForm.secteurActivite) }}
-						{{ form_widget(registrationForm.secteurActivite) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.secteurActivite) }}
-						</div>
+						{{ form_row(registrationForm.secteurActivite) }}
 					</div>
 					<div class="form-group">
-						{{ form_label(registrationForm.imageFile) }}
-						{{ form_widget(registrationForm.imageFile) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.imageFile) }}
-						</div>
+						{{ form_row(registrationForm.imageFile) }}
 					</div>
 
 					<div class="form-group">
-						{{ form_label(registrationForm.email) }}
-						{{ form_widget(registrationForm.email) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.email) }}
-						</div>
+						{{ form_row(registrationForm.email) }}
 					</div>
 
 					<div class="form-group">
-						{{ form_label(registrationForm.adresse) }}
-						{{ form_widget(registrationForm.adresse) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.adresse) }}
-						</div>
+						{{ form_row(registrationForm.adresse) }}
 					</div>
 
 					<div class="form-group">
-						{{ form_label(registrationForm.cp) }}
-						{{ form_widget(registrationForm.cp) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.cp) }}
-						</div>
+						{{ form_row(registrationForm.cp) }}
 					</div>
 
 					<div class="form-group">
-						{{ form_label(registrationForm.description) }}
-						{{ form_widget(registrationForm.description) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.description) }}
-						</div>
+						{{ form_row(registrationForm.description) }}
 					</div>
 				</div>
 
 				<div class="col-md-6">
 					<div class="form-group">
-						{{ form_label(registrationForm.ville) }}
-						{{ form_widget(registrationForm.ville) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.ville) }}
-						</div>
+						{{ form_row(registrationForm.ville) }}
 					</div>
 
 					<div class="form-group">
-						{{ form_label(registrationForm.phone) }}
-						{{ form_widget(registrationForm.phone) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.phone) }}
-						</div>
+						{{ form_row(registrationForm.phone) }}
 					</div>
 
 					<div class="form-group">
-						{{ form_label(registrationForm.siret) }}
-						{{ form_widget(registrationForm.siret) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.siret) }}
-						</div>
+						{{ form_row(registrationForm.siret) }}
 					</div>
 
 					<div class="form-group">
-						{{ form_label(registrationForm.nomContact) }}
-						{{ form_widget(registrationForm.nomContact) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.nomContact) }}
-						</div>
+						{{ form_row(registrationForm.nomContact) }}
 					</div>
 
 					<div class="form-group">
-						{{ form_label(registrationForm.numContact) }}
-						{{ form_widget(registrationForm.numContact) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.numContact) }}
-						</div>
+						{{ form_row(registrationForm.numContact) }}
 					</div>
 
 					<div class="form-group">
-						{{ form_label(registrationForm.password) }}
-						{{ form_widget(registrationForm.password) }}
-						<div class="form-error">
-							{{ form_errors(registrationForm.password) }}
-						</div>
+						{{ form_row(registrationForm.password) }}
 					</div>
 				</div>
 			</div>

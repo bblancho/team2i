@@ -56,6 +56,7 @@ class SocieteController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            /** @var Societes $user */
             $user = $form->getData();
             $manager->flush();
 
@@ -95,7 +96,8 @@ class SocieteController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $data = $form->getData();
+            /** @var Societes $user */
+            $user = $form->getData();
 
             // Retrieve the value from the extra field non-mapped !
             $newpass = $form->get("plainPassword")->getData();
