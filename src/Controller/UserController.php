@@ -34,30 +34,34 @@ class UserController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/utilisateur/edition/{id}', name: 'user.edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
+    #[Route('/utilisateur/edition', name: 'user.edit', methods: ['GET', 'POST'] )]
     public function edit(
-        Clients $user,
         Request $request,
         EntityManagerInterface $manager,
     ): Response {
-
-        if( !$this->getUser() ){
-            return $this->redirectToRoute('security.login');
-        }
         
-        if( $this->getUser() !== $user ){
-            return $this->redirectToRoute('app_index');
-        }
+        /** @var Clients $user */
+        $user = $this->getUser() ;
 
         $form = $this->createForm(ClientType::class, $user) ;
         
         $form->handleRequest($request) ;
 
-        $user = $this->getUser() ;
-
         if ($form->isSubmitted() && $form->isValid()) {
 
+            /** @var Clients $user */
             $user = $form->getData() ;
+
+            $user->setNom($form["nom"]->getData());
+            $user->setAdresse($form["adresse"]->getData());
+            $user->setCp($form["cp"]->getData());
+            $user->setVille($form["ville"]->getData());
+            $user->setPhone($form["phone"]->getData());
+            $user->setTjm($form["tjm"]->getData());
+            $user->setSiret($form["siret"]->getData());
+            $user->setDispo($form["dispo"]->getData());
+            $user->setIsNewsletter($form["isNewsletter"]->getData());
+
             $manager->flush() ;
 
             $this->addFlash(
@@ -84,21 +88,13 @@ class UserController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/utilisateur/edition-mot-de-passe/{id}', 'user.edit.password', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
+    #[Route('/utilisateur/edition-mot-de-passe', 'user.edit.password', methods: ['GET', 'POST'])]
     public function editPassword(
-        Users $user,
         Request $request,
         EntityManagerInterface $manager,
         UserPasswordHasherInterface $hasher
     ): Response {
-
-        if( !$this->getUser() ){
-            return $this->redirectToRoute('security.login');
-        }
-
-        if( $this->getUser() !== $user ){
-            return $this->redirectToRoute('app_index');
-        }
+        $user = $this->getUser() ;
 
         $form = $this->createForm(UserPasswordType::class, $user);
         

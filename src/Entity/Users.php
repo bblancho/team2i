@@ -44,12 +44,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Assert\NotBlank()]  // Interdit les valeurs vides, rajoute l'attribut required
-    # 1 minuscule, 1 majuscule , 1 chiffre
-    #[Assert\Regex(
-        pattern:"/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/",
-        message: "Le mot de passe est incorrect."
-    )]
     private string $password ;
 
     #[ORM\Column(length: 50)]

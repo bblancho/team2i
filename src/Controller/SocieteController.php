@@ -31,28 +31,21 @@ class SocieteController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/societe/edition/{id}', name: 'societe.edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
+    #[Route('/societe/edition/', name: 'societe.edit', methods: ['GET', 'POST'])]
     public function edit(
-        Societes $user,
         Request $request,
         EntityManagerInterface $manager,
         UploaderHelper $helper
     ): Response {
 
-        if( !$this->getUser() ){
-            return $this->redirectToRoute('security.login');
-        }
-        
-        if( $this->getUser() !== $user ){
-            return $this->redirectToRoute('app_index');
-        }
+        /** @var Societes $user */
+        $user = $this->getUser() ;
 
         $form = $this->createForm(SocieteType::class, $user);
 
         $cheminFichier  = $helper->asset($user, 'imageFile') ;
 
         $form->handleRequest($request);
-        $user = $this->getUser() ;
 
         if ($form->isSubmitted() && $form->isValid()) {
 

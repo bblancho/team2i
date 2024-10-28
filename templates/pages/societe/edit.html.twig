@@ -13,8 +13,6 @@
 			</div>
 		{% endfor %}
 
-		{{ form_errors(form) }}
-
 		{{ form_start(form) }}
 
 			<div class="row">
@@ -126,7 +124,8 @@
 					</div>
 				</div>
 			</div>
-
+			
+		{{ form_rest(form) }}
 		{{ form_end(form) }}
 	</div>
 {% endblock %}

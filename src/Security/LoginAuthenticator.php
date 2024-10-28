@@ -47,14 +47,11 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        
        /** @var Users $user */
         $user = $this->user->getUser();
 
-        // dd($user) ; mes_offres
-
         if(  in_array('ROLE_CLIENT', $user->getRoles(), true) ){ 
-            return new RedirectResponse($this->urlGenerator->generate('mes_missions'));
+            return new RedirectResponse($this->urlGenerator->generate('app_index'));
         }
 
         if( in_array('ROLE_SOCIETE', $user->getRoles(), true)){

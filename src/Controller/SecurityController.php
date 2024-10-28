@@ -47,50 +47,9 @@ class SecurityController extends AbstractController
     /**
      * This controller allow us to register.
      */
-    // #[Route('/inscription', 'security.registration', methods: ['GET', 'POST'])]
-    // public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
-    // {
-    //     $user = new Users();
-    //     $user->setRoles(['ROLE_USER']);
-    //     $user->setTypeUser('client');
-        
-    //     $form = $this->createForm(RegistrationFormType::class, $user);
-    //     $form->handleRequest($request);
-
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         // encode the plain password
-    //         $hashedPassword = $passwordHasher->hashPassword(
-    //             $user,
-    //             $form["password"]->getData()
-    //         );
-
-    //         $user->setPassword($hashedPassword);
-
-    //         $entityManager->persist($user);
-    //         $entityManager->flush();
-
-    //         $this->addFlash(
-    //             'success',
-    //             'Votre compte a bien été créé.'
-    //         );
-
-    //         // do anything else you need here, like send an email
-
-    //         return $this->redirectToRoute('security.login');
-    //     }
-
-    //     return $this->render('pages/register/register.html.twig', [
-    //         'registrationForm' => $form,
-    //     ]);
-    // }
-
-    /**
-     * This controller allow us to register.
-     */
     #[Route('/inscription', 'security.registration', methods: ['GET'])]
-    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
+    public function register(): Response
     {
-        
         return $this->render('pages/register/register.html.twig');
     }
 
