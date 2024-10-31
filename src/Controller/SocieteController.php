@@ -76,23 +76,22 @@ class SocieteController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/societe/edition-mot-de-passe/{id}', 'societe.edit.password', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS])]
+    #[Route('/societe/edition-mot-de-passe', 'societe.edit.password', methods: ['GET', 'POST'])]
     public function editPassword(
-        Societes $societe,
         Request $request,
         EntityManagerInterface $manager,
         UserPasswordHasherInterface $hasher
     ): Response {
-        $form = $this->createForm(UserPasswordType::class, $societe);
+
+        /** @var Societes $user */
+        $societe = $this->getUser() ;
+
+        $form = $this->createForm(UserPasswordType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            /** @var Societes $user */
-            $user = $form->getData();
-
-            // Retrieve the value from the extra field non-mapped !
             $newpass = $form->get("plainPassword")->getData();
 
             if ($hasher->isPasswordValid($societe, $form->get('password')->getData())) {
@@ -104,15 +103,15 @@ class SocieteController extends AbstractController
 
                 $societe->setPassword($hasher);
 
+                $manager->flush();
+
                 $this->addFlash(
                     'success',
                     'Le mot de passe a été modifié.'
                 );
 
-                $manager->flush();
-                dd('good');
+                return $this->redirectToRoute('offres.mes_offres');
 
-                return $this->redirectToRoute('mes_mission');
             } else {
                 $this->addFlash(
                     'warning',
@@ -121,7 +120,7 @@ class SocieteController extends AbstractController
             }
         }
 
-        return $this->render('pages/societe/edit_password.html.twig', [
+        return $this->render('pages/edit_password.html.twig', [
             'form' => $form->createView()
         ]);
     }

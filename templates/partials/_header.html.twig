@@ -61,10 +61,10 @@
 						<div class="dropdown-menu">
 							{% if app.user.typeUser == "clients"  %}
 								<a class="dropdown-item" href="{{ path('user.edit') }}">Modifier mes informations</a>
-								<a class="dropdown-item" href="{{ path('user.edit.password', {id : app.user.id}) }}">Changer mot de passe</a>
+								<a class="dropdown-item" href="{{ path('user.edit.password') }}">Changer mot de passe</a>
 							{% elseif app.user.typeUser == "societes"%} 
 								<a class="dropdown-item" href="{{ path('societe.edit') }}">Gérer mes informations</a>
-								<a class="dropdown-item" href="{{ path('societe.edit.password', {id : app.user.id}) }}">Changer mot de passe</a>
+								<a class="dropdown-item" href="{{ path('societe.edit.password') }}">Changer mot de passe</a>
 							{% endif %}
 							<div class="dropdown-divider"></div>
 							{% if 'ROLE_ADMIN' in app.user.roles %}

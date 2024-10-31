@@ -94,24 +94,20 @@ class UserController extends AbstractController
         EntityManagerInterface $manager,
         UserPasswordHasherInterface $hasher
     ): Response {
+
+        /** @var Clients $user */
         $user = $this->getUser() ;
 
-        $form = $this->createForm(UserPasswordType::class, $user);
-        
+        $form = $this->createForm(UserPasswordType::class);
+
         $form->handleRequest($request);
-        dd($form->getData()) ;
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            /** @var Clients $user */
-            $user = $form->getData();
-            
-            // Retrieve the value from the extra field non-mapped !
             $newpass = $form->get("plainPassword")->getData();
 
             if ( $hasher->isPasswordValid( $user , $form->get('password')->getData()) ) {
 
-                dd('good') ;
                 $hasher = $hasher->hashPassword(
                     $user,
                     $newpass
@@ -129,13 +125,10 @@ class UserController extends AbstractController
                 return $this->redirectToRoute('user.mesCandidatures');
             } 
 
-            dd('bad') ;
-
             $this->addFlash(
                 'warning',
                 'Le mot de passe renseigné est incorrect.'
             );
-
         }
 
         return $this->render('pages/user/edit-password.html.twig', [

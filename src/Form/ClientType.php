@@ -92,8 +92,8 @@ class ClientType extends AbstractType
             ->add('siret', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlenght' => '2',
-                    'maxlenght' => '20',
+                    'minlenght' => '9',
+                    'maxlenght' => '9',
                 ],
                 'required' => false,
                 'label' => 'Numéro de siret',

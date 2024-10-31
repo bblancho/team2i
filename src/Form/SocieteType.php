@@ -36,7 +36,6 @@ class SocieteType extends AbstractType
                     'minlenght' => '2',
                     'maxlenght' => '50',
                 ],
-                'required' => false,
                 'label' => 'Adresse',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
@@ -48,7 +47,6 @@ class SocieteType extends AbstractType
                     'minlenght' => '5',
                     'maxlenght' => '5',
                 ],
-                'required' => false,
                 'label' => 'Code postal',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
@@ -60,7 +58,6 @@ class SocieteType extends AbstractType
                     'minlenght' => '2',
                     'maxlenght' => '50',
                 ],
-                'required' => false,
                 'label' => 'Ville',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
@@ -72,7 +69,6 @@ class SocieteType extends AbstractType
                     'minlenght' => '2',
                     // 'maxlenght' => '10',
                 ],
-                'required' => false,
                 'label' => 'Télèphone',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
@@ -95,18 +91,14 @@ class SocieteType extends AbstractType
             ->add('siret', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlenght' => '2',
-                    'maxlenght' => '20',
+                    'minlenght' => '9',
+                    'maxlenght' => '9',
                 ],
-                'required' => false,
                 'label' => 'Numéro de siret',
                 'label_attr' => [
-                    'class' => 'form-label mt-4'
+                    'class' => 'form-label'
                 ],
-                'constraints' => [
-                    new Assert\Length(['min' => 2, 'max' => 20])
-                ]
-            ])
+            ]) 
             ->add('isNewsletter', CheckboxType::class, [
                 'required' => false,
                 'empty_data' => '',
@@ -115,7 +107,7 @@ class SocieteType extends AbstractType
                 ],
                 'label' => "S'inscrire à la newsletter ?",
                 'label_attr' => [
-                    'class' => 'form-check-label'
+                    'class' => 'form-check-label '
                 ],
             ])
             ->add('imageFile', VichFileType::class,[
@@ -130,6 +122,7 @@ class SocieteType extends AbstractType
                 ],
             ])   
             ->add('nomContact',TextType::class, [
+                'required' => false,
                 'attr' => [
                     'class' => 'form-control ',
                     'minlenght' => '2',
@@ -146,18 +139,18 @@ class SocieteType extends AbstractType
                     'minlenght' => '2',
                 ],
                 'required' => false,
-                'label' => 'Télèphone du contact',
+                'label' => 'Télèphone',
                 'label_attr' => [
-                    'class' => 'form-label mt-4 mb-4'
+                    'class' => 'form-label mt-4'
                 ],
             ])
             ->add('secteurActivite', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '50',
                 ],
-                'required' => false,
                 'label' => "Secteur d'activité",
                 'label_attr' => [
                     'class' => 'form-label mt-4'
