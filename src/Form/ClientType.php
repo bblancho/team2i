@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -101,28 +102,17 @@ class ClientType extends AbstractType
                     'class' => 'form-label'
                 ],
             ]) 
-            ->add('cvFile', VichFileType::class,[
+            ->add('cvFile', FileType::class,[
                 'required'  => false,
                 'mapped'    => false,
-                'label' =>' Déposer votre cv ',
                 'attr' => [
                     'class' => 'form-control',
                 ],
+                'label' =>' Déposer votre cv ',
                 'label_attr' => [
                     'class' => 'form-label'
                 ],
-            ])        
-            ->add('dispo', CheckboxType::class, [
-                'required' => false,
-                'empty_data' => '',
-                'attr' => [
-                    'class' => 'form-check-input ',
-                ],
-                'label' => 'Disponible pour une mission ?',
-                'label_attr' => [
-                    'class' => 'form-check-label'
-                ],
-            ])
+            ])   
             ->add('isNewsletter', CheckboxType::class, [
                 'required' => false,
                 'empty_data' => '',
@@ -133,7 +123,18 @@ class ClientType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-check-label '
                 ],
-            ])
+            ])     
+            // ->add('dispo', CheckboxType::class, [
+            //     'required' => false,
+            //     'empty_data' => '',
+            //     'attr' => [
+            //         'class' => 'form-check-input ',
+            //     ],
+            //     'label' => 'Disponible pour une mission ?',
+            //     'label_attr' => [
+            //         'class' => 'form-check-label'
+            //     ],
+            // ])
             // ->add('dateDispoAt', null, [
             //     'required' => false,
             //     'attr' => [

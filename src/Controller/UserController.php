@@ -21,7 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-
+#[Route("/compte", 'user.')]
 class UserController extends AbstractController
 {
     /**
@@ -34,7 +34,7 @@ class UserController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/utilisateur/edition', name: 'user.edit', methods: ['GET', 'POST'] )]
+    #[Route('/edition-profil', name: 'edit', methods: ['GET', 'POST'] )]
     public function edit(
         Request $request,
         EntityManagerInterface $manager,
@@ -59,7 +59,7 @@ class UserController extends AbstractController
             $user->setPhone($form["phone"]->getData());
             $user->setTjm($form["tjm"]->getData());
             $user->setSiret($form["siret"]->getData());
-            $user->setDispo($form["dispo"]->getData());
+            // $user->setDispo($form["dispo"]->getData());
             $user->setIsNewsletter($form["isNewsletter"]->getData());
 
             $manager->flush() ;
@@ -88,7 +88,7 @@ class UserController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/utilisateur/edition-mot-de-passe', 'user.edit.password', methods: ['GET', 'POST'])]
+    #[Route('/edition-mot-de-passe', 'password', methods: ['GET', 'POST'])]
     public function editPassword(
         Request $request,
         EntityManagerInterface $manager,
@@ -145,7 +145,7 @@ class UserController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/candidature/offre-{id}-{slug}', name: 'user.candidature', methods: ['GET'], requirements: ['id' => Requirement::DIGITS, 'slug' => Requirement::ASCII_SLUG])]
+    #[Route('/candidature/offre-{id}-{slug}', name: 'candidature', methods: ['GET'], requirements: ['id' => Requirement::DIGITS, 'slug' => Requirement::ASCII_SLUG])]
     public function candidature(
         OffresRepository $offresRepository, 
         int $id, 
@@ -175,7 +175,7 @@ class UserController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/utilisateur/mes-candidatures', name: 'user.mesCandidatures', methods: ['GET'])]
+    #[Route('/utilisateur/mes-candidatures', name: 'mesCandidatures', methods: ['GET'])]
     public function mesCandidatures(
 
     ): Response {

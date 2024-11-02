@@ -32,6 +32,9 @@ class Candidatures
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isRetenue = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -81,6 +84,18 @@ class Candidatures
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function isRetenue(): ?bool
+    {
+        return $this->isRetenue;
+    }
+
+    public function setRetenue(?bool $isRetenue): static
+    {
+        $this->isRetenue = $isRetenue;
 
         return $this;
     }
