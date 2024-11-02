@@ -85,7 +85,6 @@ class HomeController extends AbstractController
         }
 
         $freeLance = $this->getUser() ;
-        $id_offre = $mission->getId() ;
 
         $candidature = new Candidatures() ;
 
@@ -100,7 +99,7 @@ class HomeController extends AbstractController
 
         $this->addFlash(
             'success',
-            'Votre candidature a été bien été prise en compte !'
+            'Merci pour votre candidature.'
         );
 
         return $this->redirectToRoute('app_index');
@@ -117,21 +116,6 @@ class HomeController extends AbstractController
 
         return $this->render('pages/missions/show.html.twig');
     }
-
-    /**
-     * On va lister la liste des candidatures d'un user
-     *
-     * @return Response
-     */
-    #[Route('/mes-candidatures', name: 'app_mes_candidatures', methods: ["GET"])]
-    public function mesCandidatures(): Response
-    {
-
-        return $this->render('pages/missions/show.html.twig');
-    }
-
-    
-
 
 
 }

@@ -9,6 +9,8 @@ use App\Form\ClientType;
 use App\Form\UserPasswordType;
 use App\Repository\OffresRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\CandidaturesRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -175,14 +177,24 @@ class UserController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/utilisateur/mes-candidatures', name: 'mesCandidatures', methods: ['GET'])]
+    #[Route('/mes-candidatures', name: 'mesCandidatures', methods: ['GET'])]
     public function mesCandidatures(
-
+        CandidaturesRepository $candidatureRepository,
+        PaginatorInterface $paginator,
+        Request $request
     ): Response {
 
-        return $this->render('pages/user/mes-candidatures.html.twig', [
-            
-        ]);
+        /** @var Clients $user */
+        $user = $this->getUser();
+        $idClient = $user->getId();
+
+        $candidatures =  $paginator->paginate(
+            $candidatureRepository->findByUser($idClient),
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('pages/user/mes-candidatures.html.twig', compact('candidatures'));
     }
 
 

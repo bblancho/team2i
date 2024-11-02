@@ -16,20 +16,20 @@ class CandidaturesRepository extends ServiceEntityRepository
         parent::__construct($registry, Candidatures::class);
     }
 
-    //    /**
-    //     * @return Candidatures[] Returns an array of Candidatures objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+    * @return Candidatures[] Returns an array of Candidatures objects
+    */
+    public function findByUser($user): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.clients = :idClienct')
+            ->setParameter('idClienct', $user)
+            ->orderBy('c.id', 'DESC')
+            ->setMaxResults(50)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     //    public function findOneBySomeField($value): ?Candidatures
     //    {

@@ -41,7 +41,7 @@
 
 					{% elseif app.user.typeUser == "clients"%} 
 						<li class="nav-item">
-							<a class="nav-link {{ app.current_route == 'app_mes_candidatures' ? 'active' : '' }}" href="{{ path('app_mes_candidatures') }}">Mes candidatures 
+							<a class="nav-link {{ app.current_route == 'user.mesCandidatures' ? 'active' : '' }}" href="{{ path('user.mesCandidatures') }}">Mes candidatures 
 							</a>
 						</li>
 					{% endif %}  
