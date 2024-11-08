@@ -91,8 +91,8 @@ class SocieteType extends AbstractType
             ->add('siret', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlenght' => '9',
-                    'maxlenght' => '9',
+                    'minlenght' => '14',
+                    'maxlenght' => '14',
                 ],
                 'label' => 'Numéro de siret',
                 'label_attr' => [

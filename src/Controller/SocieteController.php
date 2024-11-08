@@ -120,7 +120,7 @@ class SocieteController extends AbstractController
             }
         }
 
-        return $this->render('pages/edit_password.html.twig', [
+        return $this->render('pages/edit-password.html.twig', [
             'form' => $form->createView()
         ]);
     }

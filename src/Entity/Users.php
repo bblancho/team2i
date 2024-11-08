@@ -100,8 +100,10 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank()] 
     #[Assert\Length(
-        exactly: 9,
-        exactMessage: " Le numéro de siret doit faire {{ limit }} caractères. "
+        min: 9,
+        max: 14,
+        minMessage: "Le numéro de SIRET/SIREN doit faire au minimum {{ limit }} caractères.",
+        maxMessage: "Le numéro de SIRET/SIREN doit faire au maxmimum {{ limit }} caractères."
     )]
     private string $siret = " ";
 

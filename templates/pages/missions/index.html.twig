@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!
+{% block title %} Accueil
 {% endblock %}
 
 {% block body %}
@@ -13,12 +13,12 @@
 		{% endfor %}
 		
 		{% if not missions.items is same as([]) %}
-			<h1>Nos derniéres missions</h1>
+			<h1>Nos dernières missions</h1>
 
 			<div class="album py-5 bg-body-tertiary px">
 				
 				<div class="row mb-4">
-					<div class="count"> Votre recherche renvoie  
+					<div class="count"> Votre recherche remonte  
 						{{ missions.getTotalItemCount }} résultat(s)
 					</div>
 				</div>
@@ -35,7 +35,7 @@
 									<div class=" border rounded mb-4 shadow-sm ">
 										<div class="d-flex">
 											<div class="col-md-9 p-4">
-												<h4>	<a class="nav-link" href="{{ path('app_show', {id: mission.id, slug: mission.slug}) }}"> 
+												<h4> <a class="nav-link" href="{{ path('app_show', {id: mission.id, slug: mission.slug}) }}"> 
 													{{ mission.nom | upper }}
 													</a>
 												</h4>
@@ -45,21 +45,17 @@
 
 												<div class="d-flex">
 													<p class='logo_client'>
-														<img src="https://photo.maxifoot.fr/rennes-doue-2.jpg"  alt="image"/>
+														<img src="https://photo.maxifoot.fr/rennes-doue-2.jpg" alt="image"/>
 													</p>	
 													<p class="card-text">
-														{{ mission.description | u.truncate(200, '...') }}
+														<a href="{{ path('app_show', {id: mission.id, slug: mission.slug}) }}">
+															{{ mission.description | u.truncate(200, ' ...') }}
+														</a>
 													</p> 
 												</div>
 												<div class="d-flex justify-content-between align-items-center">
-													<div class="btn-group">
-														<button type="button" class="btn btn-sm btn-outline-secondary">
-															<a class="nav-link" href="{{ path('app_show', {id: mission.id, slug: mission.slug}) }}">voir l'offre
-															</a>
-														</button>
-													</div>
 													<small class="text-body-secondary">Publié il y a 3 jours </small>
-												</div> <br/>
+												</div>
 												
 											</div>
 
@@ -111,8 +107,7 @@
 														</svg>
 														{{ mission.lieuMission }}
 													</span>
-													<span> Ref mission: #{{ mission.id }}pp </span>
-													<a href="{{ path('app_show', { id: mission.id, slug: mission.slug}) }}" class="btn btn-primary ">Postuler</a>
+													<a href="{{ path('app_show', { id: mission.id, slug: mission.slug}) }}" class="btn btn-primary "> Voir l'offre </a>
 												</a>
 											</div>
 										</div>

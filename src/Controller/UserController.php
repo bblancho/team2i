@@ -133,7 +133,7 @@ class UserController extends AbstractController
             );
         }
 
-        return $this->render('pages/user/edit-password.html.twig', [
+        return $this->render('pages/edit-password.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -188,11 +188,23 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $idClient = $user->getId();
 
+        $result = [];
+        $data = $candidatureRepository->findByUser($idClient);
+
+        // foreach($data as $e)
+        // {                   
+        //     dd($e) ;
+
+        //     $result = [$e];
+        // }
+
         $candidatures =  $paginator->paginate(
             $candidatureRepository->findByUser($idClient),
             $request->query->getInt('page', 1),
             10
         );
+
+        //$aposute = $candidatureRepository->userAsPostule($idClient);
 
         return $this->render('pages/user/mes-candidatures.html.twig', compact('candidatures'));
     }
