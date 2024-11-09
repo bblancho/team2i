@@ -2,219 +2,204 @@
 
 namespace App\Form;
 
+use App\Entity\Offres;
 use App\Entity\Missions;
 use Symfony\Component\Form\AbstractType;
+use App\Service\FormListenerFactoryService;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\Event\PreSubmitEvent;
+use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\Validator\Constraints as Assert;
+
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class MissionType extends AbstractType
 {
+    public function __construct( private FormListenerFactoryService $listenerFactroy){
+	
+    }
+    
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('nom', TextType::class, [
-            'attr' => [
-                'class' => 'form-control',
-                'minlenght' => '2',
-                'maxlenght' => '50',
-            ],
-            'required' => true,
-            'label' => 'Titre de la mission :',
-            'label_attr' => [
-                'class' => 'form-label  mt-4'
-            ],
-            'constraints' => [
-                new Assert\NotBlank(),
-                new Assert\Length(['min' => 2, 'max' => 50])
-            ]
-        ])
-        ->add('refMission', TextType::class, [
-            'attr' => [
-                'class' => 'form-control',
-                'minlenght' => '2',
-                'maxlenght' => '50',
-            ],
-            'label' => 'Ref annonce :',
-            'label_attr' => [
-                'class' => 'form-label  mt-4'
-            ],
-            'constraints' => [
-                new Assert\NotBlank(),
-                new Assert\Length(['min' => 2, 'max' => 50])
-            ]
-        ])
-        ->add('description', TextareaType::class, [
-            'attr' => [
-                'class' => 'form-control',
-                'min' => 1,
-                'max' => 5,
-                'rows'=> 6
-            ],
-            'required' => true,
-            'label' => 'Description de la mission :',
-            'label_attr' => [
-                'class' => 'form-label mt-4'
-            ],
-            'constraints' => [
-                new Assert\NotBlank()
-            ]
-        ])
-        ->add('lieuMission', TextType::class, [
-            'attr' => [
-                'class' => 'form-control',
-                'minlenght' => '2',
-                'maxlenght' => '50',
-            ],
-            'label' => 'Localisation :',
-            'label_attr' => [
-                'class' => 'form-label  mt-4'
-            ],
-            'constraints' => [
-                new Assert\NotBlank(),
-                new Assert\Length(['min' => 2, 'max' => 50])
-            ]
-        ])
-        ->add('tarif', MoneyType::class, [
-            'attr' => [
-                'class' => 'form-control',
-                'max' => 2000,
-                'type' => 'number',
-                'placeholder' => '0.00'
-            ],
-            'currency' => 'EUR',
-            'required' => true,
-            'label' => 'Budget de la mission :',
-            'label_attr' => [
-                'class' => 'form-label mt-4'
-            ],
-            'constraints' => [
-                new Assert\Positive(),
-                new Assert\LessThan(2000)
-            ]
-        ])
-        ->add('duree', IntegerType::class, [
-            'attr' => [
-                'class' => 'form-control',
-                'min' => 1,
-                'max' => 24
-            ],
-            'required' => false,
-            'label' => 'Durée de la mission en mois :',
-            'label_attr' => [
-                'class' => 'form-label mt-4'
-            ],
-            'constraints' => [
-                new Assert\Positive(),
-                new Assert\LessThan(24)
-            ]
-        ])
-        ->add('contraintes', TextareaType::class, [
-            'attr' => [
-                'class' => 'form-control',
-                'min' => 1,
-                'max' => 5,
-                'rows'=> 6
-            ],
-            'required' => false,
-            'label' => "Contraintes de la mission  :",
-            'label_attr' => [
-                'class' => 'form-label mt-4'
-            ],
-        ])
-        ->add('profil', TextareaType::class, [
-            'attr' => [
-                'class' => 'form-control',
-                'min' => 1,
-                'max' => 5,
-                'rows'=> 6
-            ],
-            'required' => false,
-            'label' => 'Profil recherché :',
-            'label_attr' => [
-                'class' => 'form-label mt-4'
-            ],
-            'constraints' => [
-                new Assert\NotBlank()
-            ]
-        ])
-        ->add('experience', IntegerType::class, [
-            'attr' => [
-                'class' => 'form-control',
-                'min' => 1,
-                'max' => 15
-            ],
-            'required' => false,
-            'label' => "Nombre d'année d'expérience minimum :",
-            'label_attr' => [
-                'class' => 'form-label mt-4'
-            ],
-            'constraints' => [
-                new Assert\Positive(),
-                new Assert\LessThan(15)
-            ]
-        ])
-        ->add('startDateAT', null, [
-            'attr' => [
-                'class' => 'form-control',
-            ],
-            'required' => true,
-            'label' => 'Date de début de mission :',
-            'widget' => 'single_text',
-        ])
-        ->add('isActive', CheckboxType::class, [
-            'attr' => [
-                'class' => 'form-check-input',
-            ],
-            'required' => false,
-            'label' => 'Publier ?',
-            'label_attr' => [
-                'class' => 'form-check-label'
-            ],
-            'constraints' => [
-                new Assert\NotNull()
-            ]
-        ])
-        // ->add('nbPersonnes', IntegerType::class, [
-        //     'attr' => [
-        //         'class' => 'form-control',
-        //         'min' => 1,
-        //         'max' => 30
-        //     ],
-        //     'required' => true,
-        //     'label' => 'Nombre de poste(s) à pourvoir :',
-        //     'label_attr' => [
-        //         'class' => 'form-label mt-4'
-        //     ],
-        //     'constraints' => [
-        //         new Assert\Positive(),
-        //         new Assert\LessThan(30)
-        //     ]
-        // ])
-        
-            // ->add('iSteletravail')
-            // ->add('skills', EntityType::class, [
-            //     'class' => skills::class,
-            //     'choice_label' => 'id',
-            //     'multiple' => true,
-            // ])
+            ->add('nom', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'minlenght' => '2',
+                    'maxlenght' => '100',
+                ],
+                'required' => true,
+                'label' => 'Titre de la mission :',
+                'label_attr' => [
+                    'class' => 'form-label  mt-4'
+                ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length(['min' => 2, 'max' => 100])
+                ]
+            ])
+            ->add('refMission', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'minlenght' => '2',
+                    'maxlenght' => '50',
+                ],
+                'label' => 'Ref annonce :',
+                'label_attr' => [
+                    'class' => 'form-label  mt-4'
+                ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length(['min' => 2, 'max' => 50])
+                ]
+            ])
+            ->add('description', TextareaType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'min' => 5,
+                    'rows'=> 6
+                ],
+                'required' => true,
+                'label' => 'Description de la mission :',
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
+                'constraints' => [
+                    new Assert\NotBlank()
+                ]
+            ])
+            ->add('lieuMission', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'minlenght' => '2',
+                    'maxlenght' => '50',
+                ],
+                'label' => 'Localisation :',
+                'label_attr' => [
+                    'class' => 'form-label  mt-4'
+                ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length(['min' => 2, 'max' => 50])
+                ]
+            ])
+            ->add('tarif', MoneyType::class, [
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-control',
+                    'max' => 2000,
+                    'type' => 'number',
+                    'placeholder' => '0'
+                ],
+                'label' => 'Budget de la mission :',
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
+                'currency' => 'EUR',
+                'constraints' => [
+                    new Assert\Positive(),
+                    new Assert\LessThan(2000)
+                ]
+            ])
+            ->add('duree', IntegerType::class, [
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'min' => 1,
+                    'max' => 24
+                ],
+                'label' => 'Durée de la mission en mois :',
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
+                'constraints' => [
+                    new Assert\Positive(),
+                    new Assert\LessThan(24)
+                ]
+            ])
+            ->add('contraintes', TextareaType::class, [
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'min' => 5,
+                    'rows'=> 6
+                ],
+                'label' => "Contraintes de la mission  :",
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
+            ])
+            ->add('profil', TextareaType::class, [
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'min' => 5,
+                    'rows'=> 6
+                ],
+                'label' => 'Profil recherché :',
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
+                'constraints' => [
+                    new Assert\NotBlank()
+                ]
+            ])
+            ->add('experience', IntegerType::class, [
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'min' => 1,
+                    'max' => 15
+                ],
+                'label' => "Nombre d'année d'expérience minimum :",
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
+                'constraints' => [
+                    new Assert\Positive(),
+                    new Assert\LessThan(15)
+                ]
+            ])
+            ->add('startDateAT', null, [
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+                'label' => 'Date de début de mission :',
+                'widget' => 'single_text',
+            ])
+            ->add('isActive', CheckboxType::class, [
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-check-input',
+                ],
+                'label' => 'Publier ?',
+                'label_attr' => [
+                    'class' => 'form-check-label'
+                ],
+                'constraints' => [
+                    new Assert\NotNull()
+                ]
+            ])
+            ->addEventListener( FormEvents::PRE_SUBMIT, $this->listenerFactroy->autoSlug("nom") ) 
+            ->addEventListener( FormEvents::POST_SUBMIT, $this->listenerFactroy->timestamp() ) 
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Missions::class,
+            'data_class' => Offres::class,
         ]);
     }
 }

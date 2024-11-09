@@ -24,11 +24,11 @@ class Offres
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 100)]
     #[Assert\NotBlank()]
     #[Assert\Length(
         min: 2,
-        max: 50,
+        max: 100,
         minMessage: "Le nom doit faire minimum {{ limit }} caractères.",
         maxMessage: "Le nom doit faire au maximum {{ limit }} caractères."
     )]
