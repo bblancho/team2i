@@ -4,21 +4,22 @@ namespace App\Form;
 
 use App\Entity\Offres;
 use App\Entity\Missions;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use App\Service\FormListenerFactoryService;
+use Symfony\Component\Form\Event\PreSubmitEvent;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\Event\PreSubmitEvent;
-use Symfony\Component\Form\Event\PostSubmitEvent;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -48,6 +49,9 @@ class MissionType extends AbstractType
                     new Assert\Length(['min' => 2, 'max' => 100])
                 ]
             ])
+            ->add('slug', HiddenType::class, [
+                'empty_data' => '',
+            ])
             ->add('refMission', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
@@ -56,7 +60,7 @@ class MissionType extends AbstractType
                 ],
                 'label' => 'Ref annonce :',
                 'label_attr' => [
-                    'class' => 'form-label  mt-4'
+                    'class' => 'form-label'
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -72,7 +76,7 @@ class MissionType extends AbstractType
                 'required' => true,
                 'label' => 'Description de la mission :',
                 'label_attr' => [
-                    'class' => 'form-label mt-4'
+                    'class' => 'form-label'
                 ],
                 'constraints' => [
                     new Assert\NotBlank()
@@ -103,7 +107,7 @@ class MissionType extends AbstractType
                 ],
                 'label' => 'Budget de la mission :',
                 'label_attr' => [
-                    'class' => 'form-label mt-4'
+                    'class' => 'form-label'
                 ],
                 'currency' => 'EUR',
                 'constraints' => [
@@ -148,7 +152,7 @@ class MissionType extends AbstractType
                 ],
                 'label' => 'Profil recherché :',
                 'label_attr' => [
-                    'class' => 'form-label mt-4'
+                    'class' => 'form-label'
                 ],
                 'constraints' => [
                     new Assert\NotBlank()
@@ -163,7 +167,7 @@ class MissionType extends AbstractType
                 ],
                 'label' => "Nombre d'année d'expérience minimum :",
                 'label_attr' => [
-                    'class' => 'form-label mt-4'
+                    'class' => 'form-label '
                 ],
                 'constraints' => [
                     new Assert\Positive(),
@@ -176,6 +180,9 @@ class MissionType extends AbstractType
                     'class' => 'form-control',
                 ],
                 'label' => 'Date de début de mission :',
+                'label_attr' => [
+                    'class' => 'form-label'
+                ],
                 'widget' => 'single_text',
             ])
             ->add('isActive', CheckboxType::class, [
@@ -191,6 +198,7 @@ class MissionType extends AbstractType
                     new Assert\NotNull()
                 ]
             ])
+
             ->addEventListener( FormEvents::PRE_SUBMIT, $this->listenerFactroy->autoSlug("nom") ) 
             ->addEventListener( FormEvents::POST_SUBMIT, $this->listenerFactroy->timestamp() ) 
         ;

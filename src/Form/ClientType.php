@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ClientType extends AbstractType
 {
@@ -18,6 +19,7 @@ class ClientType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
@@ -29,48 +31,48 @@ class ClientType extends AbstractType
                 ],
             ])
             ->add('adresse', TextType::class, [
+                'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '50',
                 ],
-                'required' => false,
                 'label' => 'Adresse',
                 'label_attr' => [
                     'class' => 'form-label'
                 ],
             ])
             ->add('cp', TextType::class, [
+                'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '5',
                     'maxlenght' => '5',
                 ],
-                'required' => false,
                 'label' => 'Code postal',
                 'label_attr' => [
                     'class' => 'form-label'
                 ],
             ])
             ->add('ville', TextType::class, [
+                'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     'maxlenght' => '50',
                 ],
-                'required' => false,
                 'label' => 'Ville',
                 'label_attr' => [
                     'class' => 'form-label'
                 ],
             ])
             ->add('phone', TextType::class, [
+                'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
                     // 'maxlenght' => '10',
                 ],
-                'required' => false,
                 'label' => 'Télèphone',
                 'label_attr' => [
                     'class' => 'form-label'
@@ -91,16 +93,25 @@ class ClientType extends AbstractType
                 ],
             ])
             ->add('siret', TextType::class, [
+                'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '9',
                     'maxlenght' => '9',
                 ],
-                'required' => false,
                 'label' => 'Numéro de siret',
                 'label_attr' => [
                     'class' => 'form-label'
                 ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length([
+                        'min' => 9,
+                        'max' => 9,
+                        'minMessage' => 'Le SIRET doit comporter {{ limit }} caractères au minimum.',
+                        'maxMessage' => 'Le SIRET doit comporter {{ limit }} caractères au maximum.',
+                    ]),
+                ]
             ]) 
             ->add('cvFile', FileType::class,[
                 'required'  => false,
@@ -124,25 +135,6 @@ class ClientType extends AbstractType
                     'class' => 'form-check-label '
                 ],
             ])     
-            // ->add('dispo', CheckboxType::class, [
-            //     'required' => false,
-            //     'empty_data' => '',
-            //     'attr' => [
-            //         'class' => 'form-check-input ',
-            //     ],
-            //     'label' => 'Disponible pour une mission ?',
-            //     'label_attr' => [
-            //         'class' => 'form-check-label'
-            //     ],
-            // ])
-            // ->add('dateDispoAt', null, [
-            //     'required' => false,
-            //     'attr' => [
-            //         'class' => 'form-control',
-            //     ],
-            //     'label' => 'Date de début de mission :',
-            //     'widget' => 'single_text',
-            // ])
         ;
     }
 

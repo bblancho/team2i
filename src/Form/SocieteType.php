@@ -20,6 +20,7 @@ class SocieteType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
@@ -31,6 +32,7 @@ class SocieteType extends AbstractType
                 ],
             ])
             ->add('adresse', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
@@ -42,6 +44,7 @@ class SocieteType extends AbstractType
                 ],
             ])
             ->add('cp', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '5',
@@ -53,6 +56,7 @@ class SocieteType extends AbstractType
                 ],
             ])
             ->add('ville', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
@@ -64,6 +68,7 @@ class SocieteType extends AbstractType
                 ],
             ])
             ->add('phone', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
@@ -75,6 +80,7 @@ class SocieteType extends AbstractType
                 ],
             ])
             ->add('description', TextareaType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'min' => 1,
@@ -89,6 +95,7 @@ class SocieteType extends AbstractType
                 ]
             ])
             ->add('siret', TextType::class, [
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '14',
@@ -98,6 +105,15 @@ class SocieteType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label'
                 ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length([
+                        'min' => 14,
+                        'max' => 14,
+                        'minMessage' => 'Le SIREN doit comporter {{ limit }} caractères au minimum.',
+                        'maxMessage' => 'Le SIREN doit comporter {{ limit }} caractères au maximum.',
+                    ]),
+                ]
             ]) 
             ->add('isNewsletter', CheckboxType::class, [
                 'required' => false,
@@ -134,12 +150,12 @@ class SocieteType extends AbstractType
                 ],
             ])
             ->add('phoneContact', TextType::class, [
+                'required' => false,
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control mb-2',
                     'minlenght' => '2',
                 ],
-                'required' => false,
-                'label' => 'Télèphone',
+                'label' => 'Télèphone du contact:',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
@@ -155,6 +171,13 @@ class SocieteType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length([
+                        'min' => 3,
+                        'minMessage' => 'Ce champ doit faire {{ limit }} caractères au minimum.',
+                    ]),
+                ]
             ])
         ;
     }

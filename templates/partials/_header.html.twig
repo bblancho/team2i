@@ -30,14 +30,14 @@
 							<a class="nav-link {{ app.current_route == 'admin' ? 'active' : '' }}" href="{{ path('offres.create') }}">Créér une offre
 							</a>
 						</li>
-						<li class="nav-item">
+						{# <li class="nav-item">
 							<a class="nav-link {{ app.current_route == 'admin' ? 'active' : '' }}" href="{{ path('offres.en_ligne') }}">OFFRES publiées
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link {{ app.current_route == 'admin' ? 'active' : '' }}" href="{{ path('offres.non_publiee') }}">OFFRES NON publiées
 							</a>
-						</li>
+						</li> #}
 
 					{% elseif app.user.typeUser == "clients"%} 
 						<li class="nav-item">

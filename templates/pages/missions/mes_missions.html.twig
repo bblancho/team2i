@@ -3,13 +3,8 @@
 {% block title %} Mes missions {% endblock %}
 
 {% block body %}
-	<div class="container mt-4">
-		{% for message in app.flashes('success') %}
-			<div class="alert alert-success mt-4">
-				{{ message }}
-			</div>
-		{% endfor %}
-
+	<div class="container mt-4 mx-auto">
+		
 		{% if not missions.items is same as([]) %}
 			<h1>Mes Missions</h1>
 
@@ -30,28 +25,28 @@
 						<th scope="col">Démarrage</th>
 						<th scope="col">Lieu</th>
 						<th scope="col">Budget</th>
-						<th scope="col">Seniorité</th>
-						<th scope="col">Durée</th>
+						<th scope="col">Nb candidatures</th>
 						<th scope="col">Publié</th>
-						<th scope="col" colspan="3">Actions</th>
+						<th scope="col" colspan="4">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for mission in missions %}
 						<tr>
 							<th scope="row">{{ mission.refMission }}</th>
-							<td>{{ mission.nom }}</td>
+							<td> <a href="{{ path('offres.show', {id: mission.id, slug: mission.slug}) }}" > {{mission.nom}} </a> </td>
 							<td>{{ mission.startDateAT|date('d/m/Y') }}</td>
 							<td>{{ mission.lieuMission }}</td>
 							<td>
 								{{ mission.tarif }} €
-							</td>
-							<td>{{ mission.experience }} an(s) </td>
-							
-							<td>{{ mission.duree }} mois </td>
+							</td>	
+							<td> </td>
 							<td>{{ mission.isActive ? 'oui' : 'non'}}  </td>
 							<td>
 								<a  href="{{ path('offres.show', {id: mission.id, slug: mission.slug}) }}" class="btn btn-primary"> Afficher </a>
+							</td>
+							<td>
+								<a  href="{{ path('offres.show', {id: mission.id, slug: mission.slug}) }}" class="btn btn-info"> Voir les candidatures </a>
 							</td>
 							<td>
 								<a href="{{ path('offres.edit', { id: mission.id }) }}" class="btn btn-info">Modifier</a>

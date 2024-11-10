@@ -10,7 +10,6 @@
 
             <p>
                 Retrouvez à tout moment vos candidatures en cours, le suivi de leur statut, ainsi que l’historique des offres auxquelles vous avez postulées. 
-                Les candidatures archivées regroupent vos candidatures sur des offres expirées ou supprimées.
             </p>
 
 			<div class="album py-5 bg-body-tertiary px">
@@ -124,13 +123,10 @@
 					<div class="navigation d-flex   mt-4">
 						{{ knp_pagination_render(candidatures) }}
 					</div>
-
-				{% else %}
-					<h4>Aucune candidatures trouvées !</h4>
 				{% endif %}
 			</div>
 		{% else %}
-			<h1 class="text-center mt-4">Aucune candidatures trouvées !</h1>
+			<h1 class="text-center mt-4">Aucune candidature(s) !</h1>
 		{% endif %}
 	</div>
 	
