@@ -4,11 +4,9 @@ namespace App\Security\Voter;
 
 use App\Entity\Offres;
 use App\Entity\Societes;
-use App\Entity\Users;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\User\UserInterface;
+
 
 class OffresVoter extends Voter
 {
@@ -18,11 +16,6 @@ class OffresVoter extends Voter
     public const OFFRE_CREATE = 'offre_create';
     public const OFFRE_LIST = 'offre_list';
     public const OFFRE_ALL = 'offre_all';
-
-    public function __construct(private readonly Security $security)
-    {
-        
-    }
 
     protected function supports(string $attribute, mixed $offre): bool
     {
@@ -44,8 +37,6 @@ class OffresVoter extends Voter
     {
         $user = $token->getUser();
 
-        // if( null === $offre->getSocietes() ) return false;
-
         // if the user is anonymous, do not grant access
         if (!$user instanceof Societes) {
             return false;
@@ -61,7 +52,7 @@ class OffresVoter extends Voter
 
             case self::OFFRE_CREATE:
             case self::OFFRE_LIST:
-                return $this->security->isGranted('ROLE_SOCIETE') ;
+                return true ;
                 break;
         }
 
