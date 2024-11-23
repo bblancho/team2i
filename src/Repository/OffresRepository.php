@@ -27,10 +27,10 @@ class OffresRepository extends ServiceEntityRepository
             $this->createQueryBuilder('o'),
             $page,
             $limit,
-            // [
-            //     'distinct' => false ,
-            //     'sortFieldAllowList' => ['o.id', 'o.nom']
-            // ]
+            [
+                'distinct' => false , //securité sur le trie
+                'sortFieldAllowList' => ['o.id'] //securité sur le trie, on choisit sur quel champs on accorde le trie
+            ]
         );
     }
 
