@@ -24,8 +24,8 @@ class MissionController extends AbstractController
     /**
      * 
      * @param OffresRepository $offresRepository
-     * @param PaginatorInterface $paginator
      * @param Request $request
+     * @param Security $security
      * 
      * @return Response
      */
@@ -33,7 +33,6 @@ class MissionController extends AbstractController
     #[IsGranted(OffresVoter::OFFRE_LIST)]
     public function mesOffres(
         OffresRepository $offresRepository,
-        PaginatorInterface $paginator,
         Request $request,
         Security $security
     ): Response {
@@ -43,19 +42,8 @@ class MissionController extends AbstractController
 
         $canListAll = $security->isGranted(OffresVoter::OFFRE_ALL) ;
 
-        $offres = $offresRepository->findBy(['societes' => $userId]) ;
-    
-       // $societe->getOffres(),
-
-        // $missions = $paginator->paginate(
-        //     $offres,
-        //     $request->query->getInt('page', 1),
-        //     10
-        // );
-
-        $missions = $offresRepository->paginateOffres($page , 5) ;
-
-        
+        // On limite la liste des recettes à celle de l'utilisateur si il n'a pas les permissions de tout voir
+        $missions = $offresRepository->paginateOffres($page , $canListAll ? null : $userId) ;
 
         return $this->render('pages/missions/mes_missions.html.twig', [
             "missions" => $missions

@@ -19,16 +19,21 @@ class OffresRepository extends ServiceEntityRepository
     }
 
     
-    public function paginateOffres(int $page, int $limit): PaginationInterface
+    public function paginateOffres(int $page, ?int $userId): PaginationInterface
     {
+        $builder =  $this->createQueryBuilder('o') ;
+
+        if($userId){
+            $builder = $builder->andWhere('o.societes = :user')
+            ->setParameter('user', $userId) ;
+        }
 
         return  $this->paginator->paginate(
-            //$this->createQueryBuilder('o')->leftJoin('o.')->select('o', 'r'),
-            $this->createQueryBuilder('o'),
-            $page,
-            $limit,
-            [
-                'distinct' => false , //securité sur le trie
+            $builder ,
+            $page ,
+            10 ,
+            [   //securité sur le trie
+                'distinct' => false , 
                 'sortFieldAllowList' => ['o.id'] //securité sur le trie, on choisit sur quel champs on accorde le trie
             ]
         );
