@@ -6,6 +6,8 @@ use App\Entity\Offres;
 use App\Entity\Clients;
 use App\Form\OffreType;
 use App\Entity\Societes;
+use Symfony\Bundle\SecurityBundle\Security;
+use App\Security\Voter\OffresVoter;
 use App\Repository\OffresRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -20,14 +22,97 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class MissionController extends AbstractController
 {   
     /**
+     * 
+     * @param OffresRepository $offresRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * 
+     * @return Response
+     */
+    #[Route('/societe/mes-offres', name: 'mes_offres', methods: ['GET'])]
+    #[IsGranted(OffresVoter::OFFRE_LIST)]
+    public function mesOffres(
+        OffresRepository $offresRepository,
+        PaginatorInterface $paginator,
+        Request $request,
+        Security $security
+    ): Response {
+
+        $page = $request->query->getInt('page', 1) ;
+        $userId =  $security->getUser()->getId() ;
+
+        $canListAll = $security->isGranted(OffresVoter::OFFRE_ALL) ;
+
+        $offres = $offresRepository->findBy(['societes' => $userId]) ;
+    
+       // $societe->getOffres(),
+
+        // $missions = $paginator->paginate(
+        //     $offres,
+        //     $request->query->getInt('page', 1),
+        //     10
+        // );
+
+        $missions = $offresRepository->paginateOffres($page , 5) ;
+
+        
+
+        return $this->render('pages/missions/mes_missions.html.twig', [
+            "missions" => $missions
+        ]);
+    }
+
+    /**
+     * This controller show a form which create an mission
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[Route('/creation', name: 'create', methods: ['GET', 'POST'])]
+    #[IsGranted(OffresVoter::OFFRE_CREATE)]
+    public function new(
+        Request $request,
+        EntityManagerInterface $manager
+    ): Response {
+
+        $mission = new Offres();
+
+        $form = $this->createForm(OffreType::class, $mission);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $mission->setSocietes($this->getUser());
+            $mission->setSlug($form["nom"]->getData());
+
+            $manager->persist($mission);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre mission a été créé avec succès !'
+            );
+
+            return $this->redirectToRoute('offres.index');
+        }
+
+        return $this->render('pages/missions/new.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+
+    /**
      * This controller allow us to see a recipe if this one is public
      *
      * @param OffresRepository $offresRepository
      * @return Response
      */
-    #[Route('client/{slug}-{id}', name: 'show', methods: ['GET'], requirements: ['id' => '\d+' , 'slug' => '[a-z0-9-]+'] )]
+    #[Route('/client/{slug}-{id}', name: 'show', methods: ['GET'], requirements: ['id' => '\d+' , 'slug' => '[a-z0-9-]+'] )]
+    #[IsGranted(OffresVoter::OFFRE_VIEW, subject: 'offre')]
     public function show(
-        OffresRepository $offresRepository, int $id, string $slug
+        OffresRepository $offresRepository, int $id, string $slug , Offres $offre
     ): Response {
 
         $mission = $offresRepository->find($id);
@@ -40,6 +125,47 @@ class MissionController extends AbstractController
             'mission' => $mission
         ]);
     }
+
+    /**
+     * This controller allow us to edit an ingredient
+     *
+     * @param Offres $offre
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[Route('/edition/{id}', 'edit', methods: ['GET', 'POST'])]
+    #[IsGranted(OffresVoter::OFFRE_EDIT, subject: 'offre')]
+    public function edit(
+        Offres $offre,
+        Request $request,
+        EntityManagerInterface $manager
+    ): Response {
+
+        $form = $this->createForm(OffreType::class, $offre);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $offre = $form->getData();
+
+            $offre->setSlug($form["nom"]->getData());
+
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre mission a été modifiée avec succès !'
+            );
+
+            return $this->redirectToRoute('offres.mes_offres');
+        }
+
+        return $this->render('pages/missions/edit.html.twig', [
+            'offre' => $offre ,
+            'form' => $form->createView()
+        ]);
+    }
+
 
     /**
      * This controller display all ingredients
@@ -101,47 +227,6 @@ class MissionController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/societe/mes-offres-en-ligne', name: 'mes_offres',  requirements: ['id' => Requirement::DIGITS], methods: ['GET'])]
-    public function mesOffres(
-        OffresRepository $offresRepository,
-        PaginatorInterface $paginator,
-        Request $request,
-    ): Response {
-
-        /** @var Societes $societe */
-        $societe =  $this->getUser() ;
-        $userId = $societe->getId();
-        
-        $offres = $offresRepository->findBy(['societes' => $userId]) ;
-    
-       // $societe->getOffres(),
-
-        $missions = $paginator->paginate(
-            $offres,
-            $request->query->getInt('page', 1),
-            10
-        );
-
-        // dd($user) ;
-
-        // $products = $OffresRepository->findBy(
-        //     ['users_id' => $userId],
-        //     ['id' => 'DESC']
-        // );
-
-        return $this->render('pages/missions/mes_missions.html.twig', [
-            "missions" => $missions
-        ]);
-    }
-
-    /**
-     * 
-     * @param OffresRepository $offresRepository
-     * @param PaginatorInterface $paginator
-     * @param Request $request
-     * @return Response
-     */
-    #[IsGranted('ROLE_USER')]
     #[Route('/societe/mes-offres-non-publiee', name: 'mes_offres_non_publiees', methods: ['GET'])]
     public function mesOffresNonPubliees(
         OffresRepository $offresRepository,
@@ -181,7 +266,7 @@ class MissionController extends AbstractController
      * @return Response
      */
     #[IsGranted('ROLE_USER')]
-    #[Route('/societe/mes-offres', name: 'mes_offres_non_publiees', methods: ['GET'])]
+    #[Route('/societe/mes-offres-publiees', name: 'mes_offres_publiees', methods: ['GET'])]
     public function mesOffresPubliees(
         OffresRepository $offresRepository,
         PaginatorInterface $paginator,
@@ -192,86 +277,6 @@ class MissionController extends AbstractController
 
         return $this->render('pages/missions/mes_missions_publiees.html.twig', [
             "missions" => $missions
-        ]);
-    }
-
-    /**
-     * This controller show a form which create an mission
-     *
-     * @param Request $request
-     * @param EntityManagerInterface $manager
-     * @return Response
-     */
-    #[IsGranted('ROLE_USER')]
-    #[Route('/creation', name: 'create', methods: ['GET', 'POST'])]
-    public function new(
-        Request $request,
-        EntityManagerInterface $manager
-    ): Response {
-        $mission = new Offres();
-
-        $form = $this->createForm(OffreType::class, $mission);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $mission->setSocietes($this->getUser());
-            $mission->setSlug($form["nom"]->getData());
-
-            $manager->persist($mission);
-            $manager->flush();
-
-            $this->addFlash(
-                'success',
-                'Votre mission a été créé avec succès !'
-            );
-
-            return $this->redirectToRoute('offres.index');
-        }
-
-        return $this->render('pages/missions/new.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
-
-    /**
-     * This controller allow us to edit an ingredient
-     *
-     * @param Offres $offre
-     * @param Request $request
-     * @param EntityManagerInterface $manager
-     * @return Response
-     */
-    ##[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
-    #[IsGranted('ROLE_USER')]
-    #[Route('/edition/{id}', 'edit', methods: ['GET', 'POST'])]
-    public function edit(
-        Offres $offre,
-        Request $request,
-        EntityManagerInterface $manager
-    ): Response {
-
-        $form = $this->createForm(OffreType::class, $offre);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $offre = $form->getData();
-
-            $offre->setSlug($form["nom"]->getData());
-
-            $manager->flush();
-
-            $this->addFlash(
-                'success',
-                'Votre mission a été modifiée avec succès !'
-            );
-
-            return $this->redirectToRoute('offres.mes_offres');
-        }
-
-        return $this->render('pages/missions/edit.html.twig', [
-            'offre' => $offre ,
-            'form' => $form->createView()
         ]);
     }
 
@@ -331,9 +336,8 @@ class MissionController extends AbstractController
      * @param Offres $offre
      * @return Response
      */
-    #[IsGranted('ROLE_USER')]
     #[Route('/suppression/{id}', 'delete', methods: ['DELETE'])]
-    // #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
+    #[IsGranted(OffresVoter::OFFRE_DELETE, subject: 'offre')]
     public function delete(
         EntityManagerInterface $manager,
         Offres $offre
@@ -348,4 +352,5 @@ class MissionController extends AbstractController
 
         return $this->redirectToRoute('offre.mes_offres');
     }
+
 }

@@ -54,6 +54,7 @@
 							<td>{{ mission.isActive ? 'oui' : 'non'}}  </td>
 							<td>
 								<div class="d-flex gap-1">
+									
 									<a href="{{ path('admin.offres.edit', { id: mission.id }) }}" class="btn btn-primary btn-sm">Modifier</a>
 									<a href="{{ path('admin.offres.activer', { id: mission.id }) }}" class="btn btn-info bt btn-sm">Activer</a>
 									<a href="{{ path('admin.offres.desactiver', { id: mission.id }) }}" class="btn btn-warning btn-sm">Désactiver</a>

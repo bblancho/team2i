@@ -5,15 +5,33 @@ namespace App\Repository;
 use App\Entity\Offres;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<Offres>
  */
 class OffresRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginator)
     {
         parent::__construct($registry, Offres::class);
+    }
+
+    
+    public function paginateOffres(int $page, int $limit): PaginationInterface
+    {
+
+        return  $this->paginator->paginate(
+            //$this->createQueryBuilder('o')->leftJoin('o.')->select('o', 'r'),
+            $this->createQueryBuilder('o'),
+            $page,
+            $limit,
+            // [
+            //     'distinct' => false ,
+            //     'sortFieldAllowList' => ['o.id', 'o.nom']
+            // ]
+        );
     }
 
     //    /**

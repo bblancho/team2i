@@ -180,10 +180,8 @@
 							</span>
 							<span> Ref mission: #{{ mission.refMission }} </span> 
 							
-							{% if app.user  %}
-								{% if app.user.typeUser == "societes"  %}
-									<a href="{{ path('offres.edit', {id: mission.id}) }}" class="btn btn-info"> Modifier </a>
-								{% endif %}
+							{% if is_granted("offre_edit", mission)  %}
+								<a href="{{ path('offres.edit', {id: mission.id}) }}" class="btn btn-info"> Modifier </a>
 							{% endif %}
 							
 						</div>
