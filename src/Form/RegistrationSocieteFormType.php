@@ -57,27 +57,11 @@ class RegistrationSocieteFormType extends AbstractType
                     new Assert\Length(['min' => 2, 'max' => 50])
                 ]
             ])
-            ->add('imageFile', FileType::class,[
-                'required' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-                'label' => 'Logo',
-                'label_attr' => [
-                    'class' => 'form-label  mt-4'
-                ],
-                'mapped' => false,
-            ])
-            // ->add('imageFile', VichFileType::class, [
-            //      'attr' => [
-                    //     'class' => 'form-control',
-                    // ],
-                    // 'required' => false,
-                    // 'label' => 'Logo',
-                    // 'label_attr' => [
-                    //     'class' => 'form-label  mt-4'
-                    // ],
-            // ])
+            ->add('imageFile', VichImageType::class, [
+                'required'     => false,
+                'allow_delete' => false,
+                'download_uri' => false
+            ]) 
             ->add('email', EmailType::class, [
                 'required' => true,
                 'attr' => [
@@ -187,7 +171,7 @@ class RegistrationSocieteFormType extends AbstractType
                 ]
             ])
             ->add('numContact', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'minlenght' => '2',
@@ -213,7 +197,7 @@ class RegistrationSocieteFormType extends AbstractType
                     'class' => 'form-label  mt-4'
                 ],
                 'constraints' => [
-                    new Assert\Length(['min' => 8, 'max' => 10])
+                    new Assert\Length(14)
                 ]
             ])
             ->add('password', RepeatedType::class, [

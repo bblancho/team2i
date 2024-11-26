@@ -43,9 +43,9 @@ class SocieteController extends AbstractController
 
         $form = $this->createForm(SocieteType::class, $user);
 
-        $cheminFichier  = $helper->asset($user, 'imageFile') ;
-
         $form->handleRequest($request);
+
+        $cheminFichier  = $helper->asset($user, 'imageFile') ;
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -53,10 +53,17 @@ class SocieteController extends AbstractController
             $user = $form->getData();
             $manager->flush();
 
+            dd($cheminFichier) ;
+
+            // /** @var UploadFile $file */
+            // $file = $form->get('imageFile')->getData() ;
+
             $this->addFlash(
                 'success',
                 'Les informations de votre compte ont bien été modifiées.'
             );
+
+            dd($user) ;
 
             return $this->redirectToRoute('offres.mes_offres', ['id' => $user->getId()]);
         }

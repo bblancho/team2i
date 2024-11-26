@@ -8,11 +8,14 @@ use Vich\UploaderBundle\Form\Type\VichFileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints\Image;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class SocieteType extends AbstractType
 {
@@ -125,18 +128,12 @@ class SocieteType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-check-label '
                 ],
+            ]) 
+            ->add('imageFile', VichImageType::class, [
+                'required'     => false,
+                'allow_delete' => false,
+                'download_uri' => false
             ])
-            ->add('imageFile', VichFileType::class,[
-                'required'  => false,
-                'mapped'    => false,
-                'label' =>' Déposer votre cv ',
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-                'label_attr' => [
-                    'class' => 'form-label mt-4'
-                ],
-            ])   
             ->add('nomContact',TextType::class, [
                 'required' => false,
                 'attr' => [

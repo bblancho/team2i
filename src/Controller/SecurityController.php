@@ -13,6 +13,7 @@ use App\Form\RegistrationSocieteFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -95,7 +96,10 @@ class SecurityController extends AbstractController
      * This controller allow us to register.
      */
     #[Route('/inscription-societe', 'security.registration.societe', methods: ['GET', 'POST'])]
-    public function registerSociete(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
+    public function registerSociete(Request $request, UserPasswordHasherInterface $passwordHasher, 
+        EntityManagerInterface $entityManager,
+        UploaderHelper $helper
+    ): Response
     {
         $user = new Societes();
         $user->setRoles(['ROLE_USER','ROLE_SOCIETE']);
@@ -103,6 +107,7 @@ class SecurityController extends AbstractController
         
         $form = $this->createForm(RegistrationSocieteFormType::class, $user);
         $form->handleRequest($request);
+        $cheminFichier  = $helper->asset($user, 'imageFile') ;
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
@@ -120,8 +125,6 @@ class SecurityController extends AbstractController
                 'success',
                 'Votre compte a bien été créé.'
             );
-
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('security.login');
         }
