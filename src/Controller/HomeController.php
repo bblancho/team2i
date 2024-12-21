@@ -16,6 +16,42 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
+
+    /**
+     * This controller allow us to see a recipe if this one is public
+     *
+     * @param OffresRepository $offresRepository
+     * @return Response
+     */
+    #[Route('/import/ville', name: 'app_import_ville', methods: ['GET'] )]
+    public function import(
+        OffresRepository $offresRepository
+    ): Response {
+
+        $file = fopen(__DIR__.'/../import/citiesexport_2.csv', 'r') ;
+        $line = fgetcsv($file, null, ","); // On parcourt l'entête du fichier
+        dd($line) ;
+        $line = fgetcsv($file, null, ","); 
+        
+        while( ($line = fgetcsv($file, null, ",")) !== false )
+        {
+            $cityName = $line[1] ; // string
+            $latitude = $line[2] ; // string
+            $longitude = $line[3] ; // string
+            $date = $line[4] ; // string
+            $temp = $line[5] ; // string
+            
+            dump($cityName, $latitude, $longitude, $date, $temp ) ;
+
+            // ensuite on procède à l'insertion
+        }
+
+
+        return $this->render('pages/missions/show.html.twig', [
+            'mission' => $mission
+        ]);
+    }
+
     /**
      * This controller display all ingredients
      *
