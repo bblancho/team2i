@@ -30,6 +30,9 @@ class HomeController extends AbstractController
 
         $file = fopen(__DIR__.'/../import/citiesexport_2.csv', 'r') ;
         $line = fgetcsv($file, null, ","); // On parcourt l'entête du fichier
+        $line = fgetcsv($file, null, ","); // On parcourt l'entête du fichier
+        $line = fgetcsv($file, null, ","); // On parcourt l'entête du fichier
+        $line = fgetcsv($file, null, ","); // On parcourt l'entête du fichier
         dd($line) ;
         $line = fgetcsv($file, null, ","); 
         
